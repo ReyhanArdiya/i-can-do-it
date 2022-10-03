@@ -5,7 +5,12 @@ import Image from "next/image";
 
 const Home: NextPage = () => {
     return (
-        <Center fontSize="20rem" color="blue.900" h="100vh" w="full">
+        <Center
+            fontSize="20rem"
+            color="blue.900"
+            h="100vh"
+            w="full"
+        >
             Meowmere
         </Center>
     );
