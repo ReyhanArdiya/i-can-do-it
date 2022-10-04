@@ -1,4 +1,4 @@
-import { HasAuthor } from "./types/author";
+import { Author, HasAuthor } from "./types/author";
 import { WasCreated } from "./types/time";
 
 export interface AudibleText {
@@ -16,10 +16,14 @@ export interface ArticleComment extends HasAuthor, WasCreated {
     body: string;
 }
 
-export interface Article extends HasAuthor, WasCreated {
-    body: Array<AudibleText | ArticleBodyImg>;
-    // TODO make this sub-collection
-    comments: ArticleComment[];
-    headerVideoUrl?: string;
-    title: string;
+export class Article implements HasAuthor, WasCreated {
+    constructor(
+        public title: string,
+        public created: Date,
+        public author: Author,
+        public body: Array<AudibleText | ArticleBodyImg>,
+        // TODO make this sub-collection
+        public comments: ArticleComment[],
+        public headerVideoUrl?: string
+    ) {}
 }
