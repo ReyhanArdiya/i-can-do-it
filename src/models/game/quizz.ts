@@ -1,4 +1,4 @@
-import { Game, GameRecord } from ".";
+import { Game } from ".";
 
 export interface QuizzScore {
     total: number;

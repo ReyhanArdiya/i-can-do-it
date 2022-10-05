@@ -1,4 +1,9 @@
-import { initializeTestEnvironment } from "@firebase/rules-unit-testing";
+import {
+    initializeTestEnvironment,
+    RulesTestContext,
+    RulesTestEnvironment,
+} from "@firebase/rules-unit-testing";
+import { Firestore } from "firebase/firestore";
 
 export const getFirebaseRulesTestEnv = async () =>
     await initializeTestEnvironment({
@@ -8,3 +13,21 @@ export const getFirebaseRulesTestEnv = async () =>
             port: 4400,
         },
     });
+
+export const cleanupFirebase = async (rule: RulesTestEnvironment) => {
+    await rule.clearDatabase();
+    await rule.clearFirestore();
+    await rule.clearStorage();
+    await rule.cleanup();
+};
+
+/**
+ * Used to fix type error when using rule's firestore with v9 SDK
+ */
+export const mockDb = (rules: RulesTestContext): Firestore => ({
+    ...rules.firestore(),
+    type: "firestore",
+    toJSON() {
+        return { ...this };
+    },
+});
