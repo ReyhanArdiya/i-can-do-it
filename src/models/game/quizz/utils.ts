@@ -35,7 +35,7 @@ export const quizzConverter: FirestoreDataConverter<Quizz> = {
 };
 
 export const getQuizzCollection = (db: Firestore) => {
-    const colRef = collection(db, "/quizzs").withConverter(quizzConverter);
+    const colRef = collection(db, "/quizzes").withConverter(quizzConverter);
 
     return colRef;
 };
