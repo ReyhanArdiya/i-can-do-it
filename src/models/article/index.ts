@@ -1,5 +1,5 @@
-import { Author, HasAuthor } from "./types/author";
-import { WasCreated } from "./types/time";
+import { Author, HasAuthor } from "../types/author";
+import { WasCreated } from "../types/time";
 
 export interface AudibleText {
     text: string;
