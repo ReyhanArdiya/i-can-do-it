@@ -1,8 +1,7 @@
-import { Game } from ".";
+import { Game } from "..";
 
-export interface QuizzScore {
-    total: number;
-    correct: number;
+export class QuizzScore {
+    constructor(public correct: number, public total: number) {}
 }
 
 export class QuizzOption {
