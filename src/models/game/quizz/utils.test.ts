@@ -9,7 +9,7 @@ import {
     cleanupFirebase,
     getFirebaseRulesTestEnv,
     mockDb,
-} from "../../../utills/tests/firebase-test-utils";
+} from "../../../utils/tests/firebase-test-utils";
 import { deleteQuizz, getQuizz, getQuizzes, saveQuizz } from "./utils";
 
 let rules: RulesTestEnvironment;

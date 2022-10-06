@@ -9,7 +9,7 @@ import {
     cleanupFirebase,
     getFirebaseRulesTestEnv,
     mockDb,
-} from "../../utills/tests/firebase-test-utils";
+} from "../../utils/tests/firebase-test-utils";
 import { deleteArticle, getArticle, getArticles, saveArticle } from "./utils";
 
 let rules: RulesTestEnvironment;
@@ -115,3 +115,5 @@ describe("Firestore operations", () => {
         expect((await getDoc(savedArticleRef)).exists()).toBe(false);
     });
 });
+
+describe("Media storage", () => {});
