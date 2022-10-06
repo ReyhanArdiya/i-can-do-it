@@ -13,6 +13,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { saveArticleMedia } from "../models/article/utils";
+import { saveQuizzMedia } from "../models/game/quizz/utils";
 import getFirebaseClient from "../utils/firebase/get-firebase-client";
 
 const Home: NextPage = () => {
@@ -26,22 +27,15 @@ const Home: NextPage = () => {
                 onClick={async () => {
                     const storage = getStorage(getFirebaseClient());
 
-                    const url = await getDownloadURL(
-                        ref(
+                    console.log(
+                        await saveQuizzMedia(
                             storage,
-                            "articles/123/1. Contoh Transkrip EF (wwcr 1 dan 3).pdf"
+                            "quizz1",
+                            new File([""], "fake.jpg", {
+                                type: "image/jpg",
+                            })
                         )
                     );
-
-                    const xhr = new XMLHttpRequest();
-                    xhr.responseType = "blob";
-                    xhr.onload = event => {
-                        const blob = xhr.response;
-                    };
-                    xhr.open("GET", url);
-                    xhr.send();
-
-                    console.log(xhr);
                 }}
             >
                 Upload
