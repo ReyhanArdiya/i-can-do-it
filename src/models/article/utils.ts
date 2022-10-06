@@ -14,7 +14,17 @@ import {
     setDoc,
     Timestamp,
 } from "firebase/firestore";
+import {
+    deleteObject,
+    FirebaseStorage,
+    getDownloadURL,
+    ref,
+    StorageReference,
+    uploadBytes,
+} from "firebase/storage";
+
 import { Article, ArticleComment } from ".";
+import { getUniqueStorageName } from "../../utils/firebase/storage";
 
 export const articleConverter: FirestoreDataConverter<Article> = {
     fromFirestore(snapshot) {
@@ -100,4 +110,19 @@ export const deleteArticle = async (db: Firestore, uid: string) => {
     const colRef = getArticleCollection(db);
 
     await deleteDoc(doc(colRef, uid));
+};
+
+export const getArticleFolderRef = (storage: FirebaseStorage, articleId: string) => {
+    return ref(storage, `/articles/${articleId}`);
+};
+
+export const saveArticleMedia = async (
+    storage: FirebaseStorage,
+    articleId: string,
+    data: File,
+    name = getUniqueStorageName(data.name)
+) => {
+    const mediaRef = ref(getArticleFolderRef(storage, articleId), name);
+
+    return await uploadBytes(mediaRef, data);
 };

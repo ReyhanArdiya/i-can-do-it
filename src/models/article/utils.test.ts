@@ -4,23 +4,39 @@ import {
 } from "@firebase/rules-unit-testing";
 import dayjs from "dayjs";
 import { Firestore, getDoc } from "firebase/firestore";
+import {
+    FirebaseStorage,
+    getMetadata,
+    getStorage,
+    ref,
+    uploadString,
+} from "firebase/storage";
 import { Article } from ".";
+import getFirebaseClient from "../../utils/firebase/get-firebase-client";
 import {
     cleanupFirebase,
     getFirebaseRulesTestEnv,
     mockDb,
 } from "../../utils/tests/firebase-test-utils";
-import { deleteArticle, getArticle, getArticles, saveArticle } from "./utils";
+import {
+    deleteArticle,
+    getArticle,
+    getArticles,
+    saveArticle,
+    saveArticleMedia,
+} from "./utils";
 
 let rules: RulesTestEnvironment;
 let user: RulesTestContext;
 let db: Firestore;
+let storage: FirebaseStorage;
 let mockArticle: Article;
 
 beforeEach(async () => {
     rules = await getFirebaseRulesTestEnv();
     user = rules.authenticatedContext("test");
     db = mockDb(user);
+    storage = user.storage("i-can-do-it-45786.appspot.com");
     mockArticle = new Article(
         "Mock Article",
         new Date(),
@@ -113,7 +129,31 @@ describe("Firestore operations", () => {
         await deleteArticle(db, savedArticleRef.id);
 
         expect((await getDoc(savedArticleRef)).exists()).toBe(false);
+        // await expect(getDoc(savedArticleRef)).resolves.toBeTruthy();
     });
 });
 
-describe("Media storage", () => {});
+describe("Media storage", () => {
+    let mockFile: File;
+    beforeEach(() => {
+        mockFile = new File([""], "fake.jpg", {
+            type: "image/jpg",
+        });
+    });
+
+    test("saveArticleMedia saves a media to /articles/article_id folder", async () => {
+        const ref = await saveArticleMedia(
+            getStorage(getFirebaseClient()),
+            "1",
+            mockFile
+        );
+
+        expect(ref.fullPath).toMatch(/^\/articles\/1/);
+        expect(await getMetadata(ref)).toBeTruthy();
+    });
+    test("saveArticleMedia replaces a media in /articles/article_id folder", async () => {
+        await uploadString(ref(getStorage(getFirebaseClient()), "meow"), "hello");
+    });
+    test("getArticleMediaUrl gets a media link from /articles/article_id folder", async () => {});
+    test("deleteArticleMedia deletes a media in /articles/article_id folder", async () => {});
+});
