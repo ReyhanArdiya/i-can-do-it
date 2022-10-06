@@ -4,7 +4,7 @@ service cloud.firestore {
 
         // TEST
         match /{document=**} {
-            allow read, write: if false;
+            allow read, write: if true;
         }
     }
 }

@@ -15,7 +15,6 @@ export const getFirebaseRulesTestEnv = async () =>
     });
 
 export const cleanupFirebase = async (rule: RulesTestEnvironment) => {
-    await rule.clearDatabase();
     await rule.clearFirestore();
     await rule.clearStorage();
     await rule.cleanup();
