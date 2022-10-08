@@ -9,16 +9,7 @@ export class QuizzOption {
 }
 
 export class QuizzItem {
-    constructor(
-        public question: string,
-        public options: [
-            QuizzOption,
-            QuizzOption,
-            QuizzOption,
-            QuizzOption,
-            QuizzOption
-        ]
-    ) {}
+    constructor(public question: string, public options: QuizzOption[]) {}
 }
 
 export class Quizz extends Game<QuizzScore, QuizzItem[]> {}
