@@ -12,7 +12,10 @@ import {
     QuerySnapshot,
     setDoc,
 } from "firebase/firestore";
+import { FirebaseStorage, ref, uploadBytes } from "firebase/storage";
 import { Quizz } from ".";
+import { getUniqueStorageName } from "../../../utils/firebase/storage";
+import { getGamesStorageFolderRef } from "../utils";
 
 export const quizzConverter: FirestoreDataConverter<Quizz> = {
     fromFirestore(snapshot) {
@@ -72,4 +75,22 @@ export const deleteQuizz = async (db: Firestore, uid: string) => {
     const colRef = getQuizzCollection(db);
 
     await deleteDoc(doc(colRef, uid));
+};
+
+export const getQuizzStorageFolderRef = (
+    storage: FirebaseStorage,
+    quizzId: string
+) => {
+    return ref(getGamesStorageFolderRef(storage), quizzId);
+};
+
+export const saveQuizzMedia = async (
+    storage: FirebaseStorage,
+    quizzId: string,
+    data: File,
+    name = getUniqueStorageName(data.name)
+) => {
+    const mediaRef = ref(getQuizzStorageFolderRef(storage, quizzId), name);
+
+    return await uploadBytes(mediaRef, data);
 };
