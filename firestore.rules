@@ -1,10 +1,30 @@
 rules_version = '2';
 service cloud.firestore {
     match /databases/{database}/documents {
+        function isSignedIn() {
+            return request.auth != null;
+        }
 
+        function isAdmin() {
+            return request.auth.token.get("admin", null) == true;
+        }
+// PROG https://firebase.google.com/docs/rules/basics#cloud-firestore
         // TEST
         match /{document=**} {
-            allow read, write: if true;
+            allow read, write: if false;
+        }
+
+        match /articles/{articleId} {
+            allow read: if isSignedIn();
+            allow write: if isSignedIn() && isAdmin();
+        }
+
+        match /games/{gameId} {
+            allow read, write: if isSignedIn();
+
+            match /quizzes/{quizzId} {
+                allow read, write: if isSignedIn();
+            }
         }
     }
 }
