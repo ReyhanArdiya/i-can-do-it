@@ -19,7 +19,9 @@ let mockQuizz: Quizz;
 
 beforeEach(async () => {
     rules = await getFirebaseRulesTestEnv();
-    user = rules.authenticatedContext("test");
+    user = rules.authenticatedContext("test", {
+        admin: true,
+    });
     db = mockDb(user);
     mockQuizz = new Quizz(
         "Mock Quizz",
