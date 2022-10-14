@@ -29,14 +29,16 @@ import {
 let rules: RulesTestEnvironment;
 let user: RulesTestContext;
 let db: Firestore;
-let storage: FirebaseStorage;
+// let storage: FirebaseStorage;
 let mockArticle: Article;
 
 beforeEach(async () => {
     rules = await getFirebaseRulesTestEnv();
-    user = rules.authenticatedContext("test");
+    user = rules.authenticatedContext("test", {
+        admin: true,
+    });
     db = mockDb(user);
-    storage = user.storage("i-can-do-it-45786.appspot.com");
+    // storage = user.storage("i-can-do-it-45786.appspot.com");
     mockArticle = new Article(
         "Mock Article",
         new Date(),
@@ -68,13 +70,13 @@ beforeEach(async () => {
 afterEach(async () => await cleanupFirebase(rules));
 
 describe("Firestore operations", () => {
-    test("saveArticle saves a new article", async () => {
+    test("saveArticle saves a new article if user is admin", async () => {
         const savedArticleRef = await saveArticle(db, mockArticle);
 
         expect((await getDoc(savedArticleRef)).exists()).toBe(true);
     });
 
-    test("saveArticle updates an article", async () => {
+    test("saveArticle updates an article if user is admin", async () => {
         const originalArticleRef = await saveArticle(db, mockArticle);
 
         const newArticle: Article = {
@@ -123,7 +125,7 @@ describe("Firestore operations", () => {
         expect(newestToOldestArticles[2].data()).toEqual(articleOld);
     });
 
-    test("deleteArticle deletes an article by its uid", async () => {
+    test("deleteArticle deletes an article by its uid if user is admin", async () => {
         const savedArticleRef = await saveArticle(db, mockArticle);
 
         await deleteArticle(db, savedArticleRef.id);
@@ -133,7 +135,7 @@ describe("Firestore operations", () => {
     });
 });
 
-describe("Media storage", () => {
+describe.skip("Media storage", () => {
     let mockFile: File;
     beforeEach(() => {
         mockFile = new File([""], "fake.jpg", {
@@ -153,7 +155,7 @@ describe("Media storage", () => {
     });
     test("saveArticleMedia replaces a media in /articles/article_id folder", async () => {
         await uploadString(ref(getStorage(getFirebaseClient()), "meow"), "hello");
-    });
+    }, 99999);
     test("getArticleMediaUrl gets a media link from /articles/article_id folder", async () => {});
     test("deleteArticleMedia deletes a media in /articles/article_id folder", async () => {});
 });
