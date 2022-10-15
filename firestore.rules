@@ -1,10 +1,21 @@
 rules_version = '2';
 service cloud.firestore {
     match /databases/{database}/documents {
+        function isAuth() {
+            return request.auth != null;
+        }
+        function isAdmin() {
+            return request.auth.token.get("admin", null) == true;
+        }
 
-        // TEST
-        match /{document=**} {
-            allow read, write: if true;
+        match /articles/{articleId} {
+            allow read: if isAuth();
+            allow write: if isAuth() && isAdmin();
+        }
+
+        match /quizzes/{game=**} {
+            allow read: if isAuth();
+            allow write: if isAuth() && isAdmin();
         }
     }
 }
