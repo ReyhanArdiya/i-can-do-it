@@ -7,6 +7,7 @@ const meta: Meta<Args> = {
     component: UserAvatarComp,
     args: {
         href: "",
+        src: "",
     },
 };
 
