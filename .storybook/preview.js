@@ -11,5 +11,24 @@ export const parameters = {
     chakra: {
         theme,
     },
-    layout: "centered",
+    layout: "fullscreen",
+    viewport: {
+        viewports: {
+            mobile: {
+                name: "mobile",
+                styles: {
+                    width: "320px",
+                    height: "568px",
+                },
+            },
+
+            desktop: {
+                name: "desktop",
+                styles: {
+                    width: "1024px",
+                    height: "768px",
+                },
+            },
+        },
+    },
 };
