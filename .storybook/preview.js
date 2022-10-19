@@ -31,4 +31,21 @@ export const parameters = {
             },
         },
     },
+    backgrounds: {
+        default: "yellow",
+        values: [
+            {
+                name: "yellow",
+                value: theme.colors.yellow[100],
+            },
+            {
+                name: "blue",
+                value: theme.colors.blue[100],
+            },
+            {
+                name: "sienna",
+                value: theme.colors.sienna[100],
+            },
+        ],
+    },
 };
