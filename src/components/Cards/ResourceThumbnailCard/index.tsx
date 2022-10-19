@@ -22,7 +22,7 @@ export interface ResourceThumbnailCardProps {
         name: string;
         picSrc: string;
     };
-    onReadButtonClick: MouseEventHandler;
+    onButtonClick: MouseEventHandler;
     buttonLabel: string;
 }
 
@@ -30,12 +30,12 @@ const ResourceThumbnailCard = ({
     author,
     title,
     date,
-    onReadButtonClick,
+    onButtonClick: onReadButtonClick,
     imageProps,
     buttonLabel,
 }: ResourceThumbnailCardProps) => {
     return (
-        <BaseCard>
+        <BaseCard minW="60">
             <Image
                 {...imageProps}
                 alt={imageProps.alt}

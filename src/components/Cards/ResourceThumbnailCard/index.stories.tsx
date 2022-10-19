@@ -17,7 +17,7 @@ const meta: Meta<Args> = {
             src: "/PLACEHOLDER.png",
             alt: "woof",
         },
-        onReadButtonClick: action("Go to article page"),
+        onButtonClick: action("Go to article page"),
         title: "Cara mencuci tangan yang baik dan benar",
         buttonLabel: "Baca",
     },
