@@ -8,7 +8,7 @@ const textStyles: Record<string, StyleProps> = {
         fontStyle: "normal",
         fontWeight: "normal",
         letterSpacing: 0,
-        lineHeight: 43.2,
+        lineHeight: "36px",
         textDecoration: "none",
     },
     h2: {
@@ -17,7 +17,7 @@ const textStyles: Record<string, StyleProps> = {
         fontStyle: "normal",
         fontWeight: "normal",
         letterSpacing: 0,
-        lineHeight: 28.8,
+        lineHeight: "30px",
         textDecoration: "none",
     },
     h3: {
@@ -26,7 +26,7 @@ const textStyles: Record<string, StyleProps> = {
         fontStyle: "normal",
         fontWeight: "normal",
         letterSpacing: 0,
-        lineHeight: 24,
+        lineHeight: "25px",
         textDecoration: "none",
     },
     body: {
@@ -35,7 +35,7 @@ const textStyles: Record<string, StyleProps> = {
         fontStyle: "normal",
         fontWeight: "normal",
         letterSpacing: 0,
-        lineHeight: 19.2,
+        lineHeight: "24px",
         textDecoration: "none",
     },
     input: {
@@ -44,7 +44,7 @@ const textStyles: Record<string, StyleProps> = {
         fontStyle: "normal",
         fontWeight: "normal",
         letterSpacing: 0,
-        lineHeight: 16.8,
+        lineHeight: "17px",
         textDecoration: "none",
     },
     small: {
@@ -53,7 +53,7 @@ const textStyles: Record<string, StyleProps> = {
         fontStyle: "normal",
         fontWeight: "normal",
         letterSpacing: 0,
-        lineHeight: 14.4,
+        lineHeight: "18px",
         textDecoration: "none",
     },
 };
