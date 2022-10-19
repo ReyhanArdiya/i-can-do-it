@@ -11,6 +11,7 @@ export interface NavbarProps {
     articleIconHref: string;
     gameIconHref: string;
     userAvatarHref: string;
+    userAvatarPicSrc: string;
 }
 
 const Navbar = ({
@@ -18,6 +19,7 @@ const Navbar = ({
     articleIconHref,
     gameIconHref,
     logoHref,
+    userAvatarPicSrc,
 }: NavbarProps) => {
     const { isDesktop } = useDevicesBreakpoints();
 
@@ -29,6 +31,8 @@ const Navbar = ({
             py="2"
             spacing="0"
             justifyContent="space-between"
+            pos="sticky"
+            top="0"
         >
             <NextLink
                 passHref
@@ -65,7 +69,10 @@ const Navbar = ({
                 </NextLink>
             </HStack>
 
-            <UserAvatar href={userAvatarHref} />
+            <UserAvatar
+                href={userAvatarHref}
+                src={userAvatarPicSrc}
+            />
         </HStack>
     );
 };
