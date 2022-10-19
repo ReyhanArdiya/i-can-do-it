@@ -24,6 +24,7 @@ export class Article implements HasAuthor, WasCreated {
         public body: Array<AudibleText | ArticleBodyImg>,
         // TODO make this sub-collection
         public comments: ArticleComment[],
-        public headerVideoUrl?: string
+        public headerVideoUrl?: string,
+        public thumbnail?: string
     ) {}
 }

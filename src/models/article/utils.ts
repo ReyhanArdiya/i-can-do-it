@@ -47,13 +47,15 @@ export const articleConverter: FirestoreDataConverter<Article> = {
             data.author,
             data.body,
             convertedComments,
-            data.headerVideoUrl
+            data.headerVideoUrl,
+            data.thumbnail
         );
     },
     toFirestore(modelObject) {
         return {
             ...modelObject,
             headerVideoUrl: modelObject.headerVideoUrl || null,
+            thumbnail: modelObject.thumbnail || null,
         } as Article;
     },
 };

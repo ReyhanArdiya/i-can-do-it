@@ -63,7 +63,8 @@ beforeEach(async () => {
                 created: new Date(),
             },
         ],
-        "Meow!"
+        "Meow!",
+        "meowmere!"
     );
 });
 
