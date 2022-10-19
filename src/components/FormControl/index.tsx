@@ -63,6 +63,7 @@ const FormControl = ({
                 _hover={{
                     borderColor: "yellow.500",
                 }}
+                bg="white"
                 {...inputProps}
             />
             {formInfo}
