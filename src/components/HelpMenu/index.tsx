@@ -25,6 +25,7 @@ const HelpIcon = () => (
     <CircularIcon
         icon={QuestionMarkIcon}
         size="32px"
+        shadow="1"
     />
 );
 
