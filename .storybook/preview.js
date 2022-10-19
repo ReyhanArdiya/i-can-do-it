@@ -11,7 +11,7 @@ export const parameters = {
     chakra: {
         theme,
     },
-    layout: "fullscreen",
+    layout: "centered",
     viewport: {
         viewports: {
             mobile: {
