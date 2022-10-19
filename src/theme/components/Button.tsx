@@ -6,6 +6,8 @@ export enum ButtonVariants {}
 
 const Button: ComponentStyleConfig = {
     baseStyle({ colorScheme }) {
+        colorScheme = colorScheme === "gray" ? "yellow" : colorScheme;
+
         return {
             textStyle: "body",
             fontWeight: "bold",
