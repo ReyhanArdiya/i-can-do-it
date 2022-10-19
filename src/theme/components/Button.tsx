@@ -5,20 +5,22 @@ export enum ButtonSizes {}
 export enum ButtonVariants {}
 
 const Button: ComponentStyleConfig = {
-    baseStyle: {
-        textStyle: "body",
-        fontWeight: "bold",
-        borderWidth: "2px",
-        borderStyle: "solid",
-        borderColor: "black",
-        borderRadius: "base",
-        bg: "yellow.500",
-        _hover: {
-            bg: "yellow.300",
-        },
-        _active: {
-            bg: "yellow.500",
-        },
+    baseStyle({ colorScheme }) {
+        return {
+            textStyle: "body",
+            fontWeight: "bold",
+            borderWidth: "2px",
+            borderStyle: "solid",
+            borderColor: "black",
+            borderRadius: "base",
+            bg: `${colorScheme}.500`,
+            _hover: {
+                bg: `${colorScheme}.300`,
+            },
+            _active: {
+                bg: `${colorScheme}.500`,
+            },
+        };
     },
     sizes: {
         md: {
