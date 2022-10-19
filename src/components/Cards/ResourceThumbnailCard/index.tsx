@@ -12,6 +12,7 @@ import { Dayjs } from "dayjs";
 import { motion } from "framer-motion";
 import { MouseEventHandler } from "react";
 import UserAvatar from "../../UserAvatar";
+import BaseCard from "../BaseCard";
 
 export interface ResourceThumbnailCardProps {
     imageProps: ImageProps;
@@ -34,25 +35,7 @@ const ResourceThumbnailCard = ({
     buttonLabel,
 }: ResourceThumbnailCardProps) => {
     return (
-        <VStack
-            as={motion.section}
-            whileHover={{
-                scale: 1.05,
-                transition: {
-                    type: "spring",
-                    bounce: 0.75,
-                },
-            }}
-            bg="white"
-            borderColor="black"
-            borderStyle="solid"
-            borderWidth="2px"
-            p="2.5"
-            rounded="base"
-            shadow="1"
-            spacing="1"
-            w="60"
-        >
+        <BaseCard>
             <Image
                 {...imageProps}
                 alt={imageProps.alt}
@@ -106,7 +89,7 @@ const ResourceThumbnailCard = ({
 
                 <Button onClick={onReadButtonClick}>{buttonLabel}</Button>
             </HStack>
-        </VStack>
+        </BaseCard>
     );
 };
 
