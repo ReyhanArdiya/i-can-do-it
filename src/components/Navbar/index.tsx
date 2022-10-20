@@ -12,6 +12,7 @@ export interface NavbarProps {
     gameIconHref: string;
     userAvatarHref: string;
     userAvatarPicSrc: string;
+    scrolled?: boolean;
 }
 
 const Navbar = ({
@@ -20,6 +21,7 @@ const Navbar = ({
     gameIconHref,
     logoHref,
     userAvatarPicSrc,
+    scrolled,
 }: NavbarProps) => {
     const { isDesktop } = useDevicesBreakpoints();
 
@@ -31,8 +33,11 @@ const Navbar = ({
             py="2"
             spacing="0"
             justifyContent="space-between"
-            pos="sticky"
+            pos="fixed"
             top="0"
+            backdropFilter="auto"
+            backdropBlur="sm"
+            background="rgba(255, 255, 255, 0.25)"
         >
             <NextLink
                 passHref
