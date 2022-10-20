@@ -1,4 +1,6 @@
 import { getApp, initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import setupLocalEmulator from "./setup-local-emulator";
 
 // Your web app's Firebase configuration
@@ -20,6 +22,13 @@ const getFirebaseClient = () => {
     }
 };
 
-setupLocalEmulator(getFirebaseClient());
+export const app = getFirebaseClient();
+
+if (typeof window !== "undefined") {
+    setupLocalEmulator(app);
+}
+
+export const db = getFirestore(app);
+export const auth = getAuth(app);
 
 export default getFirebaseClient;
