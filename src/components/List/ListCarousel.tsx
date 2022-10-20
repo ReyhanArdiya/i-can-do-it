@@ -20,6 +20,7 @@ const ListCarousel = ({ cards }: ListCarouselProps) => {
                     display: "none",
                 },
             }}
+            justify={{ lg: "center" }}
         >
             {cards}
         </HStack>
