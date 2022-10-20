@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    Heading,
     HStack,
     Image,
     ImageProps,
@@ -9,7 +8,6 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
-import { motion } from "framer-motion";
 import { MouseEventHandler } from "react";
 import UserAvatar from "../../UserAvatar";
 import BaseCard from "../BaseCard";
@@ -18,7 +16,7 @@ export interface ResourceThumbnailCardProps {
     imageProps: ImageProps;
     title: string;
     date?: Dayjs;
-    author: {
+    author?: {
         name: string;
         picSrc: string;
     };
@@ -40,6 +38,9 @@ const ResourceThumbnailCard = ({
                 {...imageProps}
                 alt={imageProps.alt}
                 rounded="base"
+                maxH="7.5em"
+                minW="full"
+                objectFit="cover"
             />
             <Text
                 as="h3"
@@ -76,12 +77,12 @@ const ResourceThumbnailCard = ({
                                     color="sienna.500"
                                     fontWeight="bold"
                                 >
-                                    {author.name}
+                                    {author!.name}
                                 </Box>
                             </Text>
                             <UserAvatar
                                 boxSize="1rem"
-                                href={author.picSrc}
+                                href={author!.picSrc}
                             />
                         </HStack>
                     </VStack>
