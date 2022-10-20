@@ -21,7 +21,13 @@ export const quizzConverter: FirestoreDataConverter<Quizz> = {
     fromFirestore(snapshot) {
         const data = snapshot.data() as Quizz;
 
-        return new Quizz(data.title, data.description, data.body, data.gameRecords);
+        return new Quizz(
+            data.title,
+            data.description,
+            data.body,
+            data.gameRecords,
+            data.thumbnail
+        );
     },
     toFirestore(modelObject) {
         const gameRecords = modelObject.gameRecords
@@ -33,6 +39,7 @@ export const quizzConverter: FirestoreDataConverter<Quizz> = {
         return {
             ...instanceToPlain(modelObject),
             gameRecords,
+            thumbnail: modelObject.thumbnail || null,
         } as Quizz;
     },
 };

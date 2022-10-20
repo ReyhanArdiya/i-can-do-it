@@ -35,11 +35,12 @@ beforeEach(async () => {
                 new QuizzOption("E", false),
             ]),
         ],
-        [new GameRecord("Test", "nothing", new QuizzScore(4, 5))]
+        [new GameRecord("Test", "nothing", new QuizzScore(4, 5))],
+        "https://picsum.photos/200/300"
     );
 });
 
-afterEach(async () => await cleanupFirebase(rules));
+// afterEach(async () => await cleanupFirebase(rules));
 
 test("saveQuizz saves a new quizz", async () => {
     const savedQuizzRef = await saveQuizz(db, mockQuizz);

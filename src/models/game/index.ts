@@ -7,6 +7,7 @@ export abstract class Game<TScore, TBody> {
         public title: string,
         public description: string,
         public body: TBody,
-        public gameRecords?: GameRecord<TScore>[]
+        public gameRecords?: GameRecord<TScore>[],
+        public thumbnail?: string
     ) {}
 }
