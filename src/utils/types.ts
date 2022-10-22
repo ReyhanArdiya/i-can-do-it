@@ -4,3 +4,5 @@ export interface IsAuthored {
         picUrl: string;
     };
 }
+
+export type WithId<T> = T & { id: string };
