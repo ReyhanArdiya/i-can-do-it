@@ -6,10 +6,8 @@ interface Args extends MemberCardProps {}
 const meta: Meta<Args> = {
     component: MemberCardComp,
     args: {
-        author: {
-            name: "John Doe",
-            picUrl: "/PLACEHOLDER.png",
-        },
+        name: "John Doe",
+        picUrl: "/PLACEHOLDER.png",
         quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. At felis nibh ullamcorper mi consequat elementum morbi facilisi ultrices. Arcu leo posuere suspendisse viverra viverra. Ridiculus eu eu integer at. Tellus posuere consequat, mauris enim.",
         socials: {
             instagram: "reyhan_roze",

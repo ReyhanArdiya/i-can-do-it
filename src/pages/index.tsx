@@ -4,6 +4,7 @@ import HomePage from "../components/pages/HomePage";
 import useFetch from "../hooks/use-fetch";
 import { getArticles } from "../models/article/utils";
 import { getQuizzes } from "../models/game/quizz/utils";
+import { getMembers } from "../models/member/utils";
 import { db } from "../utils/firebase/get-firebase-client";
 
 const Page: NextPage = () => {
@@ -13,6 +14,9 @@ const Page: NextPage = () => {
             ...article.data(),
         }))
     );
+    useEffect(() => {
+        fetchArticles();
+    }, [fetchArticles]);
 
     const { data: quizzes, fetchData: fetchQuizzes } = useFetch(async () =>
         (await getQuizzes(db)).docs.map(quizz => ({
@@ -20,16 +24,22 @@ const Page: NextPage = () => {
             ...quizz.data(),
         }))
     );
-
     useEffect(() => {
-        fetchArticles();
         fetchQuizzes();
-    }, [fetchArticles, fetchQuizzes]);
+    }, [fetchQuizzes]);
+
+    const { data: members, fetchData: fetchMembers } = useFetch(async () =>
+        (await getMembers(db)).docs.map(member => member.data())
+    );
+    useEffect(() => {
+        fetchMembers();
+    }, [fetchMembers]);
 
     return (
         <HomePage
             articles={articles}
             quizzes={quizzes}
+            members={members}
         />
     );
 };

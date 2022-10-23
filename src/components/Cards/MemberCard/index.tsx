@@ -14,6 +14,9 @@ const MemberCard = ({ name, picUrl, quote, socials }: MemberCardProps) => {
                 alt={name}
                 src={picUrl}
                 rounded="base"
+                maxH="7.5em"
+                minW="full"
+                objectFit="cover"
             />
 
             <Text
