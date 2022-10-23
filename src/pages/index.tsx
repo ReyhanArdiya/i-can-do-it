@@ -1,54 +1,47 @@
-import { Box, Button, Center } from "@chakra-ui/react";
-import {
-    getBlob,
-    getBytes,
-    getDownloadURL,
-    getStorage,
-    ref,
-    uploadBytes,
-    uploadString,
-} from "firebase/storage";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import { useState } from "react";
-import { saveArticleMedia } from "../models/article/utils";
-import { saveQuizzMedia } from "../models/game/quizz/utils";
-import getFirebaseClient from "../utils/firebase/get-firebase-client";
+import { NextPage } from "next";
+import { useEffect } from "react";
+import HomePage from "../components/pages/HomePage";
+import useFetch from "../hooks/use-fetch";
+import { getArticles } from "../models/article/utils";
+import { getQuizzes } from "../models/game/quizz/utils";
+import { getMembers } from "../models/member/utils";
+import { db } from "../utils/firebase/get-firebase-client";
 
-const Home: NextPage = () => {
-    const [state, setState] = useState("");
+const Page: NextPage = () => {
+    const { data: articles, fetchData: fetchArticles } = useFetch(async () =>
+        (await getArticles(db)).docs.map(article => ({
+            id: article.id,
+            ...article.data(),
+        }))
+    );
+    useEffect(() => {
+        fetchArticles();
+    }, [fetchArticles]);
+
+    const { data: quizzes, fetchData: fetchQuizzes } = useFetch(async () =>
+        (await getQuizzes(db)).docs.map(quizz => ({
+            id: quizz.id,
+            ...quizz.data(),
+        }))
+    );
+    useEffect(() => {
+        fetchQuizzes();
+    }, [fetchQuizzes]);
+
+    const { data: members, fetchData: fetchMembers } = useFetch(async () =>
+        (await getMembers(db)).docs.map(member => member.data())
+    );
+    useEffect(() => {
+        fetchMembers();
+    }, [fetchMembers]);
 
     return (
-        <>
-            <Button
-                variant="solid"
-                bg="teal.300"
-                onClick={async () => {
-                    const storage = getStorage(getFirebaseClient());
-
-                    console.log(
-                        await saveQuizzMedia(
-                            storage,
-                            "quizz1",
-                            new File([""], "fake.jpg", {
-                                type: "image/jpg",
-                            })
-                        )
-                    );
-                }}
-            >
-                Upload
-            </Button>
-            <Box
-                as="a"
-                download
-                href={state}
-            >
-                Download!
-            </Box>
-        </>
+        <HomePage
+            articles={articles}
+            quizzes={quizzes}
+            members={members}
+        />
     );
 };
 
-export default Home;
+export default Page;

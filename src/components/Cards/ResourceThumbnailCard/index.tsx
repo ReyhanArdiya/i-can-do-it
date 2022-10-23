@@ -4,6 +4,7 @@ import {
     HStack,
     Image,
     ImageProps,
+    Spacer,
     Text,
     VStack,
 } from "@chakra-ui/react";
@@ -18,7 +19,7 @@ export interface ResourceThumbnailCardProps {
     date?: Dayjs;
     author?: {
         name: string;
-        picSrc: string;
+        picUrl: string;
     };
     onButtonClick: MouseEventHandler;
     buttonLabel: string;
@@ -54,7 +55,7 @@ const ResourceThumbnailCard = ({
                 w="full"
                 justify="space-between"
             >
-                {date && (
+                {date ? (
                     <VStack
                         spacing="0"
                         align="left"
@@ -82,10 +83,12 @@ const ResourceThumbnailCard = ({
                             </Text>
                             <UserAvatar
                                 boxSize="1rem"
-                                href={author!.picSrc}
+                                href={author!.picUrl}
                             />
                         </HStack>
                     </VStack>
+                ) : (
+                    <Spacer />
                 )}
 
                 <Button onClick={onReadButtonClick}>{buttonLabel}</Button>

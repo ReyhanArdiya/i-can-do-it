@@ -1,33 +1,29 @@
 import { HStack, Image, Text } from "@chakra-ui/react";
-import { InstagramLogo } from "phosphor-react";
-import { IsAuthored } from "../../../utils/types";
+import { Member } from "../../../models/member";
 import BaseCard from "../BaseCard";
 
-export interface MemberCardProps extends IsAuthored {
-    quote: string;
-    socials: {
-        instagram: string;
-        email: string;
-    };
-}
+export interface MemberCardProps extends Member {}
 
-const MemberCard = ({ author, quote, socials }: MemberCardProps) => {
+const MemberCard = ({ name, picUrl, quote, socials }: MemberCardProps) => {
     return (
         <BaseCard
             align="start"
             minW="60"
         >
             <Image
-                alt={author.name}
-                src={author.picUrl}
+                alt={name}
+                src={picUrl}
                 rounded="base"
+                maxH="7.5em"
+                minW="full"
+                objectFit="cover"
             />
 
             <Text
                 as="h4"
                 textStyle="h3"
             >
-                {author.name}
+                {name}
             </Text>
             <Text
                 as="blockquote"

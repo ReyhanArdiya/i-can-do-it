@@ -10,8 +10,9 @@ const meta: Meta<Args> = {
         layout: "centered",
     },
     args: {
-        onEmailClick: action("Send email"),
-        onWhatsAppClick: action("Open wa.me"),
+        emailLink: "mailto:mreyhanapwsw@gmail.com",
+        whatsappLink: "wa.me:085161112684",
+        iconLink: "/",
     },
 };
 

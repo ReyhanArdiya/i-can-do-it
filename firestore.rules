@@ -9,13 +9,17 @@ service cloud.firestore {
         }
 
         match /articles/{articleId} {
-            allow read: if isAuth();
+            allow read;
             allow write: if isAuth() && isAdmin();
         }
 
         match /quizzes/{game=**} {
-            allow read: if isAuth();
+            allow read;
             allow write: if isAuth() && isAdmin();
+        }
+
+        match /members/{member} {
+            allow read;
         }
     }
 }
