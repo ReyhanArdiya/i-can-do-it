@@ -4,6 +4,7 @@ import {
     HStack,
     Image,
     ImageProps,
+    Spacer,
     Text,
     VStack,
 } from "@chakra-ui/react";
@@ -54,7 +55,7 @@ const ResourceThumbnailCard = ({
                 w="full"
                 justify="space-between"
             >
-                {date && (
+                {date ? (
                     <VStack
                         spacing="0"
                         align="left"
@@ -86,6 +87,8 @@ const ResourceThumbnailCard = ({
                             />
                         </HStack>
                     </VStack>
+                ) : (
+                    <Spacer />
                 )}
 
                 <Button onClick={onReadButtonClick}>{buttonLabel}</Button>
