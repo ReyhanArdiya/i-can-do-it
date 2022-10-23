@@ -17,5 +17,9 @@ service cloud.firestore {
             allow read;
             allow write: if isAuth() && isAdmin();
         }
+
+        match /members/{member} {
+            allow read;
+        }
     }
 }
