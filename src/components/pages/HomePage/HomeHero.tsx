@@ -14,9 +14,7 @@ const HomeHero = () => (
             align="center"
             justify="center"
         >
-            <StackItem alignSelf={{ base: "end", lg: "center" }}>
-                <ChubbsGreet />
-            </StackItem>
+            <ChubbsGreet alignSelf={{ base: "end", lg: "center" }} />
             <VStack spacing="2">
                 <Text
                     as="h1"

@@ -19,9 +19,7 @@ const ArticlesSectionIntro = () => (
         px="5"
         spacing="2"
     >
-        <StackItem alignSelf={{ base: "start", lg: "center" }}>
-            <ChubbsBook />
-        </StackItem>
+        <ChubbsBook alignSelf={{ base: "start", lg: "center" }} />
         <VStack spacing="2">
             <Text
                 as="h2"

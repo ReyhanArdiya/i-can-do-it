@@ -1,10 +1,14 @@
-export const ChubbsGreet = () => (
-    <svg
+import { Box, BoxProps } from "@chakra-ui/react";
+
+export const ChubbsGreet = (props: BoxProps) => (
+    <Box
+        as="svg"
         width="94"
         height="162"
         viewBox="0 0 94 162"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        {...props}
     >
         <path
             fillRule="evenodd"
@@ -411,16 +415,18 @@ export const ChubbsGreet = () => (
             strokeMiterlimit="22.93"
             strokeLinecap="round"
         />
-    </svg>
+    </Box>
 );
 
-export const ChubbsBook = () => (
-    <svg
+export const ChubbsBook = (props: BoxProps) => (
+    <Box
         width="108"
         height="182"
         viewBox="0 0 108 182"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        as="svg"
+        {...props}
     >
         <path
             fillRule="evenodd"
@@ -818,16 +824,18 @@ export const ChubbsBook = () => (
             strokeMiterlimit="22.93"
             strokeLinecap="round"
         />
-    </svg>
+    </Box>
 );
 
-export const ChubbsDribble = () => (
-    <svg
+export const ChubbsDribble = (props: BoxProps) => (
+    <Box
+        as="svg"
         width="131"
         height="181"
         viewBox="0 0 131 181"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        {...props}
     >
         <path
             fill-rule="evenodd"
@@ -1343,6 +1351,8 @@ export const ChubbsDribble = () => (
             stroke-miterlimit="22.93"
             stroke-linecap="round"
         />
+    </Box>
+);
 
 export const ChubbsPhone = (props: BoxProps) => (
     <Box

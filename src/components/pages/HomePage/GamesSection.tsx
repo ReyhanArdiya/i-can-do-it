@@ -17,9 +17,7 @@ const GamesSectionIntro = () => (
         px="5"
         spacing="2"
     >
-        <StackItem alignSelf={{ base: "end", lg: "center" }}>
-            <ChubbsDribble />
-        </StackItem>
+        <ChubbsDribble alignSelf={{ base: "end", lg: "center" }} />
         <VStack spacing="2">
             <Text
                 as="h2"
