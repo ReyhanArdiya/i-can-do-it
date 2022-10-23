@@ -3,6 +3,7 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Footer from "../components/Footer";
 import HelpMenu from "../components/HelpMenu";
 import Navbar from "../components/Navbar";
 import theme from "../theme";
@@ -10,10 +11,20 @@ import { auth } from "../utils/firebase/get-firebase-client";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     const router = useRouter();
-    const inAppRoutes = router.pathname !== "/intro" && router.pathname !== "/auth";
+    const { pathname } = router;
+    const inAppRoutes = pathname !== "/intro" && pathname !== "/auth";
 
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => onAuthStateChanged(auth, user => setUser(user)), []);
+
+    let footerBg: string;
+    if (pathname === "") {
+        footerBg = "blue.100";
+    } else if (pathname === "") {
+        footerBg = "red.100";
+    } else {
+        footerBg = "yellow.100";
+    }
 
     return (
         <ChakraProvider theme={theme}>
@@ -36,6 +47,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             </Box>
 
             <Component {...pageProps} />
+
+            {inAppRoutes && (
+                <Footer
+                    iconLink="/"
+                    emailLink="mailto:mreyhanapwsw@gmail.com"
+                    whatsappLink="wa.me:085161112684"
+                    bg={footerBg}
+                />
+            )}
         </ChakraProvider>
     );
 };
