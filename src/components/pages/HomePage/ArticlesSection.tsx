@@ -18,6 +18,7 @@ const ArticlesSectionIntro = () => (
         maxW="620px"
         px="5"
         spacing="2"
+        id="articles"
     >
         <ChubbsBook alignSelf={{ base: "start", lg: "center" }} />
         <VStack spacing="2">

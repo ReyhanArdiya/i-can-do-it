@@ -16,6 +16,7 @@ const GamesSectionIntro = () => (
         maxW="620px"
         px="5"
         spacing="2"
+        id="games"
     >
         <ChubbsDribble alignSelf={{ base: "end", lg: "center" }} />
         <VStack spacing="2">
