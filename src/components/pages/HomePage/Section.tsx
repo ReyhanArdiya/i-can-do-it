@@ -8,6 +8,7 @@ const Section = (props: SectionProps) => (
         gap="4"
         h="100vh"
         minH="568px"
+        maxH="1500px"
         py="6"
         w="full"
         {...props}

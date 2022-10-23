@@ -1,13 +1,14 @@
-import { Text, VStack } from "@chakra-ui/react";
 import { type NextPage } from "next";
-import { ChubbsGreet } from "../../Chubbs";
+import ArticlesSection, { ArticlesSectionProps } from "./ArticlesSection";
 import HomeHero from "./HomeHero";
-import Section from "./Section";
 
-const HomePage: NextPage = () => {
+export interface HomePageProps extends Partial<ArticlesSectionProps> {}
+
+const HomePage = ({ articles }: HomePageProps) => {
     return (
         <>
             <HomeHero />
+            {articles && <ArticlesSection articles={articles} />}
         </>
     );
 };
