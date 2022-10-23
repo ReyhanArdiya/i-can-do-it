@@ -62,7 +62,7 @@ const ArticlesSection = ({ articles }: ArticlesSectionProps) => {
         <Section
             bg="blue.100"
             flexDirection="column"
-            h="max"
+            h={{ base: "max", lg: "100vh" }}
         >
             <ArticlesSectionIntro />
             <NewestArticleCard {...articles[0]} />
