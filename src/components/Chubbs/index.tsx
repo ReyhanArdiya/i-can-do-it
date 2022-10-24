@@ -2,6 +2,7 @@ import { Box, BoxProps } from "@chakra-ui/react";
 
 export const ChubbsGreet = (props: BoxProps) => (
     <Box
+        flexShrink="0"
         as="svg"
         width="94"
         height="162"
@@ -420,6 +421,7 @@ export const ChubbsGreet = (props: BoxProps) => (
 
 export const ChubbsBook = (props: BoxProps) => (
     <Box
+        flexShrink="0"
         width="108"
         height="182"
         viewBox="0 0 108 182"
@@ -829,6 +831,7 @@ export const ChubbsBook = (props: BoxProps) => (
 
 export const ChubbsDribble = (props: BoxProps) => (
     <Box
+        flexShrink="0"
         as="svg"
         width="131"
         height="181"
@@ -1356,6 +1359,7 @@ export const ChubbsDribble = (props: BoxProps) => (
 
 export const ChubbsPhone = (props: BoxProps) => (
     <Box
+        flexShrink="0"
         as="svg"
         width="89"
         height="182"
