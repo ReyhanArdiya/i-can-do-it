@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 import useIsScrolled from "../hooks/use-is-scrolled";
 import theme from "../theme";
 import { auth } from "../utils/firebase/get-firebase-client";
+import "../styles.css";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     const router = useRouter();
