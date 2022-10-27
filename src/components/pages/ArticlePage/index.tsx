@@ -12,9 +12,9 @@ import OtherArticlesSection, {
 import ScrollToBottomButton from "./ScrollToBottomButton";
 
 export interface ArticlePageProps
-    extends Omit<Article, "thumbnail">,
-        OtherArticlesSectionProps,
-        ArticlePageCommentsProps {}
+    extends Omit<Article, "thumbnail" | "comments">,
+        Partial<OtherArticlesSectionProps>,
+        Partial<ArticlePageCommentsProps> {}
 
 const ArticlePage: NextPage<ArticlePageProps> = ({
     author,
@@ -43,11 +43,15 @@ const ArticlePage: NextPage<ArticlePageProps> = ({
                 spacing="0"
                 maxW="full"
             >
-                <OtherArticlesSection otherArticles={otherArticles} />
-                <ArticlePageComments
-                    comments={comments}
-                    onMoreCommentsButtonClick={onMoreCommentsButtonClick}
-                />
+                {otherArticles && (
+                    <OtherArticlesSection otherArticles={otherArticles} />
+                )}
+                {comments && onMoreCommentsButtonClick && (
+                    <ArticlePageComments
+                        comments={comments}
+                        onMoreCommentsButtonClick={onMoreCommentsButtonClick}
+                    />
+                )}
             </VStack>
             <ScrollToBottomButton />
         </VStack>
