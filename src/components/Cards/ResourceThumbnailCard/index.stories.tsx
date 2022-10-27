@@ -10,7 +10,7 @@ const meta: Meta<Args> = {
     args: {
         author: {
             name: "John Doe",
-            picSrc: "https://picsum.photos/id/237/300/300",
+            picUrl: "https://picsum.photos/id/237/300/300",
         },
         date: dayjs(),
         imageProps: {
