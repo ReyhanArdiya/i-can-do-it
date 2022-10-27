@@ -21,7 +21,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     useEffect(() => onAuthStateChanged(auth, user => setUser(user)), []);
 
     let bg: string;
-    if (pathname === "") {
+    if (["", "/quizzes/[quizzId]/playername"].includes(pathname)) {
         bg = "blue.100";
     } else if (pathname === "") {
         bg = "red.100";

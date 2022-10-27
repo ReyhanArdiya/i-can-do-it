@@ -25,7 +25,9 @@ const Page = () => {
             description={quizzData.data()!.description}
             title={quizzData.data()!.title}
             onStartGameClick={() =>
-                router.push(isAuth ? `quizzes/${quizzId}` : `games/playername`)
+                router.push(
+                    isAuth ? `quizzes/${quizzId}` : `quizzes/${quizzId}/playername`
+                )
             }
         />
     ) : (
