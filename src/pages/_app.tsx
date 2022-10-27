@@ -21,7 +21,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     useEffect(() => onAuthStateChanged(auth, user => setUser(user)), []);
 
     let bg: string;
-    if (["/quizzes/[quizzId]/playername"].includes(pathname)) {
+    if (["/quizzes/[quizzId]/playername", "/user"].includes(pathname)) {
         bg = "blue.100";
     } else if (["/quizzes/[quizzId]"].includes(pathname)) {
         bg = "sienna.100";
@@ -52,7 +52,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                             articleIconHref="/#articles"
                             gameIconHref="/#games"
                             logoHref="/"
-                            userAvatarHref="/profile"
+                            userAvatarHref="/user"
                             userAvatarPicSrc={user?.photoURL || ""}
                             bg={bg}
                         />
