@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useEffect } from "react";
 import HomePage from "../components/pages/HomePage";
 import useFetch from "../hooks/use-fetch";
@@ -6,6 +6,9 @@ import { getArticles } from "../models/article/utils";
 import { getQuizzes } from "../models/game/quizz/utils";
 import { getMembers } from "../models/member/utils";
 import { db } from "../utils/firebase/get-firebase-client";
+import { redirectIfNotAuth } from "../utils/redirect";
+
+export const getServerSideProps: GetServerSideProps = redirectIfNotAuth("/intro");
 
 const Page: NextPage = () => {
     const { data: articles, fetchData: fetchArticles } = useFetch(async () =>
