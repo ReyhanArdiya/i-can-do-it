@@ -10,6 +10,7 @@ import useIsScrolled from "../hooks/use-is-scrolled";
 import theme from "../theme";
 import { auth } from "../utils/firebase/get-firebase-client";
 import "../styles.css";
+import { QuizzContextProvider } from "../context/quizz-context";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     const router = useRouter();
@@ -36,45 +37,47 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
     return (
         <ChakraProvider theme={theme}>
-            <VStack
-                bg={bg}
-                spacing="0"
-                justify="space-between"
-                w="full"
-                minH="100vh"
-            >
-                {inAppRoutes && (
-                    <Navbar
-                        scrolled={isScrolled}
-                        ref={navbarRef}
-                        articleIconHref="/#articles"
-                        gameIconHref="/#games"
-                        logoHref="/"
-                        userAvatarHref="/profile"
-                        userAvatarPicSrc={user?.photoURL || ""}
-                        bg={bg}
-                    />
-                )}
-
-                <Box
-                    pos="fixed"
-                    bottom="4"
-                    left="4"
+            <QuizzContextProvider>
+                <VStack
+                    bg={bg}
+                    spacing="0"
+                    justify="space-between"
+                    w="full"
+                    minH="100vh"
                 >
-                    <HelpMenu onTextClick={() => 1} />
-                </Box>
+                    {inAppRoutes && (
+                        <Navbar
+                            scrolled={isScrolled}
+                            ref={navbarRef}
+                            articleIconHref="/#articles"
+                            gameIconHref="/#games"
+                            logoHref="/"
+                            userAvatarHref="/profile"
+                            userAvatarPicSrc={user?.photoURL || ""}
+                            bg={bg}
+                        />
+                    )}
 
-                <Component {...pageProps} />
+                    <Box
+                        pos="fixed"
+                        bottom="4"
+                        left="4"
+                    >
+                        <HelpMenu onTextClick={() => 1} />
+                    </Box>
 
-                {inAppRoutes && (
-                    <Footer
-                        iconLink="/"
-                        emailLink="mailto:mreyhanapwsw@gmail.com"
-                        whatsappLink="wa.me:085161112684"
-                        bg={bg}
-                    />
-                )}
-            </VStack>
+                    <Component {...pageProps} />
+
+                    {inAppRoutes && (
+                        <Footer
+                            iconLink="/"
+                            emailLink="mailto:mreyhanapwsw@gmail.com"
+                            whatsappLink="wa.me:085161112684"
+                            bg={bg}
+                        />
+                    )}
+                </VStack>
+            </QuizzContextProvider>
         </ChakraProvider>
     );
 };
