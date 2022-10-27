@@ -1,4 +1,5 @@
 import { Box, Button, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { House } from "phosphor-react";
 import ResourceThumbnailCard, {
     ResourceThumbnailCardProps,
@@ -11,6 +12,9 @@ export interface OtherArticlesSectionProps {
 }
 
 const OtherArticlesSection = ({ otherArticles }: OtherArticlesSectionProps) => {
+    const router = useRouter();
+    const goHome = () => router.push("/");
+
     const articlesCard = otherArticles.map((article, i) => (
         <ResourceThumbnailCard
             key={i}
@@ -24,6 +28,7 @@ const OtherArticlesSection = ({ otherArticles }: OtherArticlesSectionProps) => {
             spacing="6"
             py="4"
             bg="blue.100"
+            id="#other-articles"
         >
             <List
                 listTitle="Artikel Lainnya"
@@ -39,6 +44,7 @@ const OtherArticlesSection = ({ otherArticles }: OtherArticlesSectionProps) => {
                                 color="black"
                             />
                         )}
+                        onClick={goHome}
                     />
                 }
             >
