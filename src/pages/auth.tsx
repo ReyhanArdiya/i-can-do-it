@@ -31,8 +31,12 @@ const AuthPage: NextPage = () => {
         goHome();
     };
     const signInWithGoogle = async () => {
-        await signInWithPopup(auth, provider);
-        goHome();
+        try {
+            await signInWithPopup(auth, provider);
+            goHome();
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (

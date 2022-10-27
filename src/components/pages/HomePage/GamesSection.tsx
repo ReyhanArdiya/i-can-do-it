@@ -48,7 +48,7 @@ const GamesSection = ({ quizzes }: GamesSectionProps) => {
             buttonLabel="Main"
             imageProps={{ src: quizz.thumbnail, alt: quizz.title }}
             title={quizz.title}
-            onButtonClick={() => router.push(`/quizzes/${quizz.id}`)}
+            onButtonClick={() => router.push(`/quizzes/${quizz.id}/intro`)}
         />
     ));
 

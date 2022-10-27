@@ -16,7 +16,7 @@ export interface ConfirmationModalProps {
     onConfirmClick: MouseEventHandler;
     onCancelClick: MouseEventHandler;
     modalProps: Omit<ModalProps, "children">;
-    modalContentProps: ModalContentProps;
+    modalContentProps?: ModalContentProps;
 }
 
 const ConfirmationModal = ({
@@ -34,7 +34,6 @@ const ConfirmationModal = ({
             <ModalOverlay />
             <ModalContent
                 border="2px solid black"
-                bordeColor="black"
                 px="12"
                 py="4"
                 spacing="4"

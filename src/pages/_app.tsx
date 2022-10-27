@@ -1,5 +1,5 @@
-import { Box, ChakraProvider } from "@chakra-ui/react";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { Box, ChakraProvider, VStack } from "@chakra-ui/react";
+import { onAuthStateChanged, onIdTokenChanged, User } from "firebase/auth";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
@@ -10,6 +10,9 @@ import useIsScrolled from "../hooks/use-is-scrolled";
 import theme from "../theme";
 import { auth } from "../utils/firebase/get-firebase-client";
 import "../styles.css";
+import { QuizzContextProvider } from "../context/quizz-context";
+import nookies from "nookies";
+import { CookieKeys, hasVisitedPage } from "../utils/cookies";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     const router = useRouter();
@@ -18,12 +21,31 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => onAuthStateChanged(auth, user => setUser(user)), []);
+    useEffect(
+        () =>
+            onIdTokenChanged(auth, async user => {
+                if (user) {
+                    nookies.set(
+                        null,
+                        CookieKeys.FIREBASE_TOKEN,
+                        await user.getIdToken()
+                    );
+                } else {
+                    nookies.destroy(null, CookieKeys.FIREBASE_TOKEN);
+                }
+            }),
+        []
+    );
+
+    useEffect(() => {
+        hasVisitedPage();
+    }, []);
 
     let bg: string;
-    if (pathname === "") {
+    if (["/quizzes/[quizzId]/playername", "/user"].includes(pathname)) {
         bg = "blue.100";
-    } else if (pathname === "") {
-        bg = "red.100";
+    } else if (["/quizzes/[quizzId]"].includes(pathname)) {
+        bg = "sienna.100";
     } else {
         bg = "yellow.100";
     }
@@ -36,37 +58,47 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
     return (
         <ChakraProvider theme={theme}>
-            {inAppRoutes && (
-                <Navbar
-                    scrolled={isScrolled}
-                    ref={navbarRef}
-                    articleIconHref="/#articles"
-                    gameIconHref="/#games"
-                    logoHref="/"
-                    userAvatarHref="/profile"
-                    userAvatarPicSrc={user?.photoURL || ""}
+            <QuizzContextProvider>
+                <VStack
                     bg={bg}
-                />
-            )}
+                    spacing="6"
+                    justify="space-between"
+                    w="full"
+                    minH="100vh"
+                >
+                    {inAppRoutes && (
+                        <Navbar
+                            scrolled={isScrolled}
+                            ref={navbarRef}
+                            articleIconHref="/#articles"
+                            gameIconHref="/#games"
+                            logoHref="/"
+                            userAvatarHref="/user"
+                            userAvatarPicSrc={user?.photoURL || ""}
+                            bg={bg}
+                        />
+                    )}
 
-            <Box
-                pos="fixed"
-                bottom="4"
-                left="4"
-            >
-                <HelpMenu onTextClick={() => 1} />
-            </Box>
+                    <Box
+                        pos="fixed"
+                        bottom="4"
+                        left="4"
+                    >
+                        <HelpMenu onTextClick={() => 1} />
+                    </Box>
 
-            <Component {...pageProps} />
+                    <Component {...pageProps} />
 
-            {inAppRoutes && (
-                <Footer
-                    iconLink="/"
-                    emailLink="mailto:mreyhanapwsw@gmail.com"
-                    whatsappLink="wa.me:085161112684"
-                    bg={bg}
-                />
-            )}
+                    {inAppRoutes && (
+                        <Footer
+                            iconLink="/"
+                            emailLink="mailto:mreyhanapwsw@gmail.com"
+                            whatsappLink="wa.me:085161112684"
+                            bg={bg}
+                        />
+                    )}
+                </VStack>
+            </QuizzContextProvider>
         </ChakraProvider>
     );
 };

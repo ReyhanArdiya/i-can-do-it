@@ -14,8 +14,8 @@ service cloud.firestore {
         }
 
         match /quizzes/{game=**} {
-            allow read: if true;
-            allow write: if isAuth() && isAdmin();
+            allow read, update: if true;
+            allow create, delete: if isAuth() && isAdmin();
         }
 
         match /members/{member} {
