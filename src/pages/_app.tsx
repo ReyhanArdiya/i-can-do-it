@@ -12,7 +12,7 @@ import { auth } from "../utils/firebase/get-firebase-client";
 import "../styles.css";
 import { QuizzContextProvider } from "../context/quizz-context";
 import nookies from "nookies";
-import { CookieKeys } from "../utils/cookies";
+import { CookieKeys, hasVisitedPage } from "../utils/cookies";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     const router = useRouter();
@@ -36,6 +36,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             }),
         []
     );
+
+    useEffect(() => {
+        hasVisitedPage();
+    }, []);
 
     let bg: string;
     if (["/quizzes/[quizzId]/playername", "/user"].includes(pathname)) {

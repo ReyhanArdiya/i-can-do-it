@@ -30,3 +30,27 @@ export const redirectIfNotAuth: (
 
     return getServerSideProps;
 };
+
+export const redirectIfFirstTimeVisit: (
+    destination: string
+) => GetServerSideProps = destination => {
+    const getSSP: GetServerSideProps = async ({ req }) => {
+        const visited = req.cookies[CookieKeys.VISITED];
+
+        const redirect = {
+            props: [],
+            redirect: {
+                destination,
+            },
+        };
+
+        if (visited === "true") {
+            //@ts-ignore
+            delete redirect.redirect;
+        }
+
+        return redirect;
+    };
+
+    return getSSP;
+};
