@@ -12,9 +12,9 @@ const HomePage = ({ articles, quizzes, members }: HomePageProps) => {
     return (
         <>
             <HomeHero />
-            {articles && <ArticlesSection articles={articles} />}
-            {quizzes && <GamesSection quizzes={quizzes} />}
-            {members && <CreditsSection members={members} />}
+            {articles?.length && <ArticlesSection articles={articles} />}
+            {quizzes?.length && <GamesSection quizzes={quizzes} />}
+            {members?.length && <CreditsSection members={members} />}
         </>
     );
 };
