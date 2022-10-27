@@ -12,6 +12,7 @@ const UserScore = ({ name, avatarHref, score }: UserScoreProps) => {
         <HStack
             justify="space-between"
             fontFamily="sniglet"
+            w="full"
         >
             <HStack spacing={2}>
                 <UserAvatar href={avatarHref} />

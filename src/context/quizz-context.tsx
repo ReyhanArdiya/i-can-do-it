@@ -5,7 +5,7 @@ export interface QuizzContextProps extends QuizzScore {
     playerName: string;
     playerNameChanged: (playerName: string) => void;
     answeredCorrectly: () => void;
-    totalChanged: (total: number) => void;
+    newGameStarted: (total: number) => void;
 }
 
 const QuizzContext = React.createContext<QuizzContextProps>({
@@ -14,7 +14,8 @@ const QuizzContext = React.createContext<QuizzContextProps>({
     total: 0,
     answeredCorrectly() {},
     playerNameChanged() {},
-    totalChanged() {},
+
+    newGameStarted() {},
 });
 
 export const QuizzContextProvider = ({ children }: { children: ReactNode }) => {
@@ -30,11 +31,12 @@ export const QuizzContextProvider = ({ children }: { children: ReactNode }) => {
         answeredCorrectly() {
             setCorrect(c => c + 1);
         },
-        totalChanged(total) {
-            setTotal(total);
-        },
         correct,
         total,
+        newGameStarted(total) {
+            setTotal(total);
+            setCorrect(0);
+        },
     };
 
     return <QuizzContext.Provider value={value}>{children}</QuizzContext.Provider>;

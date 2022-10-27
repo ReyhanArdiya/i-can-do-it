@@ -40,7 +40,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             <QuizzContextProvider>
                 <VStack
                     bg={bg}
-                    spacing="0"
+                    spacing="6"
                     justify="space-between"
                     w="full"
                     minH="100vh"

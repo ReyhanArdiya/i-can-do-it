@@ -17,11 +17,11 @@ const QuizzPage = ({ quizzId, body }: QuizzPageProps) => {
     const [questionNumber, setQuestionNumber] = useState(0);
     const {
         answeredCorrectly,
-        totalChanged,
         correct,
         playerName,
         total,
         playerNameChanged,
+        newGameStarted,
     } = useContext(QuizzContext);
     const router = useRouter();
     const isAuth = useIsAuth();
@@ -33,8 +33,9 @@ const QuizzPage = ({ quizzId, body }: QuizzPageProps) => {
     const isQuizzFinished = questionNumber >= body.length;
 
     useEffect(() => {
-        totalChanged(body.length);
-    }, [body.length, totalChanged]);
+        newGameStarted(body.length);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!isQuizzFinished) {
         const options = body[questionNumber].options.map((option, i) => {
