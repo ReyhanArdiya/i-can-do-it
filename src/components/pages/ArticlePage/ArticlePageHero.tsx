@@ -16,6 +16,8 @@ const ArticlePageHero = ({
         <VStack
             spacing="3"
             w="full"
+            px={{ base: "5", lg: "0" }}
+            maxW="600px"
         >
             <Text
                 textAlign="left"
