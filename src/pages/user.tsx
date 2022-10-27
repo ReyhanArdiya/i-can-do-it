@@ -1,7 +1,10 @@
 import { Skeleton } from "@chakra-ui/react";
-import { type NextPage } from "next";
+import { GetServerSideProps, type NextPage } from "next";
 import UserProfilePage from "../components/pages/UserProfilePage";
 import useGetUser from "../hooks/use-get-user";
+import { redirectIfNotAuth } from "../utils/redirect";
+
+export const getServerSideProps: GetServerSideProps = redirectIfNotAuth("/auth");
 
 const Page: NextPage = () => {
     const user = useGetUser();
