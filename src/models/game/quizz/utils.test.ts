@@ -10,7 +10,13 @@ import {
     getFirebaseRulesTestEnv,
     mockDb,
 } from "../../../utils/tests/firebase-test-utils";
-import { deleteQuizz, getQuizz, getQuizzes, saveQuizz } from "./utils";
+import {
+    deleteQuizz,
+    getQuizz,
+    getQuizzes,
+    saveQuizz,
+    saveQuizzGameRecord,
+} from "./utils";
 
 let rules: RulesTestEnvironment;
 let user: RulesTestContext;
@@ -106,4 +112,22 @@ test("deleteQuizz deletes an quizz by its uid", async () => {
     await deleteQuizz(db, savedQuizzRef.id);
 
     expect((await getDoc(savedQuizzRef)).exists()).toBe(false);
+});
+
+test("saveQuizzGameRecord adds a new gameRecord", async () => {
+    const savedQuizzRef = await saveQuizz(db, mockQuizz);
+
+    const newGameRecord: GameRecord<QuizzScore> = {
+        name: "John doe",
+        picUrl: "123",
+        score: {
+            correct: 4,
+            total: 5,
+        },
+    };
+    await saveQuizzGameRecord(db, savedQuizzRef.id, newGameRecord);
+
+    const updatedQuizz = (await getDoc(savedQuizzRef)).data();
+
+    expect(updatedQuizz?.gameRecords?.at(-1)).toEqual(newGameRecord);
 });
