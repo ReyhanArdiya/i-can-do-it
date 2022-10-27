@@ -1,11 +1,4 @@
-import {
-    HStack,
-    Link,
-    SystemStyleObject,
-    Text,
-    theme,
-    useMediaQuery,
-} from "@chakra-ui/react";
+import { HStack, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { Books, GameController } from "phosphor-react";
 import { forwardRef } from "react";
@@ -21,11 +14,13 @@ export interface NavbarProps {
     userAvatarHref: string;
     userAvatarPicSrc: string;
     scrolled?: boolean;
+    bg: string;
 }
 
 const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
     (
         {
+            bg,
             userAvatarHref,
             articleIconHref,
             gameIconHref,
@@ -55,6 +50,7 @@ const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
                 pos="sticky"
                 top="0"
                 ref={ref}
+                bg={bg}
                 {...scrolledStyle}
             >
                 <NextLink

@@ -19,13 +19,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => onAuthStateChanged(auth, user => setUser(user)), []);
 
-    let footerBg: string;
+    let bg: string;
     if (pathname === "") {
-        footerBg = "blue.100";
+        bg = "blue.100";
     } else if (pathname === "") {
-        footerBg = "red.100";
+        bg = "red.100";
     } else {
-        footerBg = "yellow.100";
+        bg = "yellow.100";
     }
 
     // Navbar change style based on scroll
@@ -45,6 +45,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                     logoHref="/"
                     userAvatarHref="/profile"
                     userAvatarPicSrc={user?.photoURL || ""}
+                    bg={bg}
                 />
             )}
 
@@ -63,7 +64,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                     iconLink="/"
                     emailLink="mailto:mreyhanapwsw@gmail.com"
                     whatsappLink="wa.me:085161112684"
-                    bg={footerBg}
+                    bg={bg}
                 />
             )}
         </ChakraProvider>
