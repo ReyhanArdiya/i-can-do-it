@@ -15,7 +15,7 @@ const UserScore = ({ name, avatarHref, score }: UserScoreProps) => {
             w="full"
         >
             <HStack spacing={2}>
-                <UserAvatar href={avatarHref} />
+                <UserAvatar src={avatarHref} />
                 <Text>{name}</Text>
             </HStack>
             <Text color="sienna.500">{score}</Text>
