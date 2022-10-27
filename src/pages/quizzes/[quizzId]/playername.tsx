@@ -6,9 +6,7 @@ const Page: NextPage = () => {
     const router = useRouter();
     const { quizzId } = router.query;
 
-    return (
-        <PlayerNamePage onStartGameClick={() => router.push(`quizzes/${quizzId}`)} />
-    );
+    return <PlayerNamePage quizzId={quizzId as string} />;
 };
 
 export default Page;

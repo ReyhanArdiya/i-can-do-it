@@ -14,7 +14,7 @@ const PlayerNamePage = ({ quizzId }: { quizzId: string }) => {
 
     const startGame = () => {
         playerNameChanged(playername);
-        router.push(`quizzes/${quizzId}`);
+        router.push(`/quizzes/${quizzId}`);
     };
 
     return (
