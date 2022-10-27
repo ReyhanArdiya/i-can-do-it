@@ -1,8 +1,10 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
+import { updateProfile } from "firebase/auth";
 import { useRouter } from "next/router";
 import { ArrowRight } from "phosphor-react";
 import { MouseEventHandler, useContext, useState } from "react";
 import QuizzContext from "../../../context/quizz-context";
+import useGetUser from "../../../hooks/use-get-user";
 import { ChubbsConfused } from "../../Chubbs";
 import CircularIcon from "../../CircularIcon";
 import FormControl from "../../FormControl";
@@ -11,9 +13,14 @@ const PlayerNamePage = ({ quizzId }: { quizzId: string }) => {
     const [playername, setPlayername] = useState("");
     const { playerNameChanged } = useContext(QuizzContext);
     const router = useRouter();
+    const user = useGetUser();
 
-    const startGame = () => {
+    const startGame = async () => {
+        // TODO add a better way to change username, might be able to reuse this page after clicking buat akun
         playerNameChanged(playername);
+        await updateProfile(user!, {
+            displayName: playername,
+        });
         router.push(`/quizzes/${quizzId}`);
     };
 

@@ -1,5 +1,5 @@
 import { Box, ChakraProvider, VStack } from "@chakra-ui/react";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, onIdTokenChanged, User } from "firebase/auth";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
@@ -11,6 +11,8 @@ import theme from "../theme";
 import { auth } from "../utils/firebase/get-firebase-client";
 import "../styles.css";
 import { QuizzContextProvider } from "../context/quizz-context";
+import nookies from "nookies";
+import { CookieKeys, hasVisitedPage } from "../utils/cookies";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
     const router = useRouter();
@@ -19,6 +21,25 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
     const [user, setUser] = useState<User | null>(null);
     useEffect(() => onAuthStateChanged(auth, user => setUser(user)), []);
+    useEffect(
+        () =>
+            onIdTokenChanged(auth, async user => {
+                if (user) {
+                    nookies.set(
+                        null,
+                        CookieKeys.FIREBASE_TOKEN,
+                        await user.getIdToken()
+                    );
+                } else {
+                    nookies.destroy(null, CookieKeys.FIREBASE_TOKEN);
+                }
+            }),
+        []
+    );
+
+    useEffect(() => {
+        hasVisitedPage();
+    }, []);
 
     let bg: string;
     if (["/quizzes/[quizzId]/playername", "/user"].includes(pathname)) {

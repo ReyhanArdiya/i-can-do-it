@@ -5,8 +5,9 @@ const useIsScrolled = (ref: MutableRefObject<HTMLElement>) => {
 
     useEffect(() => {
         const onScrollHandler: EventListenerOrEventListenerObject = () => {
-            const distanceFromTop =
-                window.scrollY + ref.current.getBoundingClientRect().top;
+            const distanceFromTop = ref.current
+                ? window.scrollY + ref.current.getBoundingClientRect().top
+                : 0;
 
             if (distanceFromTop > 0) {
                 setIsScrolled(true);
