@@ -75,7 +75,13 @@ const CommentCard = ({
                 </HStack>
             </HStack>
 
-            <Text textStyle="input">{comment}</Text>
+            <Text
+                textStyle="input"
+                textAlign="left"
+                w="full"
+            >
+                {comment}
+            </Text>
         </BaseCard>
     );
 };

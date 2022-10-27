@@ -30,7 +30,6 @@ const ArticlePage: NextPage<ArticlePageProps> = ({
         <VStack
             bg="yellow.100"
             mx="auto"
-            mb="6"
             spacing="6"
         >
             <ArticlePageHero

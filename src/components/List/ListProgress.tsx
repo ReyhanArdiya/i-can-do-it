@@ -23,7 +23,12 @@ export interface ListProgressProps {
 const ListProgress = ({ activeIndex, qty }: ListProgressProps) => {
     const circles = [];
     for (let i = 0; i < qty; i++) {
-        circles.push(<Circle isActive={i === activeIndex} />);
+        circles.push(
+            <Circle
+                key={i}
+                isActive={i === activeIndex}
+            />
+        );
     }
 
     return <HStack spacing="2">{circles}</HStack>;
