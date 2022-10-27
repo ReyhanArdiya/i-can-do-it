@@ -1,5 +1,6 @@
 import { instanceToPlain } from "class-transformer";
 import {
+    arrayUnion,
     collection,
     deleteDoc,
     doc,
@@ -11,9 +12,11 @@ import {
     getDocs,
     QuerySnapshot,
     setDoc,
+    updateDoc,
 } from "firebase/firestore";
 import { FirebaseStorage, ref, uploadBytes } from "firebase/storage";
-import { Quizz } from ".";
+import { Quizz, QuizzScore } from ".";
+import { GameRecord } from "..";
 import { getUniqueStorageName } from "../../../utils/firebase/storage";
 import { getGamesStorageFolderRef } from "../utils";
 
@@ -100,4 +103,20 @@ export const saveQuizzMedia = async (
     const mediaRef = ref(getQuizzStorageFolderRef(storage, quizzId), name);
 
     return await uploadBytes(mediaRef, data);
+};
+
+export const saveQuizzGameRecord = async (
+    db: Firestore,
+    quizzId: string,
+    gameRecord: GameRecord<QuizzScore>
+) => {
+    const colRef = getQuizzCollection(db);
+
+    const quizzToUpdateDoc = doc(colRef, quizzId);
+
+    await updateDoc(quizzToUpdateDoc, {
+        gameRecords: arrayUnion(gameRecord),
+    });
+
+    return quizzToUpdateDoc;
 };

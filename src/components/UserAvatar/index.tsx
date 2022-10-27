@@ -1,13 +1,20 @@
 import { Avatar, AvatarProps } from "@chakra-ui/react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 export interface UserAvatarProps extends AvatarProps {
-    href: string;
+    href?: string;
 }
 
 const UserAvatar = (props: UserAvatarProps) => {
+    const Wrapper = props.href
+        ? ({ children }: { children: ReactNode }) => (
+              <Link href={props.href!}>{children}</Link>
+          )
+        : ({ children }: { children: ReactNode }) => <>{children}</>;
+
     return (
-        <Link href={props.href}>
+        <Wrapper>
             <Avatar
                 borderWidth="2px"
                 borderStyle="solid"
@@ -16,7 +23,7 @@ const UserAvatar = (props: UserAvatarProps) => {
                 cursor="pointer"
                 {...props}
             />
-        </Link>
+        </Wrapper>
     );
 };
 
