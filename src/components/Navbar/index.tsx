@@ -52,7 +52,7 @@ const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
                 py="2"
                 spacing="0"
                 justifyContent="space-between"
-                pos="fixed"
+                pos="sticky"
                 top="0"
                 ref={ref}
                 {...scrolledStyle}
