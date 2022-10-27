@@ -16,7 +16,7 @@ const meta: Meta<Args> = {
                 key="1"
                 author={{
                     name: "John Doe",
-                    picSrc: "https://picsum.photos/id/237/300/300",
+                    picUrl: "https://picsum.photos/id/237/300/300",
                 }}
                 date={dayjs()}
                 imageProps={{
@@ -31,7 +31,7 @@ const meta: Meta<Args> = {
                 key="2"
                 author={{
                     name: "John Doe",
-                    picSrc: "https://picsum.photos/id/237/300/300",
+                    picUrl: "https://picsum.photos/id/237/300/300",
                 }}
                 date={dayjs()}
                 imageProps={{
@@ -46,7 +46,7 @@ const meta: Meta<Args> = {
                 key="1"
                 author={{
                     name: "John Doe",
-                    picSrc: "https://picsum.photos/id/237/300/300",
+                    picUrl: "https://picsum.photos/id/237/300/300",
                 }}
                 date={dayjs()}
                 imageProps={{
@@ -61,7 +61,7 @@ const meta: Meta<Args> = {
                 key="2"
                 author={{
                     name: "John Doe",
-                    picSrc: "https://picsum.photos/id/237/300/300",
+                    picUrl: "https://picsum.photos/id/237/300/300",
                 }}
                 date={dayjs()}
                 imageProps={{
