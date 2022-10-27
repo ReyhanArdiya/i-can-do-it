@@ -1,4 +1,4 @@
-import { Box, ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider, VStack } from "@chakra-ui/react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
@@ -36,37 +36,45 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
     return (
         <ChakraProvider theme={theme}>
-            {inAppRoutes && (
-                <Navbar
-                    scrolled={isScrolled}
-                    ref={navbarRef}
-                    articleIconHref="/#articles"
-                    gameIconHref="/#games"
-                    logoHref="/"
-                    userAvatarHref="/profile"
-                    userAvatarPicSrc={user?.photoURL || ""}
-                    bg={bg}
-                />
-            )}
-
-            <Box
-                pos="fixed"
-                bottom="4"
-                left="4"
+            <VStack
+                bg={bg}
+                spacing="0"
+                justify="space-between"
+                w="full"
+                minH="100vh"
             >
-                <HelpMenu onTextClick={() => 1} />
-            </Box>
+                {inAppRoutes && (
+                    <Navbar
+                        scrolled={isScrolled}
+                        ref={navbarRef}
+                        articleIconHref="/#articles"
+                        gameIconHref="/#games"
+                        logoHref="/"
+                        userAvatarHref="/profile"
+                        userAvatarPicSrc={user?.photoURL || ""}
+                        bg={bg}
+                    />
+                )}
 
-            <Component {...pageProps} />
+                <Box
+                    pos="fixed"
+                    bottom="4"
+                    left="4"
+                >
+                    <HelpMenu onTextClick={() => 1} />
+                </Box>
 
-            {inAppRoutes && (
-                <Footer
-                    iconLink="/"
-                    emailLink="mailto:mreyhanapwsw@gmail.com"
-                    whatsappLink="wa.me:085161112684"
-                    bg={bg}
-                />
-            )}
+                <Component {...pageProps} />
+
+                {inAppRoutes && (
+                    <Footer
+                        iconLink="/"
+                        emailLink="mailto:mreyhanapwsw@gmail.com"
+                        whatsappLink="wa.me:085161112684"
+                        bg={bg}
+                    />
+                )}
+            </VStack>
         </ChakraProvider>
     );
 };
