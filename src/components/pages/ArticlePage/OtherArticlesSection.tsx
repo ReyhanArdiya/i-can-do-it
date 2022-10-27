@@ -44,9 +44,9 @@ const OtherArticlesSection = ({ otherArticles }: OtherArticlesSectionProps) => {
                                 color="black"
                             />
                         )}
-                        onClick={goHome}
                     />
                 }
+                onClick={goHome}
             >
                 Beranda
             </Button>

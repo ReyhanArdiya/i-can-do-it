@@ -45,7 +45,7 @@ const GamesSection = ({ quizzes }: GamesSectionProps) => {
     const quizzCards = quizzes.map(quizz => (
         <ResourceThumbnailCard
             key={quizz.id}
-            buttonLabel="Baca"
+            buttonLabel="Main"
             imageProps={{ src: quizz.thumbnail, alt: quizz.title }}
             title={quizz.title}
             onButtonClick={() => router.push(`/quizzes/${quizz.id}`)}
