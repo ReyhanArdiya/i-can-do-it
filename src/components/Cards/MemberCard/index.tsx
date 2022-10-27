@@ -1,4 +1,4 @@
-import { HStack, Image, Text } from "@chakra-ui/react";
+import { HStack, Image, Link, Text } from "@chakra-ui/react";
 import { Member } from "../../../models/member";
 import BaseCard from "../BaseCard";
 
@@ -37,7 +37,7 @@ const MemberCard = ({ name, picUrl, quote, socials }: MemberCardProps) => {
                 alignSelf="end"
             >
                 {socials.instagram && (
-                    <a
+                    <Link
                         target="0"
                         href={`https://www.instagram.com/${socials.instagram}`}
                     >
@@ -58,11 +58,11 @@ const MemberCard = ({ name, picUrl, quote, socials }: MemberCardProps) => {
                                 fill="#D96D4A"
                             />
                         </svg>
-                    </a>
+                    </Link>
                 )}
 
                 {socials.email && (
-                    <a
+                    <Link
                         target="0"
                         href={`mailto:${socials.email}`}
                     >
@@ -79,7 +79,7 @@ const MemberCard = ({ name, picUrl, quote, socials }: MemberCardProps) => {
                                 fill="#3A7FC5"
                             />
                         </svg>
-                    </a>
+                    </Link>
                 )}
             </HStack>
         </BaseCard>
