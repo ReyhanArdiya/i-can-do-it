@@ -51,6 +51,7 @@ const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
                 top="0"
                 ref={ref}
                 bg={bg}
+                zIndex="overlay"
                 {...scrolledStyle}
             >
                 <NextLink
