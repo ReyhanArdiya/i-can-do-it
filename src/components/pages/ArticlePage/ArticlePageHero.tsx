@@ -61,7 +61,8 @@ const ArticlePageHero = ({
 
             <AspectRatio
                 ratio={7 / 4}
-                w="280px"
+                minW="280px"
+                w="full"
                 rounded="base"
                 border="2px solid "
                 borderColor="black"
