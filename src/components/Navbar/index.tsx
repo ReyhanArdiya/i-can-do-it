@@ -1,5 +1,6 @@
-import { HStack, Link, Text } from "@chakra-ui/react";
+import { Button, HStack, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import { Books, GameController } from "phosphor-react";
 import { forwardRef } from "react";
 import useDevicesBreakpoints from "../../hooks/use-devices-breakpoints";
@@ -15,6 +16,7 @@ export interface NavbarProps {
     userAvatarPicSrc: string;
     scrolled?: boolean;
     bg: string;
+    isAuth: boolean;
 }
 
 const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
@@ -27,9 +29,12 @@ const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
             logoHref,
             userAvatarPicSrc,
             scrolled,
+            isAuth,
         },
         ref
     ) => {
+        const router = useRouter();
+        const goToAuth = () => router.push("/auth");
         const { isDesktop } = useDevicesBreakpoints();
         const scrolledStyle = scrolled
             ? {
@@ -89,10 +94,14 @@ const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
                     </NextLink>
                 </HStack>
 
-                <UserAvatar
-                    href={userAvatarHref}
-                    src={userAvatarPicSrc}
-                />
+                {isAuth ? (
+                    <UserAvatar
+                        href={userAvatarHref}
+                        src={userAvatarPicSrc}
+                    />
+                ) : (
+                    <Button onClick={goToAuth}>Masuk Akun</Button>
+                )}
             </HStack>
         );
     }

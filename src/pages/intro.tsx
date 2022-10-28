@@ -14,10 +14,13 @@ import { ArrowRight, Smiley, SmileySad } from "phosphor-react";
 import { ReactNode, useEffect, useState } from "react";
 import CircularIcon from "../components/CircularIcon";
 import ICanDoItLogo from "../components/ICanDoItLogo";
+import useIsAuth from "../hooks/use-is-auth";
 
 const IntroPage: NextPage = () => {
     const router = useRouter();
     const [slide, setSlide] = useState(0);
+
+    const isAuth = useIsAuth();
 
     useEffect(() => {
         const timer = setTimeout(() => setSlide(s => s + 1), 2_500);
@@ -470,7 +473,9 @@ const IntroPage: NextPage = () => {
 
                 <Button
                     rightIcon={<CircularIcon icon={ArrowRight} />}
-                    onClick={() => setSlide(s => s + 1)}
+                    onClick={() =>
+                        isAuth ? router.push("/") : setSlide(s => s + 1)
+                    }
                 >
                     Lanjut
                 </Button>

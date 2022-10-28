@@ -31,6 +31,32 @@ export const redirectIfNotAuth: (
     return getServerSideProps;
 };
 
+export const redirectIfAuth: (
+    destination: string
+) => GetServerSideProps = destination => {
+    const getServerSideProps: GetServerSideProps = async ({ req }) => {
+        const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN];
+        const isAuth = !!firebaseToken;
+
+        const goToPage = { props: {} };
+        const redirect = {
+            props: {},
+            redirect: {
+                destination,
+            },
+        };
+        try {
+            return isAuth ? redirect : goToPage;
+        } catch (error) {
+            console.error(error);
+
+            return redirect;
+        }
+    };
+
+    return getServerSideProps;
+};
+
 export const redirectIfFirstTimeVisit: (
     destination: string
 ) => GetServerSideProps = destination => {

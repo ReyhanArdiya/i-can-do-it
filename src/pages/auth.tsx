@@ -6,11 +6,14 @@ import {
     signInWithEmailAndPassword,
     signInWithPopup,
 } from "firebase/auth";
-import { type NextPage } from "next";
+import { GetServerSideProps, type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import FormControl from "../components/FormControl";
 import getFirebaseClient from "../utils/firebase/get-firebase-client";
+import { redirectIfAuth } from "../utils/redirect";
+
+export const getServerSideProps: GetServerSideProps = redirectIfAuth("/");
 
 const AuthPage: NextPage = () => {
     const app = getFirebaseClient();

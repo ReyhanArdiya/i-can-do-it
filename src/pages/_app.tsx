@@ -95,6 +95,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                     >
                         {inAppRoutes && (
                             <Navbar
+                                isAuth={!!user}
                                 scrolled={isScrolled}
                                 ref={navbarRef}
                                 articleIconHref="/#articles"
