@@ -28,6 +28,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({
 }) => {
     return (
         <VStack
+            w="full"
             bg="yellow.100"
             mx="auto"
             spacing="6"
@@ -41,7 +42,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({
             <ArticlePageBody body={body} />
             <VStack
                 spacing="0"
-                maxW="full"
+                w="full"
             >
                 {otherArticles && (
                     <OtherArticlesSection otherArticles={otherArticles} />
