@@ -5,6 +5,8 @@ import { ResourceThumbnailCardProps } from "../../components/Cards/ResourceThumb
 import ArticlePage from "../../components/pages/ArticlePage";
 import Loading from "../../components/Progress/Loading";
 import { Article } from "../../models/article";
+import ArticleComment from "../../models/article-comment";
+import { getArticleComments } from "../../models/article-comment/utils";
 import { getArticle, getArticles } from "../../models/article/utils";
 import { db } from "../../utils/firebase/get-firebase-client";
 
@@ -44,9 +46,26 @@ const Page = () => {
             .catch(e => console.error(e));
     }, [router]);
 
+    // Comments
+    const [comments, setComments] = useState<ArticleComment[]>();
+    useEffect(() => {
+        getArticleComments(db, articleId as string)
+            .then(comments =>
+                setComments(
+                    comments.docs.map(comment => {
+                        const data = comment.data();
+
+                        return data;
+                    })
+                )
+            )
+            .catch(e => console.error(e));
+    }, [articleId]);
+
     return articleData ? (
         <ArticlePage
             {...articleData}
+            comments={comments}
             onMoreCommentsButtonClick={() => 1}
             otherArticles={otherArticles}
         />
