@@ -1,4 +1,4 @@
-import { Stack, Text, TextProps } from "@chakra-ui/react";
+import { Stack, Text, TextProps, useDisclosure } from "@chakra-ui/react";
 import { Play } from "phosphor-react";
 import { useRef, useState } from "react";
 import CircularIcon from "../CircularIcon";
@@ -41,6 +41,7 @@ const SpeakerIcon = () => (
 
 const AudibleText = ({ audioUrl, ...textProps }: AudibleTextProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const { isOpen, onClose, onOpen } = useDisclosure();
     const { current: audio } = useRef(new Audio(audioUrl));
 
     const toggleAudio = () => {
@@ -55,6 +56,9 @@ const AudibleText = ({ audioUrl, ...textProps }: AudibleTextProps) => {
 
     return (
         <Stack
+            w="full"
+            onMouseEnter={onOpen}
+            onMouseLeave={onClose}
             spacing={2.5}
             direction={{ base: "column", lg: "row" }}
         >
@@ -63,14 +67,16 @@ const AudibleText = ({ audioUrl, ...textProps }: AudibleTextProps) => {
                 cursor="pointer"
                 onClick={toggleAudio}
             />
-            <CircularIcon
-                bg={isPlaying ? "green.200" : "white"}
-                icon={isPlaying ? Play : SpeakerIcon}
-                size="2em"
-                alignSelf="center"
-                cursor="pointer"
-                onClick={toggleAudio}
-            />
+            {isOpen && (
+                <CircularIcon
+                    bg={isPlaying ? "green.200" : "white"}
+                    icon={isPlaying ? Play : SpeakerIcon}
+                    size="2em"
+                    alignSelf="center"
+                    cursor="pointer"
+                    onClick={toggleAudio}
+                />
+            )}
         </Stack>
     );
 };
