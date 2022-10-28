@@ -83,7 +83,7 @@ const ResourceThumbnailCard = ({
                             </Text>
                             <UserAvatar
                                 boxSize="1rem"
-                                href={author!.picUrl}
+                                src={author!.picUrl}
                             />
                         </HStack>
                     </VStack>

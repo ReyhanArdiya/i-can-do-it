@@ -10,6 +10,7 @@ const ArticlePageBody = ({ body }: ArticlePageBodyProps) => {
         if ("audioSrc" in data) {
             return (
                 <AudibleText
+                    w="full"
                     audioUrl={data.audioSrc}
                     key={i}
                 >
