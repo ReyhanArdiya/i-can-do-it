@@ -1,12 +1,12 @@
-import { Skeleton, Text, VStack } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import QuizzContext from "../../../context/quizz-context";
 import useIsAuth from "../../../hooks/use-is-auth";
-import { GameRecord } from "../../../models/game";
 import { Quizz } from "../../../models/game/quizz";
 import { saveQuizzGameRecord } from "../../../models/game/quizz/utils";
 import { auth, db } from "../../../utils/firebase/get-firebase-client";
+import Loading from "../../Progress/Loading";
 import QuizzOption from "../../QuizzOption";
 
 export interface QuizzPageProps extends Pick<Quizz, "body"> {
@@ -110,12 +110,7 @@ const QuizzPage = ({ quizzId, body }: QuizzPageProps) => {
 
         finishQuizz();
 
-        return (
-            <Skeleton
-                w="full"
-                h="100vh"
-            />
-        );
+        return <Loading />;
     }
 };
 

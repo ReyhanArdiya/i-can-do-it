@@ -1,8 +1,8 @@
-import { Skeleton } from "@chakra-ui/react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import QuizzPage from "../../../components/pages/QuizzPage";
+import Loading from "../../../components/Progress/Loading";
 import { Quizz } from "../../../models/game/quizz";
 import { getQuizz } from "../../../models/game/quizz/utils";
 import { db } from "../../../utils/firebase/get-firebase-client";
@@ -24,10 +24,7 @@ const Page: NextPage = () => {
             quizzId={quizzId as string}
         />
     ) : (
-        <Skeleton
-            w="full"
-            h="100vh"
-        />
+        <Loading />
     );
 };
 

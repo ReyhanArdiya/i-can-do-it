@@ -1,8 +1,8 @@
-import { Skeleton } from "@chakra-ui/react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import QuizzResultsPage from "../../../components/pages/QuizzPage/QuizzResultsPage";
+import Loading from "../../../components/Progress/Loading";
 import QuizzContext from "../../../context/quizz-context";
 import { Quizz } from "../../../models/game/quizz";
 import { getQuizz, getQuizzes } from "../../../models/game/quizz/utils";
@@ -36,10 +36,7 @@ const Page: NextPage = () => {
             total={total}
         />
     ) : (
-        <Skeleton
-            w="full"
-            h="100vh"
-        />
+        <Loading />
     );
 };
 

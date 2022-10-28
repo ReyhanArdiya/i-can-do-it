@@ -1,3 +1,5 @@
+import { Box, Skeleton } from "@chakra-ui/react";
+import Loading from "../../Progress/Loading";
 import ArticlesSection, { ArticlesSectionProps } from "./ArticlesSection";
 import CreditsSection, { CreditsSectionProps } from "./CreditsSection";
 import GamesSection, { GamesSectionProps } from "./GamesSection";
@@ -12,9 +14,15 @@ const HomePage = ({ articles, quizzes, members }: HomePageProps) => {
     return (
         <>
             <HomeHero />
-            {articles?.length ? <ArticlesSection articles={articles} /> : null}
-            {quizzes?.length ? <GamesSection quizzes={quizzes} /> : null}
-            {members?.length ? <CreditsSection members={members} /> : null}
+            <Box w="full">
+                {articles?.length ? (
+                    <ArticlesSection articles={articles} />
+                ) : (
+                    <Loading />
+                )}
+                {quizzes?.length ? <GamesSection quizzes={quizzes} /> : <Loading />}
+            </Box>
+            {members?.length ? <CreditsSection members={members} /> : <Loading />}
         </>
     );
 };

@@ -1,8 +1,8 @@
-import { Skeleton } from "@chakra-ui/react";
 import { DocumentSnapshot } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import GamePageIntro from "../../../components/pages/GamePage/GamePageIntro";
+import Loading from "../../../components/Progress/Loading";
 import useIsAuth from "../../../hooks/use-is-auth";
 import { Quizz } from "../../../models/game/quizz";
 import { getQuizz } from "../../../models/game/quizz/utils";
@@ -32,10 +32,7 @@ const Page = () => {
             }
         />
     ) : (
-        <Skeleton
-            w="full"
-            h="100vh"
-        />
+        <Loading />
     );
 };
 

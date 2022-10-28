@@ -1,9 +1,9 @@
-import { Skeleton } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ResourceThumbnailCardProps } from "../../components/Cards/ResourceThumbnailCard";
 import ArticlePage from "../../components/pages/ArticlePage";
+import Loading from "../../components/Progress/Loading";
 import { Article } from "../../models/article";
 import { getArticle, getArticles } from "../../models/article/utils";
 import { db } from "../../utils/firebase/get-firebase-client";
@@ -51,10 +51,7 @@ const Page = () => {
             otherArticles={otherArticles}
         />
     ) : (
-        <Skeleton
-            w="full"
-            h="100vh"
-        />
+        <Loading />
     );
 };
 
