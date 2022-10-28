@@ -1,6 +1,6 @@
 import { Button, HStack, Text, Textarea, VStack } from "@chakra-ui/react";
-import { ChangeEventHandler, MouseEventHandler, useState } from "react";
-import { ArticleComment } from "../../../models/article";
+import { ChangeEventHandler, MouseEventHandler } from "react";
+import ArticleComment from "../../../models/article-comment";
 
 export interface CommentModalProps extends Pick<ArticleComment, "body"> {
     onUpdateBody: ChangeEventHandler<HTMLTextAreaElement>;

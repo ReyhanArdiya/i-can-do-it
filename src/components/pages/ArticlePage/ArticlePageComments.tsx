@@ -2,7 +2,7 @@ import { Button, Text, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { ChatTeardrop, Plus } from "phosphor-react";
 import { MouseEventHandler } from "react";
-import { ArticleComment } from "../../../models/article";
+import ArticleComment from "../../../models/article-comment";
 import CommentCard from "../../Cards/CommentCard";
 import CircularIcon from "../../CircularIcon";
 
