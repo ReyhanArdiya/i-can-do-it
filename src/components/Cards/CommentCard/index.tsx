@@ -1,25 +1,75 @@
-import { HStack, Icon, Spacer, Text, VStack } from "@chakra-ui/react";
+import { HStack, Icon, Spacer, Text, useDisclosure, VStack } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
 import { Pencil, TrashSimple } from "phosphor-react";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
+import ArticleComment from "../../../models/article-comment";
+import {
+    deleteArticleComment,
+    saveArticleComment,
+} from "../../../models/article-comment/utils";
+import { auth, db } from "../../../utils/firebase/get-firebase-client";
 import { IsAuthored } from "../../../utils/types";
+import CommentModal from "../../Modals/CommentModal";
+import ConfirmationModal from "../../Modals/ConfirmationModal";
 import UserAvatar from "../../UserAvatar";
 import BaseCard from "../BaseCard";
 
 export interface CommentCardProps extends IsAuthored {
     comment: string;
+    commentId: string;
+    articleId: string;
     timestamp: Dayjs;
-    onDeleteIconClick?: MouseEventHandler;
-    onEditIconClick?: MouseEventHandler;
 }
 
 const CommentCard = ({
     author,
     comment,
     timestamp,
-    onDeleteIconClick,
-    onEditIconClick,
+    commentId,
+    articleId,
 }: CommentCardProps) => {
+    // Update comment stuff
+    const updateCommentModal = useDisclosure();
+    const [commentBody, setCommentBody] = useState(comment);
+
+    const cancelUpdateComment = () => {
+        setCommentBody(comment);
+        updateCommentModal.onClose();
+    };
+
+    const updateComment = async () => {
+        try {
+            const { displayName, photoURL, uid } = auth.currentUser!;
+            await saveArticleComment(
+                db,
+                articleId,
+                new ArticleComment(
+                    {
+                        name: displayName!,
+                        picUrl: photoURL!,
+                        uid,
+                    },
+                    commentBody
+                )
+            );
+            updateCommentModal.onClose();
+        } catch (err) {
+            console.error(err);
+            cancelUpdateComment();
+        }
+    };
+
+    // Delete com1ment stuff
+    const deleteCommentConfirmationModal = useDisclosure();
+    const deleteComment = async () => {
+        try {
+            await deleteArticleComment(db, articleId, commentId);
+        } catch (err) {
+            console.error(err);
+        }
+        deleteCommentConfirmationModal.onClose();
+    };
+
     return (
         <BaseCard
             px="4"
@@ -62,15 +112,33 @@ const CommentCard = ({
                 <HStack>
                     <Icon
                         as={TrashSimple}
-                        onClick={onDeleteIconClick}
+                        onClick={deleteCommentConfirmationModal.onOpen}
                         boxSize="6"
                         cursor="pointer"
                     />
+                    <ConfirmationModal
+                        modalProps={{
+                            isOpen: deleteCommentConfirmationModal.isOpen,
+                            onClose: deleteCommentConfirmationModal.onClose,
+                        }}
+                        modalText="Apakah kamu ingin menghapus komentar ini?"
+                        onCancelClick={deleteCommentConfirmationModal.onClose}
+                        modalContentProps={{ bg: "sienna.300" }}
+                        onConfirmClick={deleteComment}
+                    />
+
                     <Icon
                         as={Pencil}
-                        onClick={onEditIconClick}
+                        onClick={updateCommentModal.onOpen}
                         boxSize="6"
                         cursor="pointer"
+                    />
+                    <CommentModal
+                        body={commentBody}
+                        isOpen={updateCommentModal.isOpen}
+                        onCancelClick={cancelUpdateComment}
+                        onSaveClick={updateComment}
+                        onUpdateBody={e => setCommentBody(e.target.value)}
                     />
                 </HStack>
             </HStack>

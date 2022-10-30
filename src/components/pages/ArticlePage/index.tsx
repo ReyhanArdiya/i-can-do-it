@@ -14,10 +14,13 @@ import ScrollToBottomButton from "./ScrollToBottomButton";
 export interface ArticlePageProps
     extends Omit<Article, "thumbnail" | "comments">,
         Partial<OtherArticlesSectionProps>,
-        Partial<ArticlePageCommentsProps> {}
+        Partial<ArticlePageCommentsProps> {
+    articleId: string;
+}
 
 const ArticlePage: NextPage<ArticlePageProps> = ({
     author,
+    articleId,
     body,
     created,
     title,
@@ -49,6 +52,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({
                 )}
                 {comments && onMoreCommentsButtonClick && (
                     <ArticlePageComments
+                        articleId={articleId}
                         comments={comments}
                         onMoreCommentsButtonClick={onMoreCommentsButtonClick}
                     />

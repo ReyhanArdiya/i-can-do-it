@@ -14,39 +14,20 @@ import {
     setDoc,
     Timestamp,
 } from "firebase/firestore";
-import {
-    deleteObject,
-    FirebaseStorage,
-    getDownloadURL,
-    ref,
-    StorageReference,
-    uploadBytes,
-} from "firebase/storage";
+import { FirebaseStorage, ref, uploadBytes } from "firebase/storage";
 
-import { Article, ArticleComment } from ".";
+import { Article } from ".";
 import { getUniqueStorageName } from "../../utils/firebase/storage";
 
 export const articleConverter: FirestoreDataConverter<Article> = {
     fromFirestore(snapshot) {
         const data = snapshot.data();
 
-        type CommentsWTimestamp = (Omit<ArticleComment, "created"> & {
-            created: Timestamp;
-        })[];
-
-        const convertedComments = (data.comments as CommentsWTimestamp).map(
-            comment => ({
-                ...comment,
-                created: comment.created.toDate(),
-            })
-        );
-
         return new Article(
             data.title,
             (data.created as Timestamp).toDate(),
             data.author,
             data.body,
-            convertedComments,
             data.headerVideoUrl,
             data.thumbnail
         );
