@@ -11,6 +11,7 @@ const meta: Meta<Args> = {
         onSaveClick: action("Save Comment"),
         onCancelClick: action("Cancel edit"),
         onUpdateBody: action("Update body"),
+        isOpen: true,
     },
 };
 
