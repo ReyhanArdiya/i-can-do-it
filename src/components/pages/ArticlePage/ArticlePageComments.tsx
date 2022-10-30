@@ -55,7 +55,6 @@ const ArticlePageComments = ({
             author={comment.author}
             timestamp={dayjs(comment.created)}
             comment={comment.body}
-            onEditIconClick={() => console.log("Not implemented!")}
         />
     ));
     const isAuth = useIsAuth();
