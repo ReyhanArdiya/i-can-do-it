@@ -1,7 +1,9 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { ChatTeardrop, Plus } from "phosphor-react";
 import { MouseEventHandler } from "react";
+import useIsAuth from "../../../hooks/use-is-auth";
 import ArticleComment from "../../../models/article-comment";
 import CommentCard from "../../Cards/CommentCard";
 import CircularIcon from "../../CircularIcon";
@@ -25,6 +27,30 @@ const ArticlePageComments = ({
             onEditIconClick={() => console.log("Not implemented!")}
         />
     ));
+    const isAuth = useIsAuth();
+    const router = useRouter();
+
+    const commentButton = isAuth ? (
+        <Button
+            leftIcon={
+                <CircularIcon
+                    p="1"
+                    icon={() => (
+                        <ChatTeardrop
+                            weight="fill"
+                            color="black"
+                        />
+                    )}
+                />
+            }
+        >
+            Buat Komentar
+        </Button>
+    ) : (
+        <Button onClick={() => router.push("/auth")}>
+            Anda harus masuk ke akun untuk bisa membuat komentar!
+        </Button>
+    );
 
     return (
         <VStack
@@ -39,21 +65,7 @@ const ArticlePageComments = ({
             >
                 Kolom Komentar
             </Text>
-            <Button
-                leftIcon={
-                    <CircularIcon
-                        p="1"
-                        icon={() => (
-                            <ChatTeardrop
-                                weight="fill"
-                                color="black"
-                            />
-                        )}
-                    />
-                }
-            >
-                Buat Komentar
-            </Button>
+            {commentButton}
             <VStack spacing="inherit">{commentCards}</VStack>
             <Button
                 leftIcon={
