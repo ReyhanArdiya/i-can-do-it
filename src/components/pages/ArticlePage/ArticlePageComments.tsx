@@ -5,15 +5,19 @@ import { ChatTeardrop, Plus } from "phosphor-react";
 import { MouseEventHandler } from "react";
 import useIsAuth from "../../../hooks/use-is-auth";
 import ArticleComment from "../../../models/article-comment";
+import { deleteArticleComment } from "../../../models/article-comment/utils";
+import { db } from "../../../utils/firebase/get-firebase-client";
 import CommentCard from "../../Cards/CommentCard";
 import CircularIcon from "../../CircularIcon";
 
 export interface ArticlePageCommentsProps {
-    comments: ArticleComment[];
+    articleId: string;
+    comments: (ArticleComment & { id: string })[];
     onMoreCommentsButtonClick: MouseEventHandler;
 }
 
 const ArticlePageComments = ({
+    articleId,
     comments,
     onMoreCommentsButtonClick,
 }: ArticlePageCommentsProps) => {
@@ -23,7 +27,13 @@ const ArticlePageComments = ({
             author={comment.author}
             timestamp={dayjs(comment.created)}
             comment={comment.body}
-            onDeleteIconClick={() => console.log("Not implemented!")}
+            onDeleteIconClick={async () => {
+                try {
+                    await deleteArticleComment(db, articleId, comment.id);
+                } catch (err) {
+                    console.error(err);
+                }
+            }}
             onEditIconClick={() => console.log("Not implemented!")}
         />
     ));
