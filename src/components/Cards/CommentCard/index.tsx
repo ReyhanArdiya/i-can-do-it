@@ -33,13 +33,14 @@ const CommentCard = ({
     const [commentBody, setCommentBody] = useState(comment);
 
     const cancelUpdateComment = () => {
-        setCommentBody(comment);
         updateCommentModal.onClose();
+        setCommentBody(comment);
     };
 
     const updateComment = async () => {
         try {
             const { displayName, photoURL, uid } = auth.currentUser!;
+            updateCommentModal.onClose();
             await saveArticleComment(
                 db,
                 articleId,
@@ -52,7 +53,6 @@ const CommentCard = ({
                     commentBody
                 )
             );
-            updateCommentModal.onClose();
         } catch (err) {
             console.error(err);
             cancelUpdateComment();
@@ -62,12 +62,12 @@ const CommentCard = ({
     // Delete com1ment stuff
     const deleteCommentConfirmationModal = useDisclosure();
     const deleteComment = async () => {
+        deleteCommentConfirmationModal.onClose();
         try {
             await deleteArticleComment(db, articleId, commentId);
         } catch (err) {
             console.error(err);
         }
-        deleteCommentConfirmationModal.onClose();
     };
 
     return (
