@@ -37,7 +37,7 @@ export const useSnapMembers = async (
     observer: (quizzes: QuerySnapshot<Member>) => void
 ) => {
     useEffect(() => {
-        onSnapshot(query(getMembersCollection(db)), observer);
+        onSnapshot(query(getMembersCollection(db), orderBy("name")), observer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };
