@@ -6,12 +6,14 @@ import {
     Firestore,
     FirestoreDataConverter,
     getDocs,
+    onSnapshot,
     orderBy,
     query,
     QuerySnapshot,
     setDoc,
     Timestamp,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import ArticleComment from ".";
 
 export const articleCommentConverter: FirestoreDataConverter<ArticleComment> = {
@@ -72,6 +74,23 @@ export const getArticleComments = async (
     const colRef = getArticleCommentsCollection(db, articleId);
 
     return await getDocs(query(colRef, orderBy("created", "desc")));
+};
+
+export const useSnapArticleComments = async (
+    db: Firestore,
+    articleId: string,
+    observer: (articleComments: QuerySnapshot<ArticleComment>) => void
+) => {
+    useEffect(() => {
+        onSnapshot(
+            query(
+                getArticleCommentsCollection(db, articleId),
+                orderBy("created", "desc")
+            ),
+            observer
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [articleId]);
 };
 
 export const deleteArticleComment = async (

@@ -8,6 +8,7 @@ import {
     FirestoreDataConverter,
     getDoc,
     getDocs,
+    onSnapshot,
     orderBy,
     query,
     QuerySnapshot,
@@ -15,6 +16,7 @@ import {
     Timestamp,
 } from "firebase/firestore";
 import { FirebaseStorage, ref, uploadBytes } from "firebase/storage";
+import { useEffect } from "react";
 
 import { Article } from ".";
 import { getUniqueStorageName } from "../../utils/firebase/storage";
@@ -87,6 +89,19 @@ export const getArticles = async (
     const colRef = getArticleCollection(db);
 
     return await getDocs(query(colRef, orderBy("created", "desc")));
+};
+
+export const useSnapArticles = async (
+    db: Firestore,
+    observer: (articles: QuerySnapshot<Article>) => void
+) => {
+    useEffect(() => {
+        onSnapshot(
+            query(getArticleCollection(db), orderBy("created", "desc")),
+            observer
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 };
 
 export const deleteArticle = async (db: Firestore, uid: string) => {

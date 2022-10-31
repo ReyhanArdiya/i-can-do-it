@@ -5,7 +5,11 @@ import QuizzResultsPage from "../../../components/pages/QuizzPage/QuizzResultsPa
 import Loading from "../../../components/Progress/Loading";
 import QuizzContext from "../../../context/quizz-context";
 import { Quizz } from "../../../models/game/quizz";
-import { getQuizz, getQuizzes } from "../../../models/game/quizz/utils";
+import {
+    getQuizz,
+    getQuizzes,
+    useSnapQuizzes,
+} from "../../../models/game/quizz/utils";
 import { db } from "../../../utils/firebase/get-firebase-client";
 
 const Page: NextPage = () => {
@@ -21,11 +25,9 @@ const Page: NextPage = () => {
             .catch(e => console.error(e));
     }, [quizzId]);
 
-    useEffect(() => {
-        getQuizzes(db)
-            .then(snapshot => setQuizzes(snapshot))
-            .catch(e => console.error(e));
-    }, []);
+    useSnapQuizzes(db, quizzes => {
+        setQuizzes(quizzes);
+    });
 
     return quizzData ? (
         <QuizzResultsPage

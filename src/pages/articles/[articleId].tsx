@@ -6,9 +6,8 @@ import ArticlePage from "../../components/pages/ArticlePage";
 import { ArticlePageCommentsProps } from "../../components/pages/ArticlePage/ArticlePageComments";
 import Loading from "../../components/Progress/Loading";
 import { Article } from "../../models/article";
-import ArticleComment from "../../models/article-comment";
-import { getArticleComments } from "../../models/article-comment/utils";
-import { getArticle, getArticles } from "../../models/article/utils";
+import { useSnapArticleComments } from "../../models/article-comment/utils";
+import { getArticle, useSnapArticles } from "../../models/article/utils";
 import { db } from "../../utils/firebase/get-firebase-client";
 
 const Page = () => {
@@ -25,42 +24,33 @@ const Page = () => {
             .catch(e => console.error(e));
     }, [articleId]);
 
-    useEffect(() => {
-        getArticles(db)
-            .then(articles =>
-                setOtherArticles(
-                    articles.docs.map(article => {
-                        const data = article.data();
+    useSnapArticles(db, articles =>
+        setOtherArticles(
+            articles.docs.map(article => {
+                const data = article.data();
 
-                        return {
-                            buttonLabel: "Baca",
-                            imageProps: { src: data.thumbnail },
-                            onButtonClick: () =>
-                                router.push(`/articles/${article.id}`),
-                            title: data.title,
-                            author: data.author,
-                            date: dayjs(data.created),
-                        };
-                    })
-                )
-            )
-            .catch(e => console.error(e));
-    }, [router]);
+                return {
+                    buttonLabel: "Baca",
+                    imageProps: { src: data.thumbnail },
+                    onButtonClick: () => router.push(`/articles/${article.id}`),
+                    title: data.title,
+                    author: data.author,
+                    date: dayjs(data.created),
+                };
+            })
+        )
+    );
 
     // Comments
     const [comments, setComments] = useState<ArticlePageCommentsProps["comments"]>();
-    useEffect(() => {
-        getArticleComments(db, articleId as string)
-            .then(comments =>
-                setComments(
-                    comments.docs.map(comment => ({
-                        ...comment.data(),
-                        id: comment.id,
-                    }))
-                )
-            )
-            .catch(e => console.error(e));
-    }, [articleId]);
+    useSnapArticleComments(db, articleId as string, snapshot => {
+        setComments(
+            snapshot.docs.map(comment => ({
+                ...comment.data(),
+                id: comment.id,
+            }))
+        );
+    });
 
     return articleData ? (
         <ArticlePage
