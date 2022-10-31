@@ -5,7 +5,7 @@ import useFetch from "../hooks/use-fetch";
 import { Article } from "../models/article";
 import { getArticles, useSnapArticles } from "../models/article/utils";
 import { getQuizzes, useSnapQuizzes } from "../models/game/quizz/utils";
-import { getMembers } from "../models/member/utils";
+import { getMembers, useSnapMembers } from "../models/member/utils";
 import { CookieKeys } from "../utils/cookies";
 import { db } from "../utils/firebase/get-firebase-client";
 import { WithId } from "../utils/types";
@@ -46,12 +46,10 @@ const Page: NextPage = () => {
         );
     });
 
-    const { data: members, fetchData: fetchMembers } = useFetch(async () =>
-        (await getMembers(db)).docs.map(member => member.data())
+    const [members, setMembers] = useState<HomePageProps["members"]>();
+    useSnapMembers(db, members =>
+        setMembers(members.docs.map(member => member.data()))
     );
-    useEffect(() => {
-        fetchMembers();
-    }, [fetchMembers]);
 
     return (
         <HomePage
