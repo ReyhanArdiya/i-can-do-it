@@ -81,7 +81,7 @@ const CommentCard = ({
                 spacing="3"
             >
                 <UserAvatar
-                    href={author.picUrl}
+                    src={author.picUrl}
                     boxSize="7"
                 />
 
