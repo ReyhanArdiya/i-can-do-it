@@ -15,8 +15,6 @@ const meta: Meta<Args> = {
         comment:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. At felis nibh ullamcorper mi consequat elementum morbi facilisi ultrices. Arcu leo posuere suspendisse viverra viverra. Ridiculus eu eu integer at. Tellus posuere consequat, mauris enim.",
         timestamp: dayjs(),
-        onDeleteIconClick: action("Delete!"),
-        onEditIconClick: action("Edit!"),
     },
 };
 

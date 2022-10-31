@@ -39,25 +39,31 @@ const meta: Meta<Args> = {
                 author: {
                     name: "John Doe",
                     picUrl: "https://picsum.photos/id/237/300/300",
+                    uid: "123",
                 },
                 body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pharetra purus aenean varius vulputate vitae. Magnis pretium ultricies nunc sed nulla in.",
                 created: new Date(),
+                id: "231",
             },
             {
                 author: {
                     name: "John Doe",
                     picUrl: "https://picsum.photos/id/237/300/300",
+                    uid: "123",
                 },
                 body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pharetra purus aenean varius vulputate vitae. Magnis pretium ultricies nunc sed nulla in.",
                 created: new Date(),
+                id: "231",
             },
             {
                 author: {
                     name: "John Doe",
                     picUrl: "https://picsum.photos/id/237/300/300",
+                    uid: "123",
                 },
                 body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pharetra purus aenean varius vulputate vitae. Magnis pretium ultricies nunc sed nulla in.",
                 created: new Date(),
+                id: "231",
             },
         ],
         created: new Date(),
