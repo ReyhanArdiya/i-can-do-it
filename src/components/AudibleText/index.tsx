@@ -67,7 +67,7 @@ const AudibleText = ({ audioUrl, ...textProps }: AudibleTextProps) => {
                 cursor="pointer"
                 onClick={toggleAudio}
             />
-            {isOpen && (
+            {(isOpen || isPlaying) && (
                 <CircularIcon
                     bg={isPlaying ? "green.200" : "white"}
                     icon={isPlaying ? Play : SpeakerIcon}
