@@ -108,7 +108,7 @@ const ArticlePageComments = ({
 
             <VStack spacing="inherit">{commentCards}</VStack>
 
-            <Button
+            {/* <Button
                 leftIcon={
                     <CircularIcon
                         p="1"
@@ -123,7 +123,7 @@ const ArticlePageComments = ({
                 onClick={onMoreCommentsButtonClick}
             >
                 Lihat Komentar Lain
-            </Button>
+            </Button> */}
         </VStack>
     );
 };

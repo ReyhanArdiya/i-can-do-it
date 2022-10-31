@@ -7,7 +7,10 @@ import { ArticlePageCommentsProps } from "../../components/pages/ArticlePage/Art
 import Loading from "../../components/Progress/Loading";
 import { Article } from "../../models/article";
 import ArticleComment from "../../models/article-comment";
-import { getArticleComments } from "../../models/article-comment/utils";
+import {
+    getArticleComments,
+    useSnapArticleComments,
+} from "../../models/article-comment/utils";
 import { getArticle, getArticles } from "../../models/article/utils";
 import { db } from "../../utils/firebase/get-firebase-client";
 
@@ -49,18 +52,14 @@ const Page = () => {
 
     // Comments
     const [comments, setComments] = useState<ArticlePageCommentsProps["comments"]>();
-    useEffect(() => {
-        getArticleComments(db, articleId as string)
-            .then(comments =>
-                setComments(
-                    comments.docs.map(comment => ({
-                        ...comment.data(),
-                        id: comment.id,
-                    }))
-                )
-            )
-            .catch(e => console.error(e));
-    }, [articleId]);
+    useSnapArticleComments(db, articleId as string, snapshot => {
+        setComments(
+            snapshot.docs.map(comment => ({
+                ...comment.data(),
+                id: comment.id,
+            }))
+        );
+    });
 
     return articleData ? (
         <ArticlePage
