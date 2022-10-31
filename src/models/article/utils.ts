@@ -8,45 +8,28 @@ import {
     FirestoreDataConverter,
     getDoc,
     getDocs,
+    onSnapshot,
     orderBy,
     query,
     QuerySnapshot,
     setDoc,
     Timestamp,
 } from "firebase/firestore";
-import {
-    deleteObject,
-    FirebaseStorage,
-    getDownloadURL,
-    ref,
-    StorageReference,
-    uploadBytes,
-} from "firebase/storage";
+import { FirebaseStorage, ref, uploadBytes } from "firebase/storage";
+import { useEffect } from "react";
 
-import { Article, ArticleComment } from ".";
+import { Article } from ".";
 import { getUniqueStorageName } from "../../utils/firebase/storage";
 
 export const articleConverter: FirestoreDataConverter<Article> = {
     fromFirestore(snapshot) {
         const data = snapshot.data();
 
-        type CommentsWTimestamp = (Omit<ArticleComment, "created"> & {
-            created: Timestamp;
-        })[];
-
-        const convertedComments = (data.comments as CommentsWTimestamp).map(
-            comment => ({
-                ...comment,
-                created: comment.created.toDate(),
-            })
-        );
-
         return new Article(
             data.title,
             (data.created as Timestamp).toDate(),
             data.author,
             data.body,
-            convertedComments,
             data.headerVideoUrl,
             data.thumbnail
         );
@@ -106,6 +89,19 @@ export const getArticles = async (
     const colRef = getArticleCollection(db);
 
     return await getDocs(query(colRef, orderBy("created", "desc")));
+};
+
+export const useSnapArticles = async (
+    db: Firestore,
+    observer: (articles: QuerySnapshot<Article>) => void
+) => {
+    useEffect(() => {
+        onSnapshot(
+            query(getArticleCollection(db), orderBy("created", "desc")),
+            observer
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 };
 
 export const deleteArticle = async (db: Firestore, uid: string) => {

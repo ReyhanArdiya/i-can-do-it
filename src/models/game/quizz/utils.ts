@@ -10,11 +10,15 @@ import {
     FirestoreDataConverter,
     getDoc,
     getDocs,
+    onSnapshot,
+    orderBy,
+    query,
     QuerySnapshot,
     setDoc,
     updateDoc,
 } from "firebase/firestore";
 import { FirebaseStorage, ref, uploadBytes } from "firebase/storage";
+import { useEffect } from "react";
 import { Quizz, QuizzScore } from ".";
 import { GameRecord } from "..";
 import { getUniqueStorageName } from "../../../utils/firebase/storage";
@@ -79,6 +83,16 @@ export const getQuizzes = async (db: Firestore): Promise<QuerySnapshot<Quizz>> =
     const colRef = getQuizzCollection(db);
 
     return await getDocs(colRef);
+};
+
+export const useSnapQuizzes = async (
+    db: Firestore,
+    observer: (quizzes: QuerySnapshot<Quizz>) => void
+) => {
+    useEffect(() => {
+        onSnapshot(query(getQuizzCollection(db)), observer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 };
 
 export const deleteQuizz = async (db: Firestore, uid: string) => {
