@@ -1,12 +1,14 @@
 import { GetServerSideProps, NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import HomePage from "../components/pages/HomePage";
 import useFetch from "../hooks/use-fetch";
-import { getArticles } from "../models/article/utils";
+import { Article } from "../models/article";
+import { getArticles, useSnapArticles } from "../models/article/utils";
 import { getQuizzes } from "../models/game/quizz/utils";
 import { getMembers } from "../models/member/utils";
 import { CookieKeys } from "../utils/cookies";
 import { db } from "../utils/firebase/get-firebase-client";
+import { WithId } from "../utils/types";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN];
@@ -24,15 +26,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 };
 
 const Page: NextPage = () => {
-    const { data: articles, fetchData: fetchArticles } = useFetch(async () =>
-        (await getArticles(db)).docs.map(article => ({
-            id: article.id,
-            ...article.data(),
-        }))
-    );
-    useEffect(() => {
-        fetchArticles();
-    }, [fetchArticles]);
+    const [articles, setArticles] = useState<WithId<Article>[]>();
+    useSnapArticles(db, articles => {
+        setArticles(
+            articles.docs.map(article => ({
+                id: article.id,
+                ...article.data(),
+            }))
+        );
+    });
 
     const { data: quizzes, fetchData: fetchQuizzes } = useFetch(async () =>
         (await getQuizzes(db)).docs.map(quizz => ({
