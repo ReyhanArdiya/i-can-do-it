@@ -1,4 +1,4 @@
-import { HStack, Image, Link, Spacer, Text } from "@chakra-ui/react";
+import { HStack, Image, Link, Skeleton, Spacer, Text } from "@chakra-ui/react";
 import { Member } from "../../../models/member";
 import BaseCard from "../BaseCard";
 
@@ -18,6 +18,13 @@ const MemberCard = ({ name, picUrl, quote, socials }: MemberCardProps) => {
                 maxH="7.5em"
                 minW="full"
                 objectFit="cover"
+                fallback={
+                    <Skeleton
+                        w="full"
+                        h="7.5em"
+                        rounded="base"
+                    />
+                }
             />
 
             <Text
