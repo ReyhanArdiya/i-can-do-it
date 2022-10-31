@@ -19,6 +19,7 @@ export interface CommentCardProps extends IsAuthored {
     commentId: string;
     articleId: string;
     timestamp: Dayjs;
+    isSameAuthor: boolean;
 }
 
 const CommentCard = ({
@@ -27,6 +28,7 @@ const CommentCard = ({
     timestamp,
     commentId,
     articleId,
+    isSameAuthor,
 }: CommentCardProps) => {
     // Update comment stuff
     const updateCommentModal = useDisclosure();
@@ -109,38 +111,40 @@ const CommentCard = ({
 
                 <Spacer />
 
-                <HStack>
-                    <Icon
-                        as={TrashSimple}
-                        onClick={deleteCommentConfirmationModal.onOpen}
-                        boxSize="6"
-                        cursor="pointer"
-                    />
-                    <ConfirmationModal
-                        modalProps={{
-                            isOpen: deleteCommentConfirmationModal.isOpen,
-                            onClose: deleteCommentConfirmationModal.onClose,
-                        }}
-                        modalText="Apakah kamu ingin menghapus komentar ini?"
-                        onCancelClick={deleteCommentConfirmationModal.onClose}
-                        modalContentProps={{ bg: "sienna.300" }}
-                        onConfirmClick={deleteComment}
-                    />
+                {isSameAuthor && (
+                    <HStack>
+                        <Icon
+                            as={TrashSimple}
+                            onClick={deleteCommentConfirmationModal.onOpen}
+                            boxSize="6"
+                            cursor="pointer"
+                        />
+                        <ConfirmationModal
+                            modalProps={{
+                                isOpen: deleteCommentConfirmationModal.isOpen,
+                                onClose: deleteCommentConfirmationModal.onClose,
+                            }}
+                            modalText="Apakah kamu ingin menghapus komentar ini?"
+                            onCancelClick={deleteCommentConfirmationModal.onClose}
+                            modalContentProps={{ bg: "sienna.300" }}
+                            onConfirmClick={deleteComment}
+                        />
 
-                    <Icon
-                        as={Pencil}
-                        onClick={updateCommentModal.onOpen}
-                        boxSize="6"
-                        cursor="pointer"
-                    />
-                    <CommentModal
-                        body={commentBody}
-                        isOpen={updateCommentModal.isOpen}
-                        onCancelClick={cancelUpdateComment}
-                        onSaveClick={updateComment}
-                        onUpdateBody={e => setCommentBody(e.target.value)}
-                    />
-                </HStack>
+                        <Icon
+                            as={Pencil}
+                            onClick={updateCommentModal.onOpen}
+                            boxSize="6"
+                            cursor="pointer"
+                        />
+                        <CommentModal
+                            body={commentBody}
+                            isOpen={updateCommentModal.isOpen}
+                            onCancelClick={cancelUpdateComment}
+                            onSaveClick={updateComment}
+                            onUpdateBody={e => setCommentBody(e.target.value)}
+                        />
+                    </HStack>
+                )}
             </HStack>
 
             <Text

@@ -5,6 +5,7 @@ import { ResourceThumbnailCardProps } from "../../components/Cards/ResourceThumb
 import ArticlePage from "../../components/pages/ArticlePage";
 import { ArticlePageCommentsProps } from "../../components/pages/ArticlePage/ArticlePageComments";
 import Loading from "../../components/Progress/Loading";
+import useGetUser from "../../hooks/use-get-user";
 import { Article } from "../../models/article";
 import { useSnapArticleComments } from "../../models/article-comment/utils";
 import { getArticle, useSnapArticles } from "../../models/article/utils";
@@ -17,6 +18,7 @@ const Page = () => {
     const [otherArticles, setOtherArticles] = useState<ResourceThumbnailCardProps[]>(
         []
     );
+    const user = useGetUser();
 
     useEffect(() => {
         if (articleId) {
@@ -56,6 +58,7 @@ const Page = () => {
 
     return articleData ? (
         <ArticlePage
+            currentUserId={user?.uid}
             {...articleData}
             articleId={articleId as string}
             comments={comments}

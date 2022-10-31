@@ -15,12 +15,14 @@ export interface ArticlePageCommentsProps {
     articleId: string;
     comments: (ArticleComment & { id: string })[];
     onMoreCommentsButtonClick: MouseEventHandler;
+    currentUserId: string;
 }
 
 const ArticlePageComments = ({
     articleId,
     comments,
     onMoreCommentsButtonClick,
+    currentUserId,
 }: ArticlePageCommentsProps) => {
     // Modals
     const { isOpen, onClose, onOpen } = useDisclosure();
@@ -47,16 +49,21 @@ const ArticlePageComments = ({
         onClose();
     };
 
-    const commentCards = comments.map((comment, i) => (
-        <CommentCard
-            articleId={articleId}
-            key={i}
-            commentId={comment.id}
-            author={comment.author}
-            timestamp={dayjs(comment.created)}
-            comment={comment.body}
-        />
-    ));
+    const commentCards = comments.map((comment, i) => {
+        const isSameAuthor = currentUserId === comment.author.uid;
+
+        return (
+            <CommentCard
+                isSameAuthor={isSameAuthor}
+                articleId={articleId}
+                key={i}
+                commentId={comment.id}
+                author={comment.author}
+                timestamp={dayjs(comment.created)}
+                comment={comment.body}
+            />
+        );
+    });
     const isAuth = useIsAuth();
     const router = useRouter();
 

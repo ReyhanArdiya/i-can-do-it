@@ -28,6 +28,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({
     otherArticles,
     comments,
     onMoreCommentsButtonClick,
+    currentUserId,
 }) => {
     return (
         <VStack
@@ -52,6 +53,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({
                 )}
                 {comments && onMoreCommentsButtonClick && (
                     <ArticlePageComments
+                        currentUserId={currentUserId || ""}
                         articleId={articleId}
                         comments={comments}
                         onMoreCommentsButtonClick={onMoreCommentsButtonClick}
