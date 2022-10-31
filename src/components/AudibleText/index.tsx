@@ -1,10 +1,11 @@
 import { Stack, Text, TextProps, useDisclosure } from "@chakra-ui/react";
 import { Play } from "phosphor-react";
-import { useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import CircularIcon from "../CircularIcon";
 
 export interface AudibleTextProps extends TextProps {
     audioUrl: string;
+    onAudioPlay: (newAudioEl: HTMLAudioElement) => void;
 }
 
 const SpeakerIcon = () => (
@@ -39,46 +40,66 @@ const SpeakerIcon = () => (
     </svg>
 );
 
-const AudibleText = ({ audioUrl, ...textProps }: AudibleTextProps) => {
-    const [isPlaying, setIsPlaying] = useState(false);
-    const { isOpen, onClose, onOpen } = useDisclosure();
-    const { current: audio } = useRef(new Audio(audioUrl));
+const AudibleText = forwardRef<HTMLAudioElement, AudibleTextProps>(
+    ({ audioUrl, onAudioPlay, ...textProps }, ref) => {
+        const [isPlaying, setIsPlaying] = useState(false);
+        const { isOpen, onClose, onOpen } = useDisclosure();
+        const { current: audio } = useRef(new Audio(audioUrl));
 
-    const toggleAudio = () => {
-        if (audio.paused) {
-            audio.currentTime = 0;
-            audio.play();
-        } else {
-            audio.pause();
-        }
-        setIsPlaying(!audio.paused);
-    };
+        useImperativeHandle(ref, () => audio);
 
-    return (
-        <Stack
-            w="full"
-            onMouseEnter={onOpen}
-            onMouseLeave={onClose}
-            spacing={2.5}
-            direction={{ base: "column", lg: "row" }}
-        >
-            <Text
-                {...textProps}
-                cursor="pointer"
-                onClick={toggleAudio}
-            />
-            {(isOpen || isPlaying) && (
-                <CircularIcon
-                    bg={isPlaying ? "green.200" : "white"}
-                    icon={isPlaying ? Play : SpeakerIcon}
-                    size="2em"
-                    alignSelf="center"
+        useEffect(() => {
+            const pausePlaying = () => {
+                setIsPlaying(false);
+            };
+
+            audio.addEventListener("pause", pausePlaying);
+            audio.addEventListener("ended", pausePlaying);
+
+            return () => {
+                audio.removeEventListener("pause", pausePlaying);
+                audio.removeEventListener("ended", pausePlaying);
+            };
+        }, [audio]);
+
+        const toggleAudio = () => {
+            if (audio.paused) {
+                audio.currentTime = 0;
+                audio.play();
+                onAudioPlay(audio);
+            } else {
+                audio.pause();
+            }
+            setIsPlaying(!audio.paused);
+        };
+
+        return (
+            <Stack
+                w="full"
+                onMouseEnter={onOpen}
+                onMouseLeave={onClose}
+                spacing={2.5}
+                direction={{ base: "column", lg: "row" }}
+            >
+                <Text
+                    {...textProps}
                     cursor="pointer"
                     onClick={toggleAudio}
                 />
-            )}
-        </Stack>
-    );
-};
+                {(isOpen || isPlaying) && (
+                    <CircularIcon
+                        bg={isPlaying ? "green.200" : "white"}
+                        icon={isPlaying ? Play : SpeakerIcon}
+                        size="2em"
+                        alignSelf="center"
+                        cursor="pointer"
+                        onClick={toggleAudio}
+                    />
+                )}
+            </Stack>
+        );
+    }
+);
+AudibleText.displayName = "AudibleText";
 
 export default AudibleText;
