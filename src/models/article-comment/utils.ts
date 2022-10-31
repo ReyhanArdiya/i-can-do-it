@@ -34,7 +34,7 @@ export const articleCommentConverter: FirestoreDataConverter<ArticleComment> = {
 };
 
 export const getArticleCommentsCollection = (db: Firestore, articleId: string) => {
-    return collection(db, "articles", articleId, "comments").withConverter(
+    return collection(db, `articles/${articleId}/comments`).withConverter(
         articleCommentConverter
     );
 };

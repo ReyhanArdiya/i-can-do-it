@@ -19,9 +19,11 @@ const Page = () => {
     );
 
     useEffect(() => {
-        getArticle(db, articleId as string)
-            .then(article => setArticleData(article.data()))
-            .catch(e => console.error(e));
+        if (articleId) {
+            getArticle(db, articleId as string)
+                .then(article => setArticleData(article.data()))
+                .catch(e => console.error(e));
+        }
     }, [articleId]);
 
     useSnapArticles(db, articles =>
