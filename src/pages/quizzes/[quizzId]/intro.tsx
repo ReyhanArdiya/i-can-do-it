@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import GamePageIntro from "../../../components/pages/GamePage/GamePageIntro";
 import Loading from "../../../components/Progress/Loading";
-import QuizzContext, { QuizzContextProvider } from "../../../context/quizz-context";
+import QuizzContext from "../../../context/quizz-context";
 import useGetUser from "../../../hooks/use-get-user";
 import { Quizz } from "../../../models/game/quizz";
 import { getQuizz } from "../../../models/game/quizz/utils";
 import { db } from "../../../utils/firebase/get-firebase-client";
 
-const QuizzIntroPage = () => {
+const Page = () => {
     const [quizzData, setQuizzData] = useState<DocumentSnapshot<Quizz>>();
     const router = useRouter();
     const user = useGetUser();
@@ -42,11 +42,5 @@ const QuizzIntroPage = () => {
         <Loading />
     );
 };
-
-const Page = () => (
-    <QuizzContextProvider>
-        <QuizzIntroPage />
-    </QuizzContextProvider>
-);
 
 export default Page;
