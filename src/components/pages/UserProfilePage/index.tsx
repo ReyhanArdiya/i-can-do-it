@@ -103,9 +103,8 @@ const UserProfilePage = ({
                 displayName: displayName.trim(),
             });
             await updateCurrentUser(auth, user);
+            displaynameModalDisclosure.onClose();
         }
-
-        displaynameModalDisclosure.onClose();
     };
 
     return (
