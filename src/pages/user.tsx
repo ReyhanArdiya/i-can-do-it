@@ -11,8 +11,8 @@ const Page: NextPage = () => {
 
     return user ? (
         <UserProfilePage
-            userAvatarSrc={user.photoURL!}
-            username={user.displayName!}
+            userAvatarSrc={user.photoURL || ""}
+            username={user.displayName || "Anon"}
         />
     ) : (
         <Skeleton

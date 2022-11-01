@@ -10,6 +10,7 @@ export interface DisplayNamePageProps {
     displayName: string;
     onDisplayNameInputChange: ChangeEventHandler<HTMLInputElement>;
     placeholder: string;
+    buttonLabel: string;
 }
 
 const DisplayNamePage = ({
@@ -17,6 +18,7 @@ const DisplayNamePage = ({
     displayName,
     onDisplayNameInputChange,
     placeholder,
+    buttonLabel,
 }: DisplayNamePageProps) => {
     return (
         <VStack
@@ -69,7 +71,7 @@ const DisplayNamePage = ({
                     />
                 }
             >
-                Mulai Bermain
+                {buttonLabel}
             </Button>
         </VStack>
     );

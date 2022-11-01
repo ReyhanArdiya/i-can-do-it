@@ -84,6 +84,7 @@ const UserProfilePage = ({
                 <Text
                     as="h1"
                     textStyle="h1"
+                    textAlign="center"
                 >
                     {username}
                 </Text>

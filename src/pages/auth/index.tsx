@@ -24,19 +24,20 @@ const AuthPage: NextPage = () => {
 
     const router = useRouter();
     const goHome = () => router.push("/");
+    const goUpdateName = () => router.push("/auth/displayname");
 
     const login = async () => {
         await signInWithEmailAndPassword(auth, email, password);
-        goHome();
+        auth.currentUser?.displayName ? goHome() : goUpdateName();
     };
     const signUp = async () => {
         await createUserWithEmailAndPassword(auth, email, password);
-        goHome();
+        goUpdateName();
     };
     const signInWithGoogle = async () => {
         try {
             await signInWithPopup(auth, provider);
-            goHome();
+            auth.currentUser?.displayName ? goHome() : goUpdateName();
         } catch (err) {
             console.error(err);
         }

@@ -24,6 +24,7 @@ const Page: NextPage = () => {
 
     return (
         <DisplayNamePage
+            buttonLabel="Mulai Bermain"
             displayName={playerName}
             onButtonClick={startGame}
             onDisplayNameInputChange={({ target: { value } }) =>
