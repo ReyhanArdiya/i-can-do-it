@@ -1,5 +1,7 @@
-import { Box, Button, Divider, HStack, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, useToast, VStack } from "@chakra-ui/react";
+import { FirebaseError } from "firebase/app";
 import {
+    AuthErrorCodes,
     createUserWithEmailAndPassword,
     getAuth,
     GoogleAuthProvider,
@@ -21,25 +23,98 @@ const AuthPage: NextPage = () => {
     const provider = new GoogleAuthProvider();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const toast = useToast();
 
     const router = useRouter();
     const goHome = () => router.push("/");
     const goUpdateName = () => router.push("/auth/displayname");
 
     const login = async () => {
-        await signInWithEmailAndPassword(auth, email, password);
-        auth.currentUser?.displayName ? goHome() : goUpdateName();
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            auth.currentUser?.displayName ? goHome() : goUpdateName();
+        } catch (err) {
+            if (err instanceof FirebaseError) {
+                switch (err.code) {
+                    case AuthErrorCodes.INVALID_PASSWORD:
+                        toast({
+                            status: "error",
+                            isClosable: true,
+                            description: "Password yang Anda masukkan salah",
+                        });
+                        break;
+
+                    default:
+                        toast({
+                            status: "error",
+                            isClosable: true,
+                            description: "Terjadi sebuah kesalahan",
+                        });
+                        break;
+                }
+            }
+        }
     };
+
     const signUp = async () => {
-        await createUserWithEmailAndPassword(auth, email, password);
-        goUpdateName();
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            goUpdateName();
+        } catch (err) {
+            if (err instanceof FirebaseError) {
+                switch (err.code) {
+                    case AuthErrorCodes.WEAK_PASSWORD:
+                        toast({
+                            status: "error",
+                            isClosable: true,
+                            description:
+                                "Password yang Anda masukkan harus minimal 6 huruf",
+                        });
+                        break;
+
+                    case AuthErrorCodes.EMAIL_EXISTS:
+                        toast({
+                            status: "error",
+                            isClosable: true,
+                            description: "Email sudah dipakai",
+                        });
+                        break;
+
+                    default:
+                        toast({
+                            status: "error",
+                            isClosable: true,
+                            description: "Terjadi sebuah kesalahan",
+                        });
+                        break;
+                }
+            }
+        }
     };
     const signInWithGoogle = async () => {
         try {
             await signInWithPopup(auth, provider);
             auth.currentUser?.displayName ? goHome() : goUpdateName();
         } catch (err) {
-            console.error(err);
+            if (err instanceof FirebaseError) {
+                switch (err.code) {
+                    case AuthErrorCodes.POPUP_CLOSED_BY_USER:
+                        toast({
+                            status: "info",
+                            isClosable: true,
+                            description: "Login menggunakan Google dibatalkan",
+                        });
+                        break;
+
+                    default:
+                        toast({
+                            status: "error",
+                            isClosable: true,
+                            description: "Terjadi sebuah kesalahan",
+                        });
+                        break;
+                }
+            }
         }
     };
 

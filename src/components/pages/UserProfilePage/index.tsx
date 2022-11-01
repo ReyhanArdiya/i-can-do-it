@@ -102,7 +102,7 @@ const UserProfilePage = ({
                 err.code === AuthErrorCodes.INVALID_PASSWORD
             ) {
                 toast({
-                    status: "error",
+                    status: "info",
                     isClosable: true,
                     description: "Password yang Anda masukkan salah",
                 });
@@ -120,10 +120,6 @@ const UserProfilePage = ({
             },
             async onConfirmClick() {
                 try {
-                    throw new FirebaseError(
-                        AuthErrorCodes.CREDENTIAL_TOO_OLD_LOGIN_AGAIN,
-                        "Meow"
-                    );
                     await deleteCurrentUser();
                 } catch (err) {
                     if (
