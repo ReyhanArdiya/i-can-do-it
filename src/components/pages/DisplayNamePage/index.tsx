@@ -6,7 +6,6 @@ import CircularIcon from "../../CircularIcon";
 import FormControl from "../../FormControl";
 
 export interface DisplayNamePageProps {
-    quizzId: string;
     onButtonClick: MouseEventHandler<HTMLButtonElement>;
     displayName: string;
     onDisplayNameInputChange: ChangeEventHandler<HTMLInputElement>;

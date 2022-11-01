@@ -1,12 +1,34 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
-import DisplayNamePage from "../../../components/pages/GamePage/PlayerName";
+import { useContext } from "react";
+import DisplayNamePage from "../../../components/pages/DisplayNamePage";
+import QuizzContext, { QuizzContextProvider } from "../../../context/quizz-context";
 
-const Page: NextPage = () => {
+const PlayerNamePage: NextPage = () => {
     const router = useRouter();
+    const { playerNameChanged, playerName } = useContext(QuizzContext);
     const { quizzId } = router.query;
 
-    return <DisplayNamePage quizzId={quizzId as string} />;
+    const startGame = async () => {
+        router.push(`/quizzes/${quizzId}`);
+    };
+
+    return (
+        <DisplayNamePage
+            displayName={playerName}
+            onButtonClick={startGame}
+            onDisplayNameInputChange={({ target: { value } }) =>
+                playerNameChanged(value)
+            }
+            placeholder={"Ketik namamu"}
+        />
+    );
 };
+
+const Page = () => (
+    <QuizzContextProvider>
+        <PlayerNamePage />
+    </QuizzContextProvider>
+);
 
 export default Page;
