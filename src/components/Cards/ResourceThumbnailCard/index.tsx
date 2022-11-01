@@ -4,6 +4,7 @@ import {
     HStack,
     Image,
     ImageProps,
+    Skeleton,
     Spacer,
     Text,
     VStack,
@@ -42,6 +43,13 @@ const ResourceThumbnailCard = ({
                 maxH="7.5em"
                 minW="full"
                 objectFit="cover"
+                fallback={
+                    <Skeleton
+                        w="full"
+                        h="7.5em"
+                        rounded="base"
+                    />
+                }
             />
             <Text
                 as="h3"

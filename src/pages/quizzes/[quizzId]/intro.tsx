@@ -1,18 +1,20 @@
 import { DocumentSnapshot } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GamePageIntro from "../../../components/pages/GamePage/GamePageIntro";
 import Loading from "../../../components/Progress/Loading";
-import useIsAuth from "../../../hooks/use-is-auth";
+import QuizzContext from "../../../context/quizz-context";
+import useGetUser from "../../../hooks/use-get-user";
 import { Quizz } from "../../../models/game/quizz";
 import { getQuizz } from "../../../models/game/quizz/utils";
 import { db } from "../../../utils/firebase/get-firebase-client";
 
 const Page = () => {
-    const router = useRouter();
-    const { quizzId } = router.query;
     const [quizzData, setQuizzData] = useState<DocumentSnapshot<Quizz>>();
-    const isAuth = useIsAuth();
+    const router = useRouter();
+    const user = useGetUser();
+    const { playerNameChanged } = useContext(QuizzContext);
+    const { quizzId } = router.query;
 
     useEffect(() => {
         getQuizz(db, quizzId as string)
@@ -20,14 +22,19 @@ const Page = () => {
             .catch(e => console.error(e));
     }, [quizzId]);
 
+    useEffect(() => {
+        user && user.displayName !== null && playerNameChanged(user.displayName);
+    }, [playerNameChanged, user]);
+
     return quizzData ? (
         <GamePageIntro
             description={quizzData.data()!.description}
             title={quizzData.data()!.title}
             onStartGameClick={() =>
                 router.push(
-                    // isAuth ? `/quizzes/${quizzId}` : `/quizzes/${quizzId}/playername`
-                    `/quizzes/${quizzId}/playername`
+                    user && user.displayName
+                        ? `/quizzes/${quizzId}`
+                        : `/quizzes/${quizzId}/playername`
                 )
             }
         />

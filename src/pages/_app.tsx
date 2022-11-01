@@ -43,7 +43,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     }, []);
 
     let bg: string;
-    if (["/quizzes/[quizzId]/playername", "/user"].includes(pathname)) {
+    if (
+        ["/quizzes/[quizzId]/playername", "/user", "/auth/displayname"].includes(
+            pathname
+        )
+    ) {
         bg = "blue.100";
     } else if (["/quizzes/[quizzId]"].includes(pathname)) {
         bg = "sienna.100";

@@ -1,4 +1,4 @@
-import { Button, Divider, VStack, HStack, Box } from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, VStack } from "@chakra-ui/react";
 import {
     createUserWithEmailAndPassword,
     getAuth,
@@ -9,9 +9,9 @@ import {
 import { GetServerSideProps, type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import FormControl from "../components/FormControl";
-import getFirebaseClient from "../utils/firebase/get-firebase-client";
-import { redirectIfAuth } from "../utils/redirect";
+import FormControl from "../../components/FormControl";
+import getFirebaseClient from "../../utils/firebase/get-firebase-client";
+import { redirectIfAuth } from "../../utils/redirect";
 
 export const getServerSideProps: GetServerSideProps = redirectIfAuth("/");
 
@@ -24,19 +24,20 @@ const AuthPage: NextPage = () => {
 
     const router = useRouter();
     const goHome = () => router.push("/");
+    const goUpdateName = () => router.push("/auth/displayname");
 
     const login = async () => {
         await signInWithEmailAndPassword(auth, email, password);
-        goHome();
+        auth.currentUser?.displayName ? goHome() : goUpdateName();
     };
     const signUp = async () => {
         await createUserWithEmailAndPassword(auth, email, password);
-        goHome();
+        goUpdateName();
     };
     const signInWithGoogle = async () => {
         try {
             await signInWithPopup(auth, provider);
-            goHome();
+            auth.currentUser?.displayName ? goHome() : goUpdateName();
         } catch (err) {
             console.error(err);
         }
