@@ -1,30 +1,25 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
-import { updateProfile } from "firebase/auth";
-import { useRouter } from "next/router";
 import { ArrowRight } from "phosphor-react";
-import { useContext, useState } from "react";
-import QuizzContext from "../../../context/quizz-context";
-import useGetUser from "../../../hooks/use-get-user";
+import { ChangeEventHandler, MouseEventHandler } from "react";
 import { ChubbsConfused } from "../../Chubbs";
 import CircularIcon from "../../CircularIcon";
 import FormControl from "../../FormControl";
 
-const PlayerNamePage = ({ quizzId }: { quizzId: string }) => {
-    const [playername, setPlayername] = useState("");
-    const { playerNameChanged } = useContext(QuizzContext);
-    const router = useRouter();
-    const user = useGetUser();
+export interface DisplayNamePageProps {
+    onButtonClick: MouseEventHandler<HTMLButtonElement>;
+    displayName: string;
+    onDisplayNameInputChange: ChangeEventHandler<HTMLInputElement>;
+    placeholder: string;
+    buttonLabel: string;
+}
 
-    const startGame = async () => {
-        // TODO add a better way to change username, might be able to reuse this page after clicking buat akun
-        playerNameChanged(playername);
-        !!user &&
-            (await updateProfile(user!, {
-                displayName: playername,
-            }));
-        router.push(`/quizzes/${quizzId}`);
-    };
-
+const DisplayNamePage = ({
+    onButtonClick,
+    displayName,
+    onDisplayNameInputChange,
+    placeholder,
+    buttonLabel,
+}: DisplayNamePageProps) => {
     return (
         <VStack
             px="8"
@@ -55,17 +50,15 @@ const PlayerNamePage = ({ quizzId }: { quizzId: string }) => {
                 </Text>
                 <FormControl
                     inputProps={{
-                        value: playername,
-                        placeholder: "Nama",
-                        onChange({ target }) {
-                            setPlayername(target.value);
-                        },
+                        value: displayName,
+                        placeholder,
+                        onChange: onDisplayNameInputChange,
                     }}
                 />
             </VStack>
 
             <Button
-                onClick={startGame}
+                onClick={onButtonClick}
                 rightIcon={
                     <CircularIcon
                         p="1"
@@ -78,10 +71,10 @@ const PlayerNamePage = ({ quizzId }: { quizzId: string }) => {
                     />
                 }
             >
-                Mulai Bermain
+                {buttonLabel}
             </Button>
         </VStack>
     );
 };
 
-export default PlayerNamePage;
+export default DisplayNamePage;
