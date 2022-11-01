@@ -6,15 +6,22 @@ import {
     useToast,
     VStack,
 } from "@chakra-ui/react";
+import { FirebaseError } from "firebase/app";
 import {
+    AuthCredential,
+    AuthErrorCodes,
     deleteUser,
+    EmailAuthProvider,
+    GoogleAuthProvider,
+    reauthenticateWithCredential,
+    reauthenticateWithPopup,
     signOut,
     updateCurrentUser,
     updateProfile,
 } from "firebase/auth";
 import { useRouter } from "next/router";
 import { Door, Pen, Trash } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useGetUser from "../../../hooks/use-get-user";
 import { auth } from "../../../utils/firebase/get-firebase-client";
 import ConfirmationModal, {
@@ -65,6 +72,44 @@ const UserProfilePage = ({
         });
     };
 
+    // Deletion logic
+    const passwordModalDisclosure = useDisclosure();
+    const [password, setPassword] = useState("");
+
+    const deleteCurrentUser = async () => {
+        try {
+            await deleteUser(user!);
+            goHome();
+        } catch (err) {
+            toast({
+                status: "error",
+                isClosable: true,
+                description: "Ada kesalahan terjadi, silahkan coba lagi nanti!",
+            });
+        }
+    };
+
+    const reuathEmailPw = async () => {
+        try {
+            await reauthenticateWithCredential(
+                user!,
+                EmailAuthProvider.credential(auth.currentUser!.email!, password)
+            );
+            await deleteCurrentUser();
+        } catch (err) {
+            if (
+                err instanceof FirebaseError &&
+                err.code === AuthErrorCodes.INVALID_PASSWORD
+            ) {
+                toast({
+                    status: "error",
+                    isClosable: true,
+                    description: "Password yang Anda masukkan salah",
+                });
+            }
+        }
+    };
+
     const onDeleteHandler = () => {
         onOpen();
         setConfirmationModalProps({
@@ -74,8 +119,37 @@ const UserProfilePage = ({
                 onClose();
             },
             async onConfirmClick() {
-                await deleteUser(user!);
-                goHome();
+                try {
+                    throw new FirebaseError(
+                        AuthErrorCodes.CREDENTIAL_TOO_OLD_LOGIN_AGAIN,
+                        "Meow"
+                    );
+                    await deleteCurrentUser();
+                } catch (err) {
+                    if (
+                        err instanceof FirebaseError &&
+                        err.code === AuthErrorCodes.CREDENTIAL_TOO_OLD_LOGIN_AGAIN
+                    ) {
+                        if (user?.providerData[0].providerId === "google.com") {
+                            try {
+                                await reauthenticateWithPopup(
+                                    user,
+                                    new GoogleAuthProvider()
+                                );
+                                await deleteCurrentUser();
+                            } catch (err) {
+                                toast({
+                                    status: "error",
+                                    isClosable: true,
+                                    description:
+                                        "Ada kesalahan terjadi, silahkan coba lagi nanti!",
+                                });
+                            }
+                        } else {
+                            passwordModalDisclosure.onOpen();
+                        }
+                    }
+                }
             },
             modalContentProps: {
                 bg: "sienna.300",
@@ -172,6 +246,19 @@ const UserProfilePage = ({
                 modalProps={{
                     isOpen,
                     onClose,
+                }}
+            />
+            <InputModal
+                title="Masukkan Password"
+                isOpen={passwordModalDisclosure.isOpen}
+                onCancelClick={passwordModalDisclosure.onClose}
+                onSaveClick={reuathEmailPw}
+                inputProps={{
+                    value: password,
+                    onChange({ target: { value } }) {
+                        setPassword(value);
+                    },
+                    type: "password",
                 }}
             />
         </VStack>
