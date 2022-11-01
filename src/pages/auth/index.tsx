@@ -1,4 +1,4 @@
-import { Button, Divider, VStack, HStack, Box } from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, VStack } from "@chakra-ui/react";
 import {
     createUserWithEmailAndPassword,
     getAuth,
@@ -9,9 +9,9 @@ import {
 import { GetServerSideProps, type NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import FormControl from "../components/FormControl";
-import getFirebaseClient from "../utils/firebase/get-firebase-client";
-import { redirectIfAuth } from "../utils/redirect";
+import FormControl from "../../components/FormControl";
+import getFirebaseClient from "../../utils/firebase/get-firebase-client";
+import { redirectIfAuth } from "../../utils/redirect";
 
 export const getServerSideProps: GetServerSideProps = redirectIfAuth("/");
 
