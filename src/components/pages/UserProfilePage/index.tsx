@@ -122,11 +122,17 @@ const UserProfilePage = ({
                 try {
                     await deleteCurrentUser();
                 } catch (err) {
+                    console.error(err);
+
                     if (
                         err instanceof FirebaseError &&
                         err.code === AuthErrorCodes.CREDENTIAL_TOO_OLD_LOGIN_AGAIN
                     ) {
-                        if (user?.providerData[0].providerId === "google.com") {
+                        if (
+                            user?.providerData.some(
+                                data => data.providerId === "google.com"
+                            )
+                        ) {
                             try {
                                 await reauthenticateWithPopup(
                                     user,
