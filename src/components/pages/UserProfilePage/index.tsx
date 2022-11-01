@@ -1,13 +1,26 @@
-import { Button, HStack, Text, useDisclosure, VStack } from "@chakra-ui/react";
-import { deleteUser, signOut } from "firebase/auth";
+import {
+    Button,
+    HStack,
+    Text,
+    useDisclosure,
+    useToast,
+    VStack,
+} from "@chakra-ui/react";
+import {
+    deleteUser,
+    signOut,
+    updateCurrentUser,
+    updateProfile,
+} from "firebase/auth";
 import { useRouter } from "next/router";
-import { Door, Trash } from "phosphor-react";
-import { useState } from "react";
+import { Door, Pen, Trash } from "phosphor-react";
+import { useEffect, useState } from "react";
 import useGetUser from "../../../hooks/use-get-user";
 import { auth } from "../../../utils/firebase/get-firebase-client";
 import ConfirmationModal, {
     ConfirmationModalProps,
 } from "../../Modals/ConfirmationModal";
+import InputModal from "../../Modals/InputModal";
 import UserAvatar from "../../UserAvatar";
 
 export interface UserProfilePageProps {
@@ -21,6 +34,7 @@ const UserProfilePage = ({
     username,
     isAdmin = false,
 }: UserProfilePageProps) => {
+    const toast = useToast();
     const router = useRouter();
     const goHome = () => router.push("/");
     const user = useGetUser();
@@ -69,13 +83,38 @@ const UserProfilePage = ({
         });
     };
 
+    // Displayname logic
+    const displaynameModalDisclosure = useDisclosure();
+    const [displayName, setDisplayName] = useState(username);
+
+    const cancelEditDisplayname = () => {
+        setDisplayName(username);
+        displaynameModalDisclosure.onClose();
+    };
+    const updateDisplayname = async () => {
+        if (!displayName.trim().length) {
+            toast({
+                status: "error",
+                isClosable: true,
+                description: "Nama tidak boleh kosong!",
+            });
+        } else if (user) {
+            await updateProfile(user, {
+                displayName: displayName.trim(),
+            });
+            await updateCurrentUser(auth, user);
+        }
+
+        displaynameModalDisclosure.onClose();
+    };
+
     return (
         <VStack
             w="full"
             maxW="60"
             spacing="5"
         >
-            <VStack spacing="0">
+            <VStack spacing="1">
                 <UserAvatar
                     src={userAvatarSrc}
                     boxSize="8rem"
@@ -88,6 +127,24 @@ const UserProfilePage = ({
                 >
                     {username}
                 </Text>
+                <Button
+                    leftIcon={<Pen weight="fill" />}
+                    onClick={displaynameModalDisclosure.onOpen}
+                >
+                    Edit Nama
+                </Button>
+                <InputModal
+                    title="Edit Nama"
+                    isOpen={displaynameModalDisclosure.isOpen}
+                    onCancelClick={cancelEditDisplayname}
+                    onSaveClick={updateDisplayname}
+                    inputProps={{
+                        value: displayName,
+                        onChange({ target: { value } }) {
+                            setDisplayName(value);
+                        },
+                    }}
+                />
             </VStack>
             {isAdmin && <Button w="full">Panel Admin</Button>}
             <HStack
