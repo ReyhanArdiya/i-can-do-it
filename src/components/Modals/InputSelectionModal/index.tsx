@@ -1,5 +1,4 @@
 import {
-    Button,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -9,19 +8,16 @@ import {
     ModalProps,
     VStack,
 } from "@chakra-ui/react";
-import { Article, ImageSquare } from "phosphor-react";
-import { MouseEventHandler } from "react";
 
-export interface ArticleInputSelectionModalProps extends ModalProps {
-    onParagraphClick: MouseEventHandler<HTMLButtonElement>;
-    onPictureClick: MouseEventHandler<HTMLButtonElement>;
+export interface InputSelectionModalProps extends ModalProps {
+    title: string;
 }
 
-const ArticleInputSelectionModal = ({
-    onParagraphClick,
-    onPictureClick,
+const InputSelectionModal = ({
+    title,
+    children,
     ...modalProps
-}: ArticleInputSelectionModalProps) => {
+}: InputSelectionModalProps) => {
     return (
         <Modal
             isCentered
@@ -44,7 +40,7 @@ const ArticleInputSelectionModal = ({
                     textStyle="h3"
                     as="h3"
                 >
-                    Pilih Input
+                    {title}
                 </ModalHeader>
                 <ModalCloseButton top="0" />
                 <ModalBody
@@ -55,20 +51,7 @@ const ArticleInputSelectionModal = ({
                         spacing="2"
                         w="full"
                     >
-                        <Button
-                            leftIcon={<Article weight="fill" />}
-                            w="full"
-                            onClick={onParagraphClick}
-                        >
-                            Paragraf
-                        </Button>
-                        <Button
-                            leftIcon={<ImageSquare weight="fill" />}
-                            w="full"
-                            onClick={onPictureClick}
-                        >
-                            Gambar
-                        </Button>
+                        {children}
                     </VStack>
                 </ModalBody>
             </VStack>
@@ -76,4 +59,4 @@ const ArticleInputSelectionModal = ({
     );
 };
 
-export default ArticleInputSelectionModal;
+export default InputSelectionModal;
