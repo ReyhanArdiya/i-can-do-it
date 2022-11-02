@@ -13,6 +13,12 @@ const meta: Meta<Args> = {
         onClose: action("Close modal"),
         title: "Title",
     },
+    parameters: {
+        docs: {
+            inlineStories: false,
+            iframeHeight: 500,
+        },
+    },
 };
 
 export const Default: StoryFn<Args> = args => <InputSelectionModalComp {...args} />;
