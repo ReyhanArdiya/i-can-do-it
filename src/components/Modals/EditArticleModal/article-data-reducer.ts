@@ -1,4 +1,3 @@
-import { MouseEventHandler } from "react";
 import clone from "just-clone";
 
 abstract class BaseInput {
@@ -6,23 +5,14 @@ abstract class BaseInput {
 }
 
 export class ParagraphInput extends BaseInput {
-    constructor(
-        _id: string | number,
-        public text: string,
-        public audioFile: File,
-        public onDelete: MouseEventHandler
-    ) {
-        super(_id);
+    constructor(id: string | number, public text: string, public audioFile: File) {
+        super(id);
     }
 }
 
 export class ImageInput extends BaseInput {
-    constructor(
-        _id: string | number,
-        public imageFile: File,
-        public onDelete: MouseEventHandler
-    ) {
-        super(_id);
+    constructor(id: string | number, public imageFile: File) {
+        super(id);
     }
 }
 
@@ -54,7 +44,8 @@ export type ArticleDataAction =
           type: "PARAGRAPH_INPUT_UPDATED";
           payload: {
               id: string | number;
-          } & ParagraphInput;
+          } & Partial<ParagraphInput> &
+              Pick<ParagraphInput, "id">;
       }
     | {
           type: "IMAGE_INPUT_ADDED";
@@ -68,7 +59,8 @@ export type ArticleDataAction =
           type: "IMAGE_INPUT_UPDATED";
           payload: {
               id: string | number;
-          } & ImageInput;
+          } & Partial<ImageInput> &
+              Pick<ImageInput, "id">;
       };
 
 const articleDataReducer = (
@@ -109,9 +101,8 @@ const articleDataReducer = (
                 if (inputToUpdate) {
                     for (const [key, val] of Object.entries(action.payload)) {
                         if (key !== "id") {
-                            inputToUpdate[
-                                key as keyof Omit<typeof inputToUpdate, "id">
-                            ] = val;
+                            // @ts-expect-error
+                            inputToUpdate[key] = val;
                         }
                     }
                 }

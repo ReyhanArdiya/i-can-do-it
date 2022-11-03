@@ -41,8 +41,7 @@ test("PARAGRAPH_INPUT_ADDED adds a new ParagraphInput object", () => {
     const paragraphInput: ParagraphInput = new ParagraphInput(
         12345,
         "Believe me",
-        new File(["Meow"], "Meow.mp4"),
-        () => {}
+        new File(["Meow"], "Meow.mp4")
     );
 
     const newState = articleDataReducer(initialState, {
@@ -56,8 +55,7 @@ test("PARAGRAPH_INPUT_ADDED adds a new ParagraphInput object", () => {
 test("IMAGE_INPUT_ADDED adds a new ImageInput object", () => {
     const imageInput: ImageInput = new ImageInput(
         12345,
-        new File(["Meow"], "Meow.jpg"),
-        () => {}
+        new File(["Meow"], "Meow.jpg")
     );
 
     const newState = articleDataReducer(initialState, {
@@ -69,32 +67,53 @@ test("IMAGE_INPUT_ADDED adds a new ImageInput object", () => {
 });
 
 test("PARAGRAPH_INPUT_DELETED deletes the correct ParagraphInput object", () => {
-    const paragraphInput: ParagraphInput = new ParagraphInput(
-        12345,
+    const paragraphInput1: ParagraphInput = new ParagraphInput(
+        1,
         "Believe me",
-        new File(["Meow"], "Meow.mp4"),
-        () => {}
+        new File(["Meow"], "Meow.mp4")
+    );
+    const paragraphInput2: ParagraphInput = new ParagraphInput(
+        2,
+        "Believe me",
+        new File(["Meow"], "Meow.mp4")
+    );
+    const paragraphInput3: ParagraphInput = new ParagraphInput(
+        3,
+        "Believe me",
+        new File(["Meow"], "Meow.mp4")
     );
 
-    const newState = articleDataReducer(initialState, {
+    const newState1 = articleDataReducer(initialState, {
         type: "PARAGRAPH_INPUT_ADDED",
-        payload: paragraphInput,
+        payload: paragraphInput1,
     });
 
-    expect(newState.body).toContainEqual(paragraphInput);
-    expect(
-        articleDataReducer(newState, {
-            type: "PARAGRAPH_INPUT_DELETED",
-            payload: paragraphInput.id,
-        }).body
-    ).not.toContainEqual(paragraphInput);
+    const newState2 = articleDataReducer(newState1, {
+        type: "PARAGRAPH_INPUT_ADDED",
+        payload: paragraphInput2,
+    });
+
+    const newState3 = articleDataReducer(newState2, {
+        type: "PARAGRAPH_INPUT_ADDED",
+        payload: paragraphInput3,
+    });
+
+    expect(newState3.body).toEqual(
+        expect.arrayContaining([paragraphInput1, paragraphInput2, paragraphInput3])
+    );
+
+    const finalState = articleDataReducer(newState3, {
+        type: "PARAGRAPH_INPUT_DELETED",
+        payload: paragraphInput2.id,
+    });
+
+    expect(finalState.body).not.toContainEqual(paragraphInput2);
 });
 
 test("IMAGE_INPUT_DELETED deletes the correct ImageInput object", () => {
     const imageInput: ImageInput = new ImageInput(
         12345,
-        new File(["Meow"], "Meow.jpg"),
-        () => {}
+        new File(["Meow"], "Meow.jpg")
     );
 
     const newState = articleDataReducer(initialState, {
@@ -115,8 +134,7 @@ test("PARAGRAPH_INPUT_UPDATED updates the correct ParagraphInput object", () => 
     const paragraphInput: ParagraphInput = new ParagraphInput(
         12345,
         "Believe me",
-        new File(["Meow"], "Meow.mp4"),
-        () => {}
+        new File(["Meow"], "Meow.mp4")
     );
 
     const newState = articleDataReducer(initialState, {
@@ -127,8 +145,7 @@ test("PARAGRAPH_INPUT_UPDATED updates the correct ParagraphInput object", () => 
     const updatedInput: ParagraphInput = new ParagraphInput(
         12345,
         "Fuck u",
-        new File(["Meow"], "Meow.mp4"),
-        () => {}
+        new File(["Meow"], "Meow.mp4")
     );
 
     const updatedState = articleDataReducer(newState, {
@@ -143,8 +160,7 @@ test("PARAGRAPH_INPUT_UPDATED updates the correct ParagraphInput object", () => 
 test("IMAGE_INPUT_UPDATED updates the correct ImageInput object", () => {
     const imageInput: ImageInput = new ImageInput(
         12345,
-        new File(["Meow"], "Meow.jpg"),
-        () => {}
+        new File(["Meow"], "Meow.jpg")
     );
 
     const newState = articleDataReducer(initialState, {
@@ -154,8 +170,7 @@ test("IMAGE_INPUT_UPDATED updates the correct ImageInput object", () => {
 
     const updatedInput: ImageInput = new ImageInput(
         12345,
-        new File(["be"], "bu.jpg"),
-        () => {}
+        new File(["be"], "bu.jpg")
     );
 
     const updatedState = articleDataReducer(newState, {
