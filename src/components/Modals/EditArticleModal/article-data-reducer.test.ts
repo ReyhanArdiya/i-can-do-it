@@ -38,12 +38,12 @@ test("AUTHOR_CHANGED changes the states author", () => {
 });
 
 test("PARAGRAPH_INPUT_ADDED adds a new ParagraphInput object", () => {
-    const paragraphInput: ParagraphInput = {
-        audioFile: new File(["Meow"], "Meow.mp4"),
-        id: 12345,
-        onDelete() {},
-        text: "Believe me",
-    };
+    const paragraphInput: ParagraphInput = new ParagraphInput(
+        12345,
+        "Believe me",
+        new File(["Meow"], "Meow.mp4"),
+        () => {}
+    );
 
     const newState = articleDataReducer(initialState, {
         type: "PARAGRAPH_INPUT_ADDED",
@@ -54,11 +54,11 @@ test("PARAGRAPH_INPUT_ADDED adds a new ParagraphInput object", () => {
 });
 
 test("IMAGE_INPUT_ADDED adds a new ImageInput object", () => {
-    const imageInput: ImageInput = {
-        imageFile: new File(["Meow"], "Meow.mp4"),
-        id: 12345,
-        onDelete() {},
-    };
+    const imageInput: ImageInput = new ImageInput(
+        12345,
+        new File(["Meow"], "Meow.jpg"),
+        () => {}
+    );
 
     const newState = articleDataReducer(initialState, {
         type: "IMAGE_INPUT_ADDED",
@@ -69,12 +69,12 @@ test("IMAGE_INPUT_ADDED adds a new ImageInput object", () => {
 });
 
 test("PARAGRAPH_INPUT_DELETED deletes the correct ParagraphInput object", () => {
-    const paragraphInput: ParagraphInput = {
-        audioFile: new File(["Meow"], "Meow.mp4"),
-        id: 12345,
-        onDelete() {},
-        text: "Believe me",
-    };
+    const paragraphInput: ParagraphInput = new ParagraphInput(
+        12345,
+        "Believe me",
+        new File(["Meow"], "Meow.mp4"),
+        () => {}
+    );
 
     const newState = articleDataReducer(initialState, {
         type: "PARAGRAPH_INPUT_ADDED",
@@ -91,11 +91,11 @@ test("PARAGRAPH_INPUT_DELETED deletes the correct ParagraphInput object", () => 
 });
 
 test("IMAGE_INPUT_DELETED deletes the correct ImageInput object", () => {
-    const imageInput: ImageInput = {
-        imageFile: new File(["Meow"], "Meow.mp4"),
-        id: 12345,
-        onDelete() {},
-    };
+    const imageInput: ImageInput = new ImageInput(
+        12345,
+        new File(["Meow"], "Meow.jpg"),
+        () => {}
+    );
 
     const newState = articleDataReducer(initialState, {
         type: "IMAGE_INPUT_ADDED",

@@ -1,17 +1,33 @@
 import { MouseEventHandler } from "react";
 import clone from "just-clone";
 
-export interface ParagraphInput {
-    text: string;
-    audioFile: File;
-    onDelete: MouseEventHandler;
-    id: string | number;
+abstract class BaseInput {
+    constructor(private _id: string | number) {}
+
+    get id() {
+        return this._id;
+    }
 }
 
-export interface ImageInput {
-    imageFile: File;
-    onDelete: MouseEventHandler;
-    id: string | number;
+export class ParagraphInput extends BaseInput {
+    constructor(
+        _id: string | number,
+        public text: string,
+        public audioFile: File,
+        public onDelete: MouseEventHandler
+    ) {
+        super(_id);
+    }
+}
+
+export class ImageInput extends BaseInput {
+    constructor(
+        _id: string | number,
+        public imageFile: File,
+        public onDelete: MouseEventHandler
+    ) {
+        super(_id);
+    }
 }
 
 export interface EditArticleModalData {
@@ -39,12 +55,24 @@ export type ArticleDataAction =
           payload: string | number;
       }
     | {
+          type: "PARAGRAPH_INPUT_UPDATED";
+          payload: {
+              id: string | number;
+          } & ParagraphInput;
+      }
+    | {
           type: "IMAGE_INPUT_ADDED";
           payload: ImageInput;
       }
     | {
           type: "IMAGE_INPUT_DELETED";
           payload: string | number;
+      }
+    | {
+          type: "IMAGE_INPUT_UPDATED";
+          payload: {
+              id: string | number;
+          } & ImageInput;
       };
 
 const articleDataReducer = (
