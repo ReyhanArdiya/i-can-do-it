@@ -14,6 +14,9 @@ const AdminPanelResourceCard = ({
 }: AdminPanelResourceCardProps) => {
     return (
         <HStack
+            _hover={{
+                bg: "gray.100",
+            }}
             onClick={onClick}
             p="2"
             spacing="2"
@@ -22,6 +25,7 @@ const AdminPanelResourceCard = ({
             bg="white"
             w="full"
             cursor="pointer"
+            transition="background-color 250ms ease-in-out"
         >
             <Image
                 src={imageSrc}
