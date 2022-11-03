@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import type { Meta, StoryFn } from "@storybook/react";
 import EditArticleModalComp, { EditArticleModalProps } from ".";
 
@@ -24,6 +25,9 @@ const meta: Meta<Args> = {
             ],
             title: "This is a mock article",
         },
+        onCancelClick: action("Canceled"),
+        onDeleteIconClick: action("Delete article"),
+        onSaveClick: action("Save article"),
     },
 };
 

@@ -31,7 +31,7 @@ import {
 } from "./EditArticleModalInput";
 
 export interface EditArticleModalProps extends Pick<ModalProps, "isOpen"> {
-    onSaveClick: MouseEventHandler;
+    onSaveClick: (data: EditArticleModalData) => void;
     onCancelClick: () => void;
     onDeleteIconClick: MouseEventHandler;
     initialData: EditArticleModalData;
@@ -136,6 +136,8 @@ const EditArticleModal = ({
         });
         inputSelectionDisclosure.onClose();
     };
+
+    const submit = () => onSaveClick(articleData);
 
     return (
         <>
@@ -252,7 +254,7 @@ const EditArticleModal = ({
                         <Button
                             w="83px"
                             bg="yellow.500"
-                            onClick={onSaveClick}
+                            onClick={submit}
                         >
                             Simpan
                         </Button>
