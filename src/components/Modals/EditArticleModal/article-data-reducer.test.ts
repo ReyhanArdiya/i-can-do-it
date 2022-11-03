@@ -110,3 +110,59 @@ test("IMAGE_INPUT_DELETED deletes the correct ImageInput object", () => {
         }).body
     ).not.toContainEqual(imageInput);
 });
+
+test("PARAGRAPH_INPUT_UPDATED updates the correct ParagraphInput object", () => {
+    const paragraphInput: ParagraphInput = new ParagraphInput(
+        12345,
+        "Believe me",
+        new File(["Meow"], "Meow.mp4"),
+        () => {}
+    );
+
+    const newState = articleDataReducer(initialState, {
+        type: "PARAGRAPH_INPUT_ADDED",
+        payload: paragraphInput,
+    });
+
+    const updatedInput: ParagraphInput = new ParagraphInput(
+        12345,
+        "Fuck u",
+        new File(["Meow"], "Meow.mp4"),
+        () => {}
+    );
+
+    const updatedState = articleDataReducer(newState, {
+        type: "PARAGRAPH_INPUT_UPDATED",
+        payload: updatedInput,
+    });
+
+    expect(updatedState.body).not.toContainEqual(paragraphInput);
+    expect(updatedState.body).toContainEqual(updatedInput);
+});
+
+test("IMAGE_INPUT_UPDATED updates the correct ImageInput object", () => {
+    const imageInput: ImageInput = new ImageInput(
+        12345,
+        new File(["Meow"], "Meow.jpg"),
+        () => {}
+    );
+
+    const newState = articleDataReducer(initialState, {
+        type: "IMAGE_INPUT_ADDED",
+        payload: imageInput,
+    });
+
+    const updatedInput: ImageInput = new ImageInput(
+        12345,
+        new File(["be"], "bu.jpg"),
+        () => {}
+    );
+
+    const updatedState = articleDataReducer(newState, {
+        type: "IMAGE_INPUT_UPDATED",
+        payload: updatedInput,
+    });
+
+    expect(updatedState.body).not.toContainEqual(imageInput);
+    expect(updatedState.body).toContainEqual(updatedInput);
+});

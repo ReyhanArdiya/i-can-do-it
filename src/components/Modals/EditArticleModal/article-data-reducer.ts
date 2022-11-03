@@ -2,11 +2,7 @@ import { MouseEventHandler } from "react";
 import clone from "just-clone";
 
 abstract class BaseInput {
-    constructor(private _id: string | number) {}
-
-    get id() {
-        return this._id;
-    }
+    constructor(public id: string | number) {}
 }
 
 export class ParagraphInput extends BaseInput {
@@ -102,6 +98,24 @@ const articleDataReducer = (
                     data => data.id === action.payload
                 );
                 newState.body.splice(indexToDelete, 1);
+                break;
+
+            case "PARAGRAPH_INPUT_UPDATED":
+            case "IMAGE_INPUT_UPDATED":
+                const inputToUpdate = newState.body.find(
+                    input => input.id === action.payload.id
+                );
+
+                if (inputToUpdate) {
+                    for (const [key, val] of Object.entries(action.payload)) {
+                        if (key !== "id") {
+                            inputToUpdate[
+                                key as keyof Omit<typeof inputToUpdate, "id">
+                            ] = val;
+                        }
+                    }
+                }
+
                 break;
         }
     }
