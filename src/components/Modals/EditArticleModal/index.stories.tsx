@@ -9,9 +9,6 @@ const meta: Meta<Args> = {
     args: {
         isOpen: true,
         initialData: {
-            author: {
-                name: "John Doe",
-            },
             body: [
                 {
                     id: 1,
@@ -24,6 +21,12 @@ const meta: Meta<Args> = {
                 },
             ],
             title: "This is a mock article",
+            author: {
+                name: "John Doe",
+            },
+            created: new Date(),
+            headerVideo: new File(["fjeijfe"], "meow.jpg"),
+            thumbnail: new File(["fjeijfe"], "meow.jpg"),
         },
         onCancelClick: action("Canceled"),
         onDeleteIconClick: action("Delete article"),

@@ -13,6 +13,7 @@ import {
     useDisclosure,
     VStack,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { Article, ImageSquare, Plus, TrashSimple } from "phosphor-react";
 import { ChangeEventHandler, MouseEventHandler, useReducer } from "react";
@@ -217,6 +218,46 @@ const EditArticleModal = ({
                                 },
                             }}
                         />
+                        <FormControl
+                            formLabelProps={{ children: "Dibuat" }}
+                            inputProps={{
+                                value: dayjs(articleData.created).format(
+                                    "YYYY-MM-DD"
+                                ),
+                                type: "date",
+                                onChange({ target: { value } }) {
+                                    dispatchArticleData({
+                                        type: "CREATED_CHANGED",
+                                        payload: new Date(value),
+                                    });
+                                },
+                            }}
+                        />
+                        <FormControl
+                            formLabelProps={{ children: "Video Utama" }}
+                            inputProps={{
+                                type: "file",
+                                onChange: ({ target: { files } }) => {
+                                    dispatchArticleData({
+                                        type: "VIDEO_CHANGED",
+                                        payload: files![0],
+                                    });
+                                },
+                            }}
+                        />
+                        <FormControl
+                            formLabelProps={{ children: "Thumbnail" }}
+                            inputProps={{
+                                type: "file",
+                                onChange: ({ target: { files } }) => {
+                                    dispatchArticleData({
+                                        type: "THUMBNAIL_CHANGED",
+                                        payload: files![0],
+                                    });
+                                },
+                            }}
+                        />
+
                         {bodyInputs}
 
                         <Button
