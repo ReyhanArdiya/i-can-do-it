@@ -1,4 +1,5 @@
 import clone from "just-clone";
+import { Article } from "../../../models/article";
 
 abstract class BaseInput {
     constructor(public id: string | number) {}
@@ -16,10 +17,12 @@ export class ImageInput extends BaseInput {
     }
 }
 
-export interface EditArticleModalData {
-    title: string;
+export interface EditArticleModalData
+    extends Omit<Article, "body" | "author" | "headerVideoUrl" | "thumbnail"> {
     body: Array<ParagraphInput | ImageInput>;
     author: { name: string };
+    headerVideo: File;
+    thumbnail: File;
 }
 
 export type ArticleDataAction =
@@ -31,6 +34,18 @@ export type ArticleDataAction =
           type: "AUTHOR_CHANGED";
           // TODO add way to update profile pic later
           payload: EditArticleModalData["author"]["name"];
+      }
+    | {
+          type: "CREATED_CHANGED";
+          payload: EditArticleModalData["created"];
+      }
+    | {
+          type: "VIDEO_CHANGED";
+          payload: EditArticleModalData["headerVideo"];
+      }
+    | {
+          type: "THUMBNAIL_CHANGED";
+          payload: EditArticleModalData["thumbnail"];
       }
     | {
           type: "PARAGRAPH_INPUT_ADDED";
@@ -77,6 +92,18 @@ const articleDataReducer = (
 
             case "AUTHOR_CHANGED":
                 newState.author.name = action.payload;
+                break;
+
+            case "CREATED_CHANGED":
+                newState.created = action.payload;
+                break;
+
+            case "VIDEO_CHANGED":
+                newState.headerVideo = action.payload;
+                break;
+
+            case "THUMBNAIL_CHANGED":
+                newState.thumbnail = action.payload;
                 break;
 
             case "PARAGRAPH_INPUT_ADDED":

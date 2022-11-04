@@ -12,6 +12,9 @@ beforeEach(() => {
         },
         body: [],
         title: "Test",
+        created: new Date(),
+        headerVideo: new File([""], ""),
+        thumbnail: new File([""], ""),
     };
 });
 
@@ -35,6 +38,33 @@ test("AUTHOR_CHANGED changes the states author", () => {
     });
 
     expect(newState.author.name).not.toBe(initialState.author.name);
+});
+
+test("CREATED_CHANGED changes the states created", () => {
+    const newState = articleDataReducer(initialState, {
+        type: "CREATED_CHANGED",
+        payload: new Date(),
+    });
+
+    expect(newState.created).not.toBe(initialState.created);
+});
+
+test("VIDEO_CHANGED changes the states headerVideo", () => {
+    const newState = articleDataReducer(initialState, {
+        type: "VIDEO_CHANGED",
+        payload: new File([""], "updated.jpg"),
+    });
+
+    expect(newState.headerVideo).not.toBe(initialState.headerVideo);
+});
+
+test("THUMBNAIL_CHANGED changes the states thumbnail", () => {
+    const newState = articleDataReducer(initialState, {
+        type: "THUMBNAIL_CHANGED",
+        payload: new File([""], "updated.jpg"),
+    });
+
+    expect(newState.thumbnail).not.toBe(initialState.thumbnail);
 });
 
 test("PARAGRAPH_INPUT_ADDED adds a new ParagraphInput object", () => {
@@ -178,6 +208,10 @@ test("IMAGE_INPUT_UPDATED updates the correct ImageInput object", () => {
         payload: updatedInput,
     });
 
-    expect(updatedState.body).not.toContainEqual(imageInput);
-    expect(updatedState.body).toContainEqual(updatedInput);
+    expect((updatedState.body[0] as ImageInput).imageFile.name).not.toBe(
+        imageInput.imageFile.name
+    );
+    expect((updatedState.body[0] as ImageInput).imageFile.name).toBe(
+        updatedInput.imageFile.name
+    );
 });
