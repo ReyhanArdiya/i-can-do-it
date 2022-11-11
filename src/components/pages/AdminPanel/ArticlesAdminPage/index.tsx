@@ -51,7 +51,7 @@ const ArticlesAdminPage = ({
             },
             body: [],
             created: new Date(),
-            id: "",
+            id: nanoid(),
             title: "",
             headerVideo: new File([], ""),
             thumbnail: new File([], ""),
