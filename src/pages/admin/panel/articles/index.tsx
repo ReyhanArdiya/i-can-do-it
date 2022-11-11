@@ -18,20 +18,15 @@ const Page = () => {
         );
     });
 
-    const createNewArticle = async () => {
-        alert("Not implemented!");
-    };
-
     const router = useRouter();
     const goBack = async () => {
-        router.back();
+        router.push("/admin/panel");
     };
 
     return articles?.length ? (
         <ArticlesAdminPage
             articles={articles}
             onGoBackButtonClick={goBack}
-            onNewArticleButtonClick={createNewArticle}
         />
     ) : (
         <Loading />

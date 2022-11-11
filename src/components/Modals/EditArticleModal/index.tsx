@@ -146,7 +146,11 @@ const EditArticleModal = ({
                 isCentered
                 isOpen={isOpen}
                 onClose={onCancelClick}
-                size="full"
+                size={{
+                    base: "full",
+                    md: "2xl",
+                    lg: "3xl",
+                }}
             >
                 <ModalOverlay />
                 <VStack
