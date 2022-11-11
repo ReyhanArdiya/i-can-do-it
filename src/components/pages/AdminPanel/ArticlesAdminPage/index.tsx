@@ -63,6 +63,7 @@ const ArticlesAdminPage = ({
 
     const deleteArticleHandler = async () => {
         try {
+            spinnerDisclosure.onOpen();
             initialData && (await deleteArticle(db, initialData.id));
             onClose();
         } catch (err) {
@@ -74,6 +75,7 @@ const ArticlesAdminPage = ({
                 });
             }
         }
+        spinnerDisclosure.onClose();
     };
 
     const saveArticleHandler: EditArticleModalProps["onSaveClick"] =
@@ -237,6 +239,7 @@ const ArticlesAdminPage = ({
             <VStack
                 maxW="full"
                 spacing="6"
+                w="full"
             >
                 <Button
                     leftIcon={
@@ -257,6 +260,13 @@ const ArticlesAdminPage = ({
                 <List
                     listTitle="List Artikel"
                     cards={articleCards}
+                    stackProps={{
+                        justify: {
+                            base: "start",
+                            lg: articleCards.length > 3 ? "start" : "center",
+                        },
+                        w: "full",
+                    }}
                 />
 
                 <Button
