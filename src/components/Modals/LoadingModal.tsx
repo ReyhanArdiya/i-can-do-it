@@ -1,7 +1,5 @@
 import {
-    Center,
     Modal,
-    ModalBody,
     ModalContent,
     ModalOverlay,
     ModalProps,
@@ -12,9 +10,13 @@ export interface LoadingModalProps extends Pick<ModalProps, "isOpen" | "onClose"
 
 const LoadingModal = (props: LoadingModalProps) => {
     return (
-        <Modal {...props}>
+        <Modal
+            {...props}
+            isCentered
+        >
             <ModalOverlay />
             <ModalContent
+                m="0"
                 boxSize="max"
                 shadow="none"
                 bg="none"

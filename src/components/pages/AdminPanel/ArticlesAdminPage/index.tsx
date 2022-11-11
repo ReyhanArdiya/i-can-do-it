@@ -102,7 +102,7 @@ const ArticlesAdminPage = ({
                 };
 
                 const articleBody: Article["body"] = [];
-                articleData.body.map(async bodyData => {
+                for (const bodyData of articleData.body) {
                     if ("audioFile" in bodyData) {
                         const audibleText: AudibleText = {
                             text: bodyData.text,
@@ -125,7 +125,7 @@ const ArticlesAdminPage = ({
 
                         articleBody.push(articleBodyImg);
                     }
-                });
+                }
 
                 try {
                     const savedHeaderVideo = await saveArticleMedia(
@@ -213,7 +213,10 @@ const ArticlesAdminPage = ({
 
     return (
         <>
-            <VStack spacing="6">
+            <VStack
+                maxW="full"
+                spacing="6"
+            >
                 <Button
                     leftIcon={
                         <CircularIcon
