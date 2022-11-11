@@ -25,22 +25,38 @@ import {
     ImageInput,
     ParagraphInput,
 } from "../../../Modals/EditArticleModal/article-data-reducer";
+import LoadingModal from "../../../Modals/LoadingModal";
 
 export interface ArticlesAdminPageProps {
-    onNewArticleButtonClick: MouseEventHandler;
     onGoBackButtonClick: MouseEventHandler;
     articles: WithId<Article>[];
 }
 
 const ArticlesAdminPage = ({
-    onNewArticleButtonClick,
     onGoBackButtonClick,
     articles,
 }: ArticlesAdminPageProps) => {
     const [initialData, setInitialData] =
         useState<WithId<EditArticleModalProps["initialData"]>>();
+    const { isOpen, onClose, onOpen } = useDisclosure();
+    const spinnerDisclosure = useDisclosure();
 
     const toast = useToast();
+
+    const openCreateArticleModal = () => {
+        onOpen();
+        setInitialData({
+            author: {
+                name: "",
+            },
+            body: [],
+            created: new Date(),
+            id: "",
+            title: "",
+            headerVideo: new File([], ""),
+            thumbnail: new File([], ""),
+        });
+    };
 
     const deleteArticleHandler = async () => {
         try {
@@ -60,6 +76,7 @@ const ArticlesAdminPage = ({
     const saveArticleHandler: EditArticleModalProps["onSaveClick"] =
         async articleData => {
             if (initialData) {
+                spinnerDisclosure.onOpen();
                 const storage = getStorage(getFirebaseClient());
 
                 const saveAudio = async (audioFile: File) => {
@@ -150,9 +167,10 @@ const ArticlesAdminPage = ({
                     }
                 }
             }
+
+            spinnerDisclosure.onClose();
         };
 
-    const { isOpen, onClose, onOpen } = useDisclosure();
     const articleCards = articles.map(article => {
         const body: Array<ParagraphInput | ImageInput> = article.body.map(data => {
             if ("text" in data) {
@@ -207,7 +225,7 @@ const ArticlesAdminPage = ({
                             )}
                         />
                     }
-                    onClick={onNewArticleButtonClick}
+                    onClick={openCreateArticleModal}
                 >
                     Artikel Baru
                 </Button>
@@ -244,6 +262,8 @@ const ArticlesAdminPage = ({
                     onSaveClick={saveArticleHandler}
                 />
             )}
+
+            {<LoadingModal {...spinnerDisclosure} />}
         </>
     );
 };
