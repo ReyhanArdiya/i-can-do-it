@@ -1,7 +1,7 @@
 import { Button, useDisclosure, useToast, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { FirebaseError } from "firebase/app";
-import { getDownloadURL, getStorage } from "firebase/storage";
+import { getBlob, getDownloadURL, getStorage, ref } from "firebase/storage";
 import { nanoid } from "nanoid";
 import { ArrowLeft, Plus } from "phosphor-react";
 import { MouseEventHandler, useState } from "react";
@@ -11,10 +11,13 @@ import {
     saveArticle,
     saveArticleMedia,
 } from "../../../../models/article/utils";
+import { catchErrorWithToast } from "../../../../utils/errors";
 import getFirebaseClient, {
+    app,
     db,
 } from "../../../../utils/firebase/get-firebase-client";
 import { WithId } from "../../../../utils/types";
+import { extractPathFromDownloadURL } from "../../../../utils/uri";
 import ResourceThumbnailCard from "../../../Cards/ResourceThumbnailCard";
 import CircularIcon from "../../../CircularIcon";
 import List from "../../../List";
@@ -185,18 +188,36 @@ const ArticlesAdminPage = ({
             } as ImageInput;
         });
 
-        const editArticle = () => {
-            onOpen();
+        const editArticle = catchErrorWithToast(toast, async () => {
+            const storage = getStorage(app);
+            const headerVideoRef = ref(
+                storage,
+                decodeURIComponent(
+                    extractPathFromDownloadURL(article.headerVideoUrl!) as string
+                )
+            );
+            const thumbnailRef = ref(
+                storage,
+                decodeURIComponent(
+                    extractPathFromDownloadURL(article.thumbnail!) as string
+                )
+            );
+
+            const headerVideoBlob = await getBlob(headerVideoRef);
+            const thumbnailBlob = await getBlob(thumbnailRef);
+
             setInitialData({
                 author: { name: article.author.name },
                 body,
                 title: article.title,
                 id: article.id,
                 created: article.created,
-                headerVideo: new File([""], "mock"),
-                thumbnail: new File([""], "mock"),
+                headerVideo: new File([headerVideoBlob], headerVideoRef.name),
+                thumbnail: new File([thumbnailBlob], thumbnailRef.name),
             });
-        };
+
+            onOpen();
+        });
 
         return (
             <ResourceThumbnailCard

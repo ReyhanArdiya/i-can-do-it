@@ -16,7 +16,7 @@ import {
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import { Article, ImageSquare, Plus, TrashSimple } from "phosphor-react";
-import { ChangeEventHandler, MouseEventHandler, useEffect, useReducer } from "react";
+import { ChangeEventHandler, MouseEventHandler, useReducer } from "react";
 import CircularIcon from "../../CircularIcon";
 import FormControl from "../../FormControl";
 import InputSelectionModal from "../InputSelectionModal";
