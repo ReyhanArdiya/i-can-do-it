@@ -1,14 +1,11 @@
 import { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import HomePage, { HomePageProps } from "../components/pages/HomePage";
-import useFetch from "../hooks/use-fetch";
-import { Article } from "../models/article";
-import { getArticles, useSnapArticles } from "../models/article/utils";
-import { getQuizzes, useSnapQuizzes } from "../models/game/quizz/utils";
-import { getMembers, useSnapMembers } from "../models/member/utils";
+import { useSnapArticles } from "../models/article/utils";
+import { useSnapQuizzes } from "../models/game/quizz/utils";
+import { useSnapMembers } from "../models/member/utils";
 import { CookieKeys } from "../utils/cookies";
 import { db } from "../utils/firebase/get-firebase-client";
-import { WithId } from "../utils/types";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN];

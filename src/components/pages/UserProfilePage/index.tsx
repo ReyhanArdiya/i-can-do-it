@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { FirebaseError } from "firebase/app";
 import {
-    AuthCredential,
     AuthErrorCodes,
     deleteUser,
     EmailAuthProvider,

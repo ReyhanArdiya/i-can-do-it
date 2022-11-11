@@ -1,0 +1,41 @@
+import { useRouter } from "next/router";
+import { useState } from "react";
+import ArticlesAdminPage, {
+    ArticlesAdminPageProps,
+} from "../../../../components/pages/AdminPanel/ArticlesAdminPage";
+import Loading from "../../../../components/Progress/Loading";
+import { useSnapArticles } from "../../../../models/article/utils";
+import { db } from "../../../../utils/firebase/get-firebase-client";
+
+const Page = () => {
+    const [articles, setArticles] = useState<ArticlesAdminPageProps["articles"]>();
+    useSnapArticles(db, articles => {
+        setArticles(
+            articles.docs.map(article => ({
+                id: article.id,
+                ...article.data(),
+            }))
+        );
+    });
+
+    const createNewArticle = async () => {
+        alert("Not implemented!");
+    };
+
+    const router = useRouter();
+    const goBack = async () => {
+        router.back();
+    };
+
+    return articles?.length ? (
+        <ArticlesAdminPage
+            articles={articles}
+            onGoBackButtonClick={goBack}
+            onNewArticleButtonClick={createNewArticle}
+        />
+    ) : (
+        <Loading />
+    );
+};
+
+export default Page;
