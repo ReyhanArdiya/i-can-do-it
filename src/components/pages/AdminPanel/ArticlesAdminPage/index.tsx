@@ -205,8 +205,12 @@ const ArticlesAdminPage = ({
                 )
             );
 
-            const headerVideoBlob = await getBlob(headerVideoRef);
-            const thumbnailBlob = await getBlob(thumbnailRef);
+            let headerVideoBlob = new Blob([""]);
+            let thumbnailBlob = new Blob([""]);
+            await catchErrorWithToast(toast, async () => {
+                headerVideoBlob = await getBlob(headerVideoRef);
+                thumbnailBlob = await getBlob(thumbnailRef);
+            })();
 
             setInitialData({
                 author: { name: article.author.name },
