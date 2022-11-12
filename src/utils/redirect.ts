@@ -1,13 +1,13 @@
 import { GetServerSideProps } from "next";
 import { CookieKeys } from "./cookies";
+import { getAuth } from "firebase-admin/auth";
+import { app } from "./firebase/get-firebase-admin";
+import { checkIsAuth } from "./firebase/auth";
 
 export const redirectIfNotAuth: (
     destination: string
 ) => GetServerSideProps = destination => {
     const getServerSideProps: GetServerSideProps = async ({ req }) => {
-        const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN];
-        const isAuth = !!firebaseToken;
-
         const goToPage = { props: {} };
         const redirect = {
             props: {},
@@ -16,9 +16,9 @@ export const redirectIfNotAuth: (
             },
         };
         try {
-            // XXX This keeps giving me no kid claim shit
-            // const auth = getAuth(app);
-            // const isAuth = await auth.verifyIdToken(firebaseToken as string);
+            const auth = getAuth(app);
+            const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN];
+            const isAuth = await checkIsAuth(auth, firebaseToken);
 
             return isAuth ? goToPage : redirect;
         } catch (error) {
