@@ -35,9 +35,6 @@ export const redirectIfAuth: (
     destination: string
 ) => GetServerSideProps = destination => {
     const getServerSideProps: GetServerSideProps = async ({ req }) => {
-        const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN];
-        const isAuth = !!firebaseToken;
-
         const goToPage = { props: {} };
         const redirect = {
             props: {},
@@ -46,6 +43,10 @@ export const redirectIfAuth: (
             },
         };
         try {
+            const auth = getAuth(app);
+            const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN];
+            const isAuth = await checkIsAuth(auth, firebaseToken);
+
             return isAuth ? redirect : goToPage;
         } catch (error) {
             console.error(error);
