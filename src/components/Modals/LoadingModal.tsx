@@ -13,6 +13,8 @@ const LoadingModal = (props: LoadingModalProps) => {
         <Modal
             {...props}
             isCentered
+            closeOnEsc={false}
+            closeOnOverlayClick={false}
         >
             <ModalOverlay />
             <ModalContent
