@@ -108,7 +108,7 @@ const ArticlesAdminPage = ({
 
                 const articleBody: Article["body"] = [];
                 for (const bodyData of articleData.body) {
-                    if ("audioFile" in bodyData) {
+                    if ("text" in bodyData) {
                         const audibleText: AudibleText = {
                             text: bodyData.text,
                             audioSrc: await saveAudio(bodyData.audioFile),
