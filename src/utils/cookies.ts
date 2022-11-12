@@ -8,3 +8,7 @@ export enum CookieKeys {
 export const hasVisitedPage = () => {
     nookies.set(null, CookieKeys.VISITED, "true");
 };
+
+export const destoryFirebaseTokenCookie = () => {
+    nookies.destroy(null, CookieKeys.FIREBASE_TOKEN);
+};

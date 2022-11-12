@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import { Door, Pen, Trash } from "phosphor-react";
 import { useState } from "react";
 import useGetUser from "../../../hooks/use-get-user";
+import { destoryFirebaseTokenCookie } from "../../../utils/cookies";
 import { auth } from "../../../utils/firebase/get-firebase-client";
 import ConfirmationModal, {
     ConfirmationModalProps,
@@ -53,6 +54,7 @@ const UserProfilePage = ({
             onClose();
         },
         async onConfirmClick() {
+            destoryFirebaseTokenCookie();
             await signOut(auth);
         },
     });
