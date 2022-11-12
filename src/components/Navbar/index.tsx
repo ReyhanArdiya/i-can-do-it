@@ -94,14 +94,10 @@ const Navbar = forwardRef<HTMLDivElement, NavbarProps>(
                     </NextLink>
                 </HStack>
 
-                {isAuth ? (
-                    <UserAvatar
-                        href={userAvatarHref}
+                <UserAvatar
+                        href={isAuth? userAvatarHref : "/auth"}
                         src={userAvatarPicSrc}
                     />
-                ) : (
-                    <Button onClick={goToAuth}>Masuk Akun</Button>
-                )}
             </HStack>
         );
     }

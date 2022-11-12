@@ -22,6 +22,7 @@ const Button: ComponentStyleConfig = {
             _active: {
                 bg: `${colorScheme}.500`,
             },
+            color: "black",
         };
     },
     sizes: {

@@ -118,7 +118,7 @@ export const saveArticleMedia = async (
     storage: FirebaseStorage,
     articleId: string,
     data: File,
-    name = getUniqueStorageName(data.name)
+    name = data ? getUniqueStorageName(data.name) : ""
 ) => {
     const mediaRef = ref(getArticleFolderRef(storage, articleId), name);
 
