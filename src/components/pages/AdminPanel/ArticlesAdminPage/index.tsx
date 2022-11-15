@@ -227,10 +227,10 @@ const ArticlesAdminPage = ({
 
                 onOpen();
             } catch (error) {
-                spinnerDisclosure.onOpen();
+                spinnerDisclosure.onClose();
                 throw error;
             }
-            spinnerDisclosure.onOpen();
+            spinnerDisclosure.onClose();
         });
 
         return (
