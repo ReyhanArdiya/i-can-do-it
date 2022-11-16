@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { FirebaseError } from "firebase/app";
 import {
-    AuthCredential,
     AuthErrorCodes,
     deleteUser,
     EmailAuthProvider,
@@ -23,6 +22,7 @@ import { useRouter } from "next/router";
 import { Door, Pen, Trash } from "phosphor-react";
 import { useState } from "react";
 import useGetUser from "../../../hooks/use-get-user";
+import { destoryFirebaseTokenCookie } from "../../../utils/cookies";
 import { auth } from "../../../utils/firebase/get-firebase-client";
 import ConfirmationModal, {
     ConfirmationModalProps,
@@ -44,6 +44,7 @@ const UserProfilePage = ({
     const toast = useToast();
     const router = useRouter();
     const goHome = () => router.push("/");
+    const goToAdminPanel = () => router.push("/admin/panel");
     const user = useGetUser();
     const { isOpen, onClose, onOpen } = useDisclosure();
     const [confirmationModalProps, setConfirmationModalProps] = useState<
@@ -54,6 +55,7 @@ const UserProfilePage = ({
             onClose();
         },
         async onConfirmClick() {
+            destoryFirebaseTokenCookie();
             await signOut(auth);
         },
     });
@@ -221,7 +223,14 @@ const UserProfilePage = ({
                     }}
                 />
             </VStack>
-            {isAdmin && <Button w="full">Panel Admin</Button>}
+            {isAdmin && (
+                <Button
+                    w="full"
+                    onClick={goToAdminPanel}
+                >
+                    Panel Admin
+                </Button>
+            )}
             <HStack
                 w="full"
                 justify="space-between"

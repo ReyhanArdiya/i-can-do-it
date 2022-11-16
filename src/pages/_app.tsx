@@ -44,9 +44,14 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
     let bg: string;
     if (
-        ["/quizzes/[quizzId]/playername", "/user", "/auth/displayname"].includes(
-            pathname
-        )
+        [
+            "/quizzes/[quizzId]/playername",
+            "/user",
+            "/auth/displayname",
+            "/admin/panel",
+            "/admin/panel/articles",
+            "/admin/panel/games",
+        ].includes(pathname)
     ) {
         bg = "blue.100";
     } else if (["/quizzes/[quizzId]"].includes(pathname)) {

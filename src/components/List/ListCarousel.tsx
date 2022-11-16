@@ -1,11 +1,12 @@
-import { HStack } from "@chakra-ui/react";
+import { HStack, StackProps } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 export interface ListCarouselProps {
     cards: ReactNode[];
+    stackProps?: StackProps;
 }
 
-const ListCarousel = ({ cards }: ListCarouselProps) => {
+const ListCarousel = ({ cards, stackProps }: ListCarouselProps) => {
     return (
         <HStack
             spacing="3"
@@ -21,6 +22,7 @@ const ListCarousel = ({ cards }: ListCarouselProps) => {
                 },
             }}
             justify={{ lg: "center" }}
+            {...stackProps}
         >
             {cards}
         </HStack>

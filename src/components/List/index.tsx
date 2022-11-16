@@ -6,7 +6,7 @@ export interface ListProps extends ListCarouselProps {
     listTitle: string;
 }
 
-const List = ({ cards, listTitle }: ListProps) => {
+const List = ({ cards, listTitle, stackProps }: ListProps) => {
     return (
         <VStack
             spacing="2"
@@ -21,7 +21,10 @@ const List = ({ cards, listTitle }: ListProps) => {
                 {listTitle}
             </Text>
 
-            <ListCarousel cards={cards} />
+            <ListCarousel
+                cards={cards}
+                stackProps={stackProps}
+            />
 
             <ListProgress
                 qty={cards.length}
