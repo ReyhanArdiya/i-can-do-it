@@ -8,7 +8,6 @@ const meta: Meta<Args> = {
     component: ArticlesAdminPageComp,
     args: {
         onGoBackButtonClick: action("Go back"),
-        onNewArticleButtonClick: action("Create new article"),
         articles: [
             {
                 author: {
