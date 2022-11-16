@@ -81,3 +81,31 @@ export const redirectIfFirstTimeVisit: (
 
     return getSSP;
 };
+
+export const redirectIfNotAdmin: (
+    destination: string
+) => GetServerSideProps = destination => {
+    const getServerSideProps: GetServerSideProps = async ({ req }) => {
+        const goToPage = { props: {} };
+        const redirect = {
+            props: {},
+            redirect: {
+                destination,
+            },
+        };
+        try {
+            const auth = getAuth(app);
+            const firebaseToken = req.cookies[CookieKeys.FIREBASE_TOKEN] as string;
+            const idToken = await auth.verifyIdToken(firebaseToken);
+            const isAdmin = !!idToken.admin;
+
+            return isAdmin ? goToPage : redirect;
+        } catch (error) {
+            console.error(error);
+
+            return redirect;
+        }
+    };
+
+    return getServerSideProps;
+};

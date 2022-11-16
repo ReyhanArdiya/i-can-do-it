@@ -44,6 +44,7 @@ const UserProfilePage = ({
     const toast = useToast();
     const router = useRouter();
     const goHome = () => router.push("/");
+    const goToAdminPanel = () => router.push("/admin/panel");
     const user = useGetUser();
     const { isOpen, onClose, onOpen } = useDisclosure();
     const [confirmationModalProps, setConfirmationModalProps] = useState<
@@ -222,7 +223,14 @@ const UserProfilePage = ({
                     }}
                 />
             </VStack>
-            {isAdmin && <Button w="full">Panel Admin</Button>}
+            {isAdmin && (
+                <Button
+                    w="full"
+                    onClick={goToAdminPanel}
+                >
+                    Panel Admin
+                </Button>
+            )}
             <HStack
                 w="full"
                 justify="space-between"
