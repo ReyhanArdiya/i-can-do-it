@@ -1,4 +1,5 @@
 import { Auth } from "firebase-admin/auth";
+import { getIdTokenResult, User } from "firebase/auth";
 import { isClient } from "../client-or-server";
 
 // There is a validation error no KID when validating mock google account using
@@ -9,4 +10,10 @@ export const checkIsAuth = async (auth: Auth, idToken?: string) => {
         : idToken
         ? await auth.verifyIdToken(idToken)
         : false;
+};
+
+export const checkIsClientUserAdmin = async (user: User) => {
+    const idToken = await getIdTokenResult(user);
+
+    return !!idToken.claims.admin;
 };
