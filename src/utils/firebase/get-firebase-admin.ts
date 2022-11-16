@@ -1,11 +1,13 @@
-import { initializeApp, getApp } from "firebase-admin/app";
+import { cert, initializeApp } from "firebase-admin/app";
+
+const serviceAccount = JSON.parse(
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
+);
 
 const getFirebaseAdmin = () => {
-    try {
-        return getApp();
-    } catch (err) {
-        return initializeApp();
-    }
+    return initializeApp({
+        credential: cert(serviceAccount),
+    });
 };
 
 export const app = getFirebaseAdmin();
