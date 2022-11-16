@@ -151,6 +151,7 @@ const EditArticleModal = ({
                     md: "2xl",
                     lg: "3xl",
                 }}
+                scrollBehavior="inside"
             >
                 <ModalOverlay />
                 <VStack
@@ -189,6 +190,11 @@ const EditArticleModal = ({
                     </HStack>
 
                     <VStack
+                        sx={{
+                            "&::-webkit-scrollbar": {
+                                display: "none",
+                            },
+                        }}
                         as={ModalBody}
                         p="0"
                         w="full"

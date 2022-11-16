@@ -191,38 +191,46 @@ const ArticlesAdminPage = ({
         });
 
         const editArticle = catchErrorWithToast(toast, async () => {
-            const storage = getStorage(app);
-            const headerVideoRef = ref(
-                storage,
-                decodeURIComponent(
-                    extractPathFromDownloadURL(article.headerVideoUrl!) as string
-                )
-            );
-            const thumbnailRef = ref(
-                storage,
-                decodeURIComponent(
-                    extractPathFromDownloadURL(article.thumbnail!) as string
-                )
-            );
+            try {
+                spinnerDisclosure.onOpen();
 
-            let headerVideoBlob = new Blob([""]);
-            let thumbnailBlob = new Blob([""]);
-            await catchErrorWithToast(toast, async () => {
-                headerVideoBlob = await getBlob(headerVideoRef);
-                thumbnailBlob = await getBlob(thumbnailRef);
-            })();
+                const storage = getStorage(app);
+                const headerVideoRef = ref(
+                    storage,
+                    decodeURIComponent(
+                        extractPathFromDownloadURL(article.headerVideoUrl!) as string
+                    )
+                );
+                const thumbnailRef = ref(
+                    storage,
+                    decodeURIComponent(
+                        extractPathFromDownloadURL(article.thumbnail!) as string
+                    )
+                );
 
-            setInitialData({
-                author: { name: article.author.name },
-                body,
-                title: article.title,
-                id: article.id,
-                created: article.created,
-                headerVideo: new File([headerVideoBlob], headerVideoRef.name),
-                thumbnail: new File([thumbnailBlob], thumbnailRef.name),
-            });
+                let headerVideoBlob = new Blob([""]);
+                let thumbnailBlob = new Blob([""]);
+                await catchErrorWithToast(toast, async () => {
+                    headerVideoBlob = await getBlob(headerVideoRef);
+                    thumbnailBlob = await getBlob(thumbnailRef);
+                })();
 
-            onOpen();
+                setInitialData({
+                    author: { name: article.author.name },
+                    body,
+                    title: article.title,
+                    id: article.id,
+                    created: article.created,
+                    headerVideo: new File([headerVideoBlob], headerVideoRef.name),
+                    thumbnail: new File([thumbnailBlob], thumbnailRef.name),
+                });
+
+                onOpen();
+            } catch (error) {
+                spinnerDisclosure.onClose();
+                throw error;
+            }
+            spinnerDisclosure.onClose();
         });
 
         return (
