@@ -1,5 +1,4 @@
 import { Radio, RadioGroup, VStack } from "@chakra-ui/react";
-import { action } from "@storybook/addon-actions";
 import { useContext } from "react";
 import EditQuizzContext from "../../../../../context/edit-quizz-context";
 import AnswerInput, { AnswerInputProps } from "../AnswerInput";
@@ -37,7 +36,6 @@ const Answers = ({ questionIndex, setValue, value }: AnswersProps) => {
         editQuizzCtx.correctAnswerChanged(questionIndex, +nextVal);
         setValue(nextVal);
     };
-    action("Ctx")(editQuizzCtx);
 
     return (
         <RadioGroup
