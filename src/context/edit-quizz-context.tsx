@@ -37,7 +37,7 @@ const EditQuizzContext = React.createContext<IEditQuizzContext>({
     gameRecords: [new GameRecord<QuizzScore>("", "", new QuizzScore(0, 0))],
     description: "",
     title: "",
-    thumbnail: new File([""], ""),
+    thumbnail: 123,
     bodyReplaced() {},
     infoChanged() {},
     correctAnswerChanged() {},
@@ -71,7 +71,7 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
 
     const value: IEditQuizzContext = {
         infoChanged(quizzInfo) {
-            setInfo(prev => ({ ...prev, ...{ quizzInfo } }));
+            setInfo(prev => ({ ...prev, ... quizzInfo  }));
         },
         description: info.description as string,
         title: info.title as string,
@@ -124,7 +124,6 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
                         new QuizzOption("Pilihan 2", false),
                         new QuizzOption("Pilihan 3", false),
                         new QuizzOption("Pilihan 4", false),
-                        new QuizzOption("Pilihan 5", false),
                     ])
                 );
             });
