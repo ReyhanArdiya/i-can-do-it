@@ -75,6 +75,8 @@ const EditQuizzModalNoCtx = ({
     };
     const deleteThisQuizz = catchErrorWithToast(toast, async () => {
         await deleteQuizz(db, quizzId);
+        onCancelClick()
+
     });
     const saveQuizzData = catchErrorWithToast(toast, async () => {
         const { title, body, description, thumbnail, gameRecords } = editQuizzCtx;
@@ -82,11 +84,14 @@ const EditQuizzModalNoCtx = ({
         const storage = getStorage(app);
         const savedThumbnailRef = await saveQuizzMedia(storage, quizzId, thumbnail);
         const savedThumbnailUrl = await getDownloadURL(savedThumbnailRef.ref);
+        const newQuizz = new Quizz(title, description, body, gameRecords, savedThumbnailUrl);
 
         await saveQuizz(
             db,
-            new Quizz(title, description, body, gameRecords, savedThumbnailUrl)
+            newQuizz,
+            quizzId
         );
+        onCancelClick()
     });
 
     useEffect(() => {
@@ -95,6 +100,7 @@ const EditQuizzModalNoCtx = ({
 
             if (quizzData) {
                 const { body, description, title, gameRecords } = quizzData;
+                // console.log(quizzData)
 
                 editQuizzCtx.infoChanged({
                     title,
@@ -109,7 +115,8 @@ const EditQuizzModalNoCtx = ({
         });
 
         fetchQuizzData();
-    }, [editQuizzCtx, quizzId, toast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [quizzId, toast]);
 
     return (
         <Modal
