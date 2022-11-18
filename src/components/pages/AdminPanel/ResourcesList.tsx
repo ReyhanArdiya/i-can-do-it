@@ -28,12 +28,12 @@ const ResourcesList = ({}: ResourcesListProps) => {
 
                 <AdminPanelResourceCard
                     label="Artikel"
-                    imageSrc="https://picsum.photos/id/237/300/300"
+                    imageSrc="https://picsum.photos/300/300"
                     onClick={() => router.push(`${router.pathname}/articles`)}
                 />
                 <AdminPanelResourceCard
                     label="Game"
-                    imageSrc="https://picsum.photos/id/237/300/300"
+                    imageSrc="https://picsum.photos/300/300"
                     onClick={() => router.push(`${router.pathname}/games/quizzes`)}
                 />
             </VStack>
