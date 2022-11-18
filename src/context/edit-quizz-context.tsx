@@ -37,6 +37,8 @@ const EditQuizzContext = React.createContext<IEditQuizzContext>({
     gameRecords: [new GameRecord<QuizzScore>("", "", new QuizzScore(0, 0))],
     description: "",
     title: "",
+    // TODO fix File is not defined on server side
+    // @ts-expect-error: File is not defined when rendering server side
     thumbnail: 123,
     bodyReplaced() {},
     infoChanged() {},
@@ -71,7 +73,7 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
 
     const value: IEditQuizzContext = {
         infoChanged(quizzInfo) {
-            setInfo(prev => ({ ...prev, ... quizzInfo  }));
+            setInfo(prev => ({ ...prev, ...quizzInfo }));
         },
         description: info.description as string,
         title: info.title as string,
