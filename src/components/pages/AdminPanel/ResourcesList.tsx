@@ -34,7 +34,7 @@ const ResourcesList = ({}: ResourcesListProps) => {
                 <AdminPanelResourceCard
                     label="Game"
                     imageSrc="https://picsum.photos/id/237/300/300"
-                    onClick={() => router.push(`${router.pathname}/games`)}
+                    onClick={() => router.push(`${router.pathname}/games/quizzes`)}
                 />
             </VStack>
 
