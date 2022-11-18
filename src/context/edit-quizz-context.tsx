@@ -12,11 +12,14 @@ export interface IEditQuizzContext extends Omit<Quizz, "gameRecords"> {
     infoChanged: (quizzInfo: QuizzInfo) => void;
     bodyReplaced: (newQuizzBody: Quizz["body"]) => void;
     correctAnswerChanged: (questionIndex: number, answerIndex: number) => void;
+    // TODO do this after answer input onblur
     answerTextUpdated: (
         questionIndex: number,
         answerIndex: number,
         text: string
     ) => void;
+    questionTextUpdated: (questionIndex: number, text: string) => void;
+    questionDeleted: (questionIndex: number) => void;
 }
 
 const EditQuizzContext = React.createContext<IEditQuizzContext>({
@@ -33,7 +36,8 @@ const EditQuizzContext = React.createContext<IEditQuizzContext>({
     infoChanged() {},
     correctAnswerChanged() {},
     answerTextUpdated() {},
-    // TODO add deletion
+    questionDeleted() {},
+    questionTextUpdated() {},
 });
 
 export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) => {
@@ -49,6 +53,14 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
         },
     ]);
 
+    const editBody = (cb: (newBody: Quizz["body"]) => void) => {
+        setBody(prev => {
+            const newBody = clone(prev);
+            cb(newBody);
+            return newBody;
+        });
+    };
+
     const value: IEditQuizzContext = {
         infoChanged(quizzInfo) {
             setInfo(prev => ({ ...prev, ...{ quizzInfo } }));
@@ -61,8 +73,7 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
             setBody(newQuizzBody);
         },
         correctAnswerChanged(questionIndex, answerIndex) {
-            setBody(prev => {
-                const newBody = clone(prev);
+            editBody(newBody => {
                 const { options } = newBody[questionIndex];
 
                 // Search for old correct answer and set it to false
@@ -74,15 +85,26 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
                 });
 
                 options[answerIndex].isCorrect = true;
-                return newBody;
             });
         },
         answerTextUpdated(questionIndex, answerIndex, text) {
-            setBody(prev => {
-                const newBody = clone(prev);
+            editBody(newBody => {
                 const { options } = newBody[questionIndex];
                 options[answerIndex].text = text;
-                return newBody;
+            });
+        },
+        questionTextUpdated(questionIndex, text) {
+            editBody(newBody => {
+                if (text) {
+                    return (newBody[questionIndex].question = text);
+                }
+
+                newBody[questionIndex].question = "Soal";
+            });
+        },
+        questionDeleted(questionIndex) {
+            editBody(newBody => {
+                newBody.splice(questionIndex, 1);
             });
         },
     };
