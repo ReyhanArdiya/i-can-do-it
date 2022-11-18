@@ -1,7 +1,9 @@
 import { Button, useDisclosure, VStack } from "@chakra-ui/react";
-import { ArrowLeft } from "phosphor-react";
+import { ArrowLeft, Plus } from "phosphor-react";
 import { MouseEventHandler, useState } from "react";
-import { Quizz } from "../../../../models/game/quizz";
+import { Quizz, QuizzItem, QuizzOption } from "../../../../models/game/quizz";
+import { saveQuizz } from "../../../../models/game/quizz/utils";
+import { db } from "../../../../utils/firebase/get-firebase-client";
 import { WithId } from "../../../../utils/types";
 import ResourceThumbnailCard from "../../../Cards/ResourceThumbnailCard";
 import CircularIcon from "../../../CircularIcon";
@@ -35,6 +37,25 @@ const QuizzAdminPage = ({ quizzes, onGoBackButtonClick }: QuizzAdminPageProps) =
             />
         );
     });
+    const openCreateArticleModal = async () => {
+        const quizz = await saveQuizz(
+            db,
+            new Quizz(
+                "Draft",
+                "Draft",
+                [
+                    new QuizzItem("Draft", [
+                        new QuizzOption("Pilihan 1", true),
+                        new QuizzOption("Pilihan 2", false),
+                        new QuizzOption("Pilihan 3", false),
+                        new QuizzOption("Pilihan 4", false),
+                    ]),
+                ],
+            )
+        );
+        setQuizzId(quizz.id);
+        onOpen();
+    };
 
     return (
         <>
@@ -43,7 +64,7 @@ const QuizzAdminPage = ({ quizzes, onGoBackButtonClick }: QuizzAdminPageProps) =
                 spacing="6"
                 w="full"
             >
-                {/* <Button
+                <Button
                     leftIcon={
                         <CircularIcon
                             icon={() => (
@@ -56,8 +77,8 @@ const QuizzAdminPage = ({ quizzes, onGoBackButtonClick }: QuizzAdminPageProps) =
                     }
                     onClick={openCreateArticleModal}
                 >
-                    Artikel Baru
-                </Button> */}
+                    Quizz Baru
+                </Button>
 
                 <List
                     listTitle="List Quizz"
