@@ -1,15 +1,18 @@
 import clone from "just-clone";
 import React, { ReactNode, useState } from "react";
-import { Quizz } from "../models/game/quizz";
+import { GameRecord } from "../models/game";
+import { Quizz, QuizzItem, QuizzOption, QuizzScore } from "../models/game/quizz";
 
 export interface QuizzInfo {
     title?: string;
     description?: string;
     thumbnail?: File;
+    gameRecords?: Quizz["gameRecords"];
 }
 
 export interface IEditQuizzContext extends Omit<Quizz, "gameRecords" | "thumbnail"> {
     thumbnail: File;
+    gameRecords: Quizz["gameRecords"];
     infoChanged: (quizzInfo: QuizzInfo) => void;
     bodyReplaced: (newQuizzBody: Quizz["body"]) => void;
     correctAnswerChanged: (questionIndex: number, answerIndex: number) => void;
@@ -19,6 +22,7 @@ export interface IEditQuizzContext extends Omit<Quizz, "gameRecords" | "thumbnai
         answerIndex: number,
         text: string
     ) => void;
+    questionAdded: () => void;
     questionTextUpdated: (questionIndex: number, text: string) => void;
     questionDeleted: (questionIndex: number) => void;
 }
@@ -30,6 +34,7 @@ const EditQuizzContext = React.createContext<IEditQuizzContext>({
             question: "",
         },
     ],
+    gameRecords: [new GameRecord<QuizzScore>("", "", new QuizzScore(0, 0))],
     description: "",
     title: "",
     thumbnail: new File([""], ""),
@@ -37,6 +42,7 @@ const EditQuizzContext = React.createContext<IEditQuizzContext>({
     infoChanged() {},
     correctAnswerChanged() {},
     answerTextUpdated() {},
+    questionAdded() {},
     questionDeleted() {},
     questionTextUpdated() {},
 });
@@ -46,6 +52,7 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
         description: "",
         thumbnail: new File([""], ""),
         title: "",
+        gameRecords: [new GameRecord<QuizzScore>("", "", new QuizzScore(0, 0))],
     });
     const [body, setBody] = useState<Quizz["body"]>([
         {
@@ -69,6 +76,7 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
         description: info.description as string,
         title: info.title as string,
         thumbnail: info.thumbnail as File,
+        gameRecords: info.gameRecords as GameRecord<QuizzScore>[],
         body,
         bodyReplaced(newQuizzBody) {
             setBody(newQuizzBody);
@@ -106,6 +114,19 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
         questionDeleted(questionIndex) {
             editBody(newBody => {
                 newBody.splice(questionIndex, 1);
+            });
+        },
+        questionAdded() {
+            editBody(newBody => {
+                newBody.push(
+                    new QuizzItem("Soal", [
+                        new QuizzOption("Pilihan 1", true),
+                        new QuizzOption("Pilihan 2", false),
+                        new QuizzOption("Pilihan 3", false),
+                        new QuizzOption("Pilihan 4", false),
+                        new QuizzOption("Pilihan 5", false),
+                    ])
+                );
             });
         },
     };
