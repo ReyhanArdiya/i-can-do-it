@@ -5,10 +5,11 @@ import { Quizz } from "../models/game/quizz";
 export interface QuizzInfo {
     title?: string;
     description?: string;
-    thumbnail?: string;
+    thumbnail?: File;
 }
 
-export interface IEditQuizzContext extends Omit<Quizz, "gameRecords"> {
+export interface IEditQuizzContext extends Omit<Quizz, "gameRecords" | "thumbnail"> {
+    thumbnail: File;
     infoChanged: (quizzInfo: QuizzInfo) => void;
     bodyReplaced: (newQuizzBody: Quizz["body"]) => void;
     correctAnswerChanged: (questionIndex: number, answerIndex: number) => void;
@@ -31,7 +32,7 @@ const EditQuizzContext = React.createContext<IEditQuizzContext>({
     ],
     description: "",
     title: "",
-    thumbnail: "",
+    thumbnail: new File([""], ""),
     bodyReplaced() {},
     infoChanged() {},
     correctAnswerChanged() {},
@@ -43,7 +44,7 @@ const EditQuizzContext = React.createContext<IEditQuizzContext>({
 export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) => {
     const [info, setInfo] = useState<QuizzInfo>({
         description: "",
-        thumbnail: "",
+        thumbnail: new File([""], ""),
         title: "",
     });
     const [body, setBody] = useState<Quizz["body"]>([
@@ -67,7 +68,7 @@ export const EditQuizzContextProvider = ({ children }: { children: ReactNode }) 
         },
         description: info.description as string,
         title: info.title as string,
-        thumbnail: info.thumbnail as string,
+        thumbnail: info.thumbnail as File,
         body,
         bodyReplaced(newQuizzBody) {
             setBody(newQuizzBody);
