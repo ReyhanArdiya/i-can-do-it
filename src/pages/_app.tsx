@@ -51,6 +51,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             "/admin/panel",
             "/admin/panel/articles",
             "/admin/panel/games",
+            "/admin/panel/games/quizzes",
         ].includes(pathname)
     ) {
         bg = "blue.100";
