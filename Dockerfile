@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:16-alpine AS base
 
 WORKDIR /app
 
@@ -8,8 +8,13 @@ RUN npm install
 
 COPY . .
 
+FROM base AS prod
 ENV NODE_ENV=production
-
 RUN npm run build
+EXPOSE 3000
+CMD ["npm" ,"start"]
 
-CMD ["npm", "start"]
+FROM base AS dev
+ENV NODE_ENV=development
+EXPOSE 3000
+CMD ["npm" ,"run", "dev"]
