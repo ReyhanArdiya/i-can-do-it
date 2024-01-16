@@ -46,7 +46,7 @@ jobs:
                   npm ci
                   npm run build --if-present
             - name: Upload app
-              uses: actions/upload-artifact@v4.1.0
+              uses: actions/upload-artifact@v4
               with:
                   # Artifact name
                   name: app
@@ -59,9 +59,10 @@ jobs:
         needs: build-app
         steps:
             - name: Download app
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   # Artifact name
                   name: app
                   # Target path to download the artifact to
                   path: ./app
+            - run: ls -a
