@@ -11,7 +11,7 @@
         "build-storybook": "build-storybook",
         "test": "vitest",
         "start:emulator-import": "firebase emulators:start --import=firestore_exports",
-        "pack": ""
+        "pack:prod": "docker build --target=prod -t i-can-do-it:$npm_package_version ."
     },
     "dependencies": {
         "@chakra-ui/react": "^2.3.4",
