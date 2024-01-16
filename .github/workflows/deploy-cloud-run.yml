@@ -4,33 +4,75 @@
 name: Deploy to Cloud Run
 
 on:
-  push:
-    branches: [ "deploy/cloud-run" ]
-  workflow_dispatch:
+    push:
+        branches: ["deploy/cloud-run"]
+    workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [16.x]
-        
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: |
-        npm ci
-        npm run build --if-present
-    - name: Upload .next folder
-      uses: actions/upload-artifact@v4.1.0
-      with:
-        # Artifact name
-        name: next-app
-        # A file, directory or wildcard pattern that describes what to upload
-        path: ./.next
-          
+    build-app:
+        runs-on: ubuntu-latest
+        environment: Prod/Cloud Run Demo
+        strategy:
+            matrix:
+                node-version: [16.x]
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Make envfile
+              uses: SpicyPizza/create-envfile@v2.0
+              with:
+                  envkey_FIREBASE_SERVICE_ACCOUNT_KEY: ${{secrets.FIREBASE_SERVICE_ACCOUNT_KEY}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_APPID: ${{env.FIREBASE_CLIENT_APPID}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_MESSAGINGSENDERID: ${{env.FIREBASE_CLIENT_MESSAGINGSENDERID}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_STORAGEBUCKET: ${{env.FIREBASE_CLIENT_STORAGEBUCKET}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_PROJECTID: ${{env.FIREBASE_CLIENT_PROJECTID}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_AUTHDOMAIN: ${{env.FIREBASE_CLIENT_AUTHDOMAIN}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY: ${{env.FIREBASE_CLIENT_APIKEY}}
+                  envkey_NEXT_PUBLIC_EMULATOR_FIRESTORE_PORT: ${{env.EMULATOR_FIRESTORE_PORT}}
+                  envkey_NEXT_PUBLIC_EMULATOR_AUTH_PORT: ${{env.EMULATOR_AUTH_PORT}}
+                  envkey_NEXT_PUBLIC_EMULATOR_STORAGE_PORT: ${{env.EMULATOR_STORAGE_PORT}}
+                  fail_on_empty: false
+
+            - name: Check envfile
+              run: |
+                  cat .env
+                  echo $FIREBASE_SERVICE_ACCOUNT_KEY
+                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_APPID
+                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_MESSAGINGSENDERID
+                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_STORAGEBUCKET
+                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_PROJECTID
+                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_AUTHDOMAIN
+                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY
+                  echo $NEXT_PUBLIC_EMULATOR_FIRESTORE_PORT
+                  echo $NEXT_PUBLIC_EMULATOR_AUTH_PORT
+                  echo $NEXT_PUBLIC_EMULATOR_STORAGE_PORT
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+            - run: |
+                  npm ci
+                  npm run build --if-present
+            - name: Upload app
+              uses: actions/upload-artifact@v4.1.0
+              with:
+                  # Artifact name
+                  name: app
+                  # A file, directory or wildcard pattern that describes what to upload
+                  path: ./.next
+
+    deploy-cloud-run:
+        runs-on: ubuntu-latest
+        environment: Prod/Cloud Run Demo
+        needs: build-app
+        steps:
+            - name: Download app
+              uses: actions/download-artifact@v3
+              with:
+                  # Artifact name
+                  name: app
+                  # Target path to download the artifact to
+                  path: ./.next
