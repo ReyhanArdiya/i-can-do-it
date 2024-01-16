@@ -64,4 +64,4 @@ jobs:
                   # Artifact name
                   name: app
                   # Target path to download the artifact to
-                  path: ./.next
+                  path: ./app
