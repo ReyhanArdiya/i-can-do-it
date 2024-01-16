@@ -61,6 +61,7 @@ jobs:
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+                  target: prod
 
             # - name: Use Node.js ${{ matrix.node-version }}
             #   uses: actions/setup-node@v3
