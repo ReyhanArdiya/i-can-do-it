@@ -23,30 +23,19 @@ jobs:
               uses: SpicyPizza/create-envfile@v2.0
               with:
                   envkey_FIREBASE_SERVICE_ACCOUNT_KEY: ${{secrets.FIREBASE_SERVICE_ACCOUNT_KEY}}
-                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_APPID: ${{env.FIREBASE_CLIENT_APPID}}
-                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_MESSAGINGSENDERID: ${{env.FIREBASE_CLIENT_MESSAGINGSENDERID}}
-                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_STORAGEBUCKET: ${{env.FIREBASE_CLIENT_STORAGEBUCKET}}
-                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_PROJECTID: ${{env.FIREBASE_CLIENT_PROJECTID}}
-                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_AUTHDOMAIN: ${{env.FIREBASE_CLIENT_AUTHDOMAIN}}
-                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY: ${{env.FIREBASE_CLIENT_APIKEY}}
-                  envkey_NEXT_PUBLIC_EMULATOR_FIRESTORE_PORT: ${{env.EMULATOR_FIRESTORE_PORT}}
-                  envkey_NEXT_PUBLIC_EMULATOR_AUTH_PORT: ${{env.EMULATOR_AUTH_PORT}}
-                  envkey_NEXT_PUBLIC_EMULATOR_STORAGE_PORT: ${{env.EMULATOR_STORAGE_PORT}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_APPID: ${{vars.FIREBASE_CLIENT_APPID}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_MESSAGINGSENDERID: ${{vars.FIREBASE_CLIENT_MESSAGINGSENDERID}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_STORAGEBUCKET: ${{vars.FIREBASE_CLIENT_STORAGEBUCKET}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_PROJECTID: ${{vars.FIREBASE_CLIENT_PROJECTID}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_AUTHDOMAIN: ${{vars.FIREBASE_CLIENT_AUTHDOMAIN}}
+                  envkey_NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY: ${{vars.FIREBASE_CLIENT_APIKEY}}
+                  envkey_NEXT_PUBLIC_EMULATOR_FIRESTORE_PORT: ${{vars.EMULATOR_FIRESTORE_PORT}}
+                  envkey_NEXT_PUBLIC_EMULATOR_AUTH_PORT: ${{vars.EMULATOR_AUTH_PORT}}
+                  envkey_NEXT_PUBLIC_EMULATOR_STORAGE_PORT: ${{vars.EMULATOR_STORAGE_PORT}}
                   fail_on_empty: false
 
             - name: Check envfile
-              run: |
-                  cat .env
-                  echo $FIREBASE_SERVICE_ACCOUNT_KEY
-                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_APPID
-                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_MESSAGINGSENDERID
-                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_STORAGEBUCKET
-                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_PROJECTID
-                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_AUTHDOMAIN
-                  echo $NEXT_PUBLIC_FIREBASE_CLIENT_APIKEY
-                  echo $NEXT_PUBLIC_EMULATOR_FIRESTORE_PORT
-                  echo $NEXT_PUBLIC_EMULATOR_AUTH_PORT
-                  echo $NEXT_PUBLIC_EMULATOR_STORAGE_PORT
+              run: cat .env
 
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3
