@@ -20,6 +20,9 @@ jobs:
             matrix:
                 node-version: [16.x]
 
+        outputs:
+            image: ${{ steps.docker_build.outputs.imageid }}
+
         steps:
             - uses: actions/checkout@v4
 
@@ -52,12 +55,12 @@ jobs:
               id: meta
               uses: docker/metadata-action@v5
               with:
-                  images: asia-southeast2-docker.pkg.dev/positive-harbor-411415/i-can-do-it/i-can-do-it
+                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
             - name: Build and push Docker image to GitHub Packages
               uses: docker/build-push-action@v5
+              id: docker_build
               with:
-                  # TODO change label to AR repo
                   context: .
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
@@ -103,3 +106,7 @@ jobs:
 
             - name: Auth Docker
               run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev
+
+            # TODO download image and retag for AR
+            - name: Pull image
+              run: docker pull ${{needs.build-app.outputs.image}}
