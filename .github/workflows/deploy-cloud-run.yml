@@ -52,11 +52,12 @@ jobs:
               id: meta
               uses: docker/metadata-action@v5
               with:
-                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+                  images: asia-southeast2-docker.pkg.dev/positive-harbor-411415/i-can-do-it/i-can-do-it
 
             - name: Build and push Docker image to GitHub Packages
               uses: docker/build-push-action@v5
               with:
+                  # TODO change label to AR repo
                   context: .
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
@@ -83,6 +84,7 @@ jobs:
         runs-on: ubuntu-latest
         environment: Prod/Cloud Run Demo
         needs: build-app
+
         permissions:
             contents: "read"
             id-token: "write"
@@ -98,3 +100,6 @@ jobs:
                   project_id: "positive-harbor-411415"
                   workload_identity_provider: "projects/780572399149/locations/global/workloadIdentityPools/pool-github-actions/providers/github"
                   service_account: "github-actions-deploy-cloud-ru@positive-harbor-411415.iam.gserviceaccount.com"
+
+            - name: Auth Docker
+              run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev
