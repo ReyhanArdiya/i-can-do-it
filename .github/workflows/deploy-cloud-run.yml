@@ -20,9 +20,6 @@ jobs:
             matrix:
                 node-version: [16.x]
 
-        outputs:
-            image: ${{ steps.docker_build.outputs.imageid }}
-
         steps:
             - uses: actions/checkout@v4
 
@@ -109,4 +106,4 @@ jobs:
 
             # TODO download image and retag for AR
             - name: Pull image
-              run: docker pull ${{needs.build-app.outputs.image}}
+              run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
