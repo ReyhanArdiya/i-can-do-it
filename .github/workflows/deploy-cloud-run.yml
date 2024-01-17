@@ -11,6 +11,7 @@ on:
 env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ${{ github.repository }}
+    AR_TAG: asia-southeast2-docker.pkg.dev/positive-harbor-411415/i-can-do-it/i-can-do-it
 
 jobs:
     build-app:
@@ -106,4 +107,10 @@ jobs:
 
             # TODO download image and retag for AR
             - name: Pull image
-              run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+              run: docker pull ghcr.io/reyhanardiya/i-can-do-it:deploy-cloud-run
+
+            - name: Retag image
+              run: docker tag ghcr.io/reyhanardiya/i-can-do-it:deploy-cloud-run ${{ env.AR_TAG }}
+
+            - name: Push image
+              run: docker push asia-southeast2-docker.pkg.dev/positive-harbor-411415/i-can-do-it/i-can-do-it
