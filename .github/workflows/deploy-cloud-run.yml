@@ -12,9 +12,11 @@ env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ${{ github.repository }}
     AR_TAG: asia-southeast2-docker.pkg.dev/positive-harbor-411415/i-can-do-it/i-can-do-it
+    SERVICE_NAME: i-can-do-it
 
 jobs:
     build-app:
+        name: Build app
         runs-on: ubuntu-latest
         environment: Prod/Cloud Run Demo
         strategy:
@@ -24,6 +26,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
+            # TODO add this on cloud run instead
             - name: Make envfile
               uses: SpicyPizza/create-envfile@v2.0
               with:
@@ -82,15 +85,16 @@ jobs:
             #       path: ./.next
 
     deploy-cloud-run:
+        name: Deploy to Cloud Run
         runs-on: ubuntu-latest
-        environment: Prod/Cloud Run Demo
+        environment:
+            name: Prod/Cloud Run Demo
+            url: ${{steps.deploy-cloudrun.outputs.url}}
         needs: build-app
 
         permissions:
             contents: "read"
             id-token: "write"
-
-        # TODO push to AR
 
         steps:
             - uses: actions/checkout@v4
@@ -105,7 +109,6 @@ jobs:
             - name: Auth Docker
               run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev
 
-            # TODO download image and retag for AR
             - name: Pull image
               run: docker pull ghcr.io/reyhanardiya/i-can-do-it:deploy-cloud-run
 
@@ -117,6 +120,10 @@ jobs:
 
             - name: Deploy to Cloud Run
               uses: "google-github-actions/deploy-cloudrun@v2"
+              id: deploy-cloudrun
               with:
                   image: ${{ env.AR_TAG }}
-                  service: i-can-do-it
+                  service: ${{ env.SERVICE_NAME }}
+
+            - name: Set revision to public
+              run: gcloud run services add-iam-policy-binding ${{ env.SERVICE_NAME }} --member=allUsers --role=roles/run.invoker
