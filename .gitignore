@@ -16,6 +16,7 @@
 # production
 /build
 secret.*
+gha-creds-*.json
 
 # misc
 .DS_Store

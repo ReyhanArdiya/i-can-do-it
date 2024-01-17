@@ -21,7 +21,7 @@ jobs:
                 node-version: [16.x]
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - name: Make envfile
               uses: SpicyPizza/create-envfile@v2.0
@@ -83,12 +83,18 @@ jobs:
         runs-on: ubuntu-latest
         environment: Prod/Cloud Run Demo
         needs: build-app
+        permissions:
+            contents: "read"
+            id-token: "write"
+
+        # TODO push to AR
+
         steps:
-            - name: Download app
-              uses: actions/download-artifact@v4
+            - uses: actions/checkout@v4
+
+            - name: Authenticate with Google Cloud
+              uses: "google-github-actions/auth@v2"
               with:
-                  # Artifact name
-                  name: app
-                  # Target path to download the artifact to
-                  path: ./app
-            - run: ls -a
+                  project_id: "positive-harbor-411415"
+                  workload_identity_provider: "projects/780572399149/locations/global/workloadIdentityPools/pool-github-actions/providers/github"
+                  service_account: "github-actions-deploy-cloud-ru@positive-harbor-411415.iam.gserviceaccount.com"
