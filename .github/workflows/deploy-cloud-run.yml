@@ -13,6 +13,7 @@ env:
     IMAGE_NAME: ${{ github.repository }}
     AR_TAG: asia-southeast2-docker.pkg.dev/positive-harbor-411415/i-can-do-it/i-can-do-it
     SERVICE_NAME: i-can-do-it
+    REGION: asia-southeast2
 
 jobs:
     build-app:
@@ -124,6 +125,7 @@ jobs:
               with:
                   image: ${{ env.AR_TAG }}
                   service: ${{ env.SERVICE_NAME }}
+                  region: ${{ env.REGION }}
 
             - name: Set revision to public
-              run: gcloud run services add-iam-policy-binding ${{ env.SERVICE_NAME }} --member=allUsers --role=roles/run.invoker --region=asia-southeast2
+              run: gcloud run services add-iam-policy-binding ${{ env.SERVICE_NAME }} --member=allUsers --role=roles/run.invoker --region=${{env.REGION}}
